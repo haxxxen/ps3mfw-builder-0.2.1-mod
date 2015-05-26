@@ -1,0 +1,9 @@
+<Settings>
+	<Theme>default</Theme>        
+	<language>English</language>
+	<BUILD_DIR></BUILD_DIR>
+	<PS3_KEYS>ps3mfw-builder-0.2.1-mod/ps3keys</PS3_KEYS>	
+	<IN_FILE>PS3UPDAT.PUP</IN_FILE>	
+	<OUT_FILE>ps3mfw-builder-0.2.1-mod/test</OUT_FILE>	    
+	<tasks></tasks>
+</Settings>
