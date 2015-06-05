@@ -15,3 +15,7 @@ Changes:
 - pkgtool "hexified" to work on WindowsXP (SP3)
 
 Credits go to all the original authors of MFW-BUILDER and its tools
+
+
+NOTE:
+Currently the spoof update task does not work for 4.6+ cfw due to changings in version.txt.
