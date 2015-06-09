@@ -18,4 +18,4 @@ Credits go to all the original authors of MFW-BUILDER and its tools
 
 
 NOTE:
-Currently the spoof update task does not work for 4.6+ cfw due to changings in version.txt.
+Spoofer update task fixed now and works again to spoof new 4.6+ version.txt entries.
