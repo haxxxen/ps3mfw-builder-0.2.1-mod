@@ -18,4 +18,4 @@ Credits go to all the original authors of MFW-BUILDER and its tools
 
 
 NOTE:
-Spoofer update task fixed now and works again to spoof new 4.6+ version.txt entries.
+Sorry, but spoof task still needs fixing.....
