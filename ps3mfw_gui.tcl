@@ -152,15 +152,15 @@ namespace eval ::gui {
         set ::OUT_FILE [lindex $arguments 1]
 
         set build [::ttk::button .right.build -text "[::xml::GetData ${::xmllang} "Lang:Build_MFW" 0]" -command ::gui::build_mfw]
-        set pause [::ttk::button .right.pause -text "[::xml::GetData ${::xmllang} "Lang:PAUSE" 0]" -command ::gui::pause]
+        # set pause [::ttk::button .right.pause -text "[::xml::GetData ${::xmllang} "Lang:PAUSE" 0]" -command ::gui::pause]
 		set setting [::ttk::button .right.lsettings -text "[::xml::GetData ${::xmllang} "Lang:Settings" 0]" -command ::gui::settings]
         set exit [::ttk::button .right.exit -text "[::xml::GetData ${::xmllang} "Lang:Quit" 0]" -command exit]
         set about [::ttk::frame .right.about]
         set themes [::ttk::labelframe .right.themes -text "[::xml::GetData ${::xmllang} "Lang:Theme" 0]"]
         populate_themes $themes
         add_about_msg $about
-        # pack $about $build $setting $exit -side top -expand false -fill both -padx $::gui::padx -pady $::gui::pady
-        pack $about $build $pause $setting $exit -side top -expand false -fill both -padx $::gui::padx -pady $::gui::pady
+        pack $about $build $setting $exit -side top -expand false -fill both -padx $::gui::padx -pady $::gui::pady
+        # pack $about $build $pause $setting $exit -side top -expand false -fill both -padx $::gui::padx -pady $::gui::pady
 
         unset ::options(--gui)
         foreach opt [get_sorted_options [file normalize [info script]] [array names ::options]] {
@@ -235,7 +235,7 @@ namespace eval ::gui {
         $filemenu add separator
         $filemenu add command -label "[::xml::GetData ${::xmllang} "Lang:Build_MFW" 0]" -command ::gui::build_mfw
         $filemenu add separator
-		$filemenu add command -label "[::xml::GetData ${::xmllang} "Lang:PAUSE" 0]" -command ::gui::pause
+		# $filemenu add command -label "[::xml::GetData ${::xmllang} "Lang:PAUSE" 0]" -command ::gui::pause
 		$filemenu add separator
 		$filemenu add command -label "[::xml::GetData ${::xmllang} "Lang:Settings" 0]" -command ::gui::settings
 		$filemenu add separator

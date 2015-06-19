@@ -14,7 +14,7 @@
 
 # Option --patch-rsod-version: [3.xx/4.xx] Select Firmware you want to bypass RSOD
 
-# Type --patch-rsod-version: combobox { { 3.15 } { 3.15 DEX } { 3.40-3.55 } { 4.xx } }
+# Type --patch-rsod-version: combobox { {3.15} {3.15 DEX} {3.40-3.55} {4.xx} }
 
 namespace eval ::08_patch_rsod {
 

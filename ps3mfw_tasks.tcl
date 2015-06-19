@@ -34,7 +34,7 @@ proc ego_gui {} {
 
 proc clean_up {} {
     log "Deleting output files"
-    catch_die {file delete -force -- ${::CUSTOM_PUP_DIR} ${::ORIGINAL_PUP_DIR} ${::OUT_FILE}} \
+    catch_die {file delete -force -- ${::CUSTOM_PUP_DIR} ${::ORIGINAL_PUP_DIR} ${::HASH_DIR} ${::OUT_FILE}} \
         "Could not cleanup output files"
 }
 
@@ -61,6 +61,13 @@ proc pack_custom_pup {dir pup} {
     catch_die {pup_create ${dir} ${pup} $build} "Error packing PUP file [file tail ${pup}]"
 }
 
+# proc export_hash {in} {
+	# variable options
+	# set flag "|"
+	# shell ${::HC} $in $flag clip
+    # catch_die {export_hash_clip ${in} ${flag} clip} "Error hashing PUP file [file tail ${in}]"
+# }
+
 proc build_mfw {input output tasks} {
     global options
 	 # array for saving off SELF-SCE Hdr fields
@@ -79,7 +86,7 @@ proc build_mfw {input output tasks} {
 
 	set ::AUTOCOS "0"
 	if {$::options(--auto-cos)} {
-    set ::AUTOCOS "1"
+		set ::AUTOCOS "1"
     }
 
     set ::selected_tasks [sort_tasks ${tasks}]
@@ -192,6 +199,17 @@ proc build_mfw {input output tasks} {
     file delete -force ${::CUSTOM_COSUNPKG_DIR}
     file delete -force ${::CUSTOM_UNPKG_DIR}
 	debug "custom CORE_OS deleted"	
+
+    set meta [file join ${::PS3MFW_DIR}	metadata_decrypted]
+    if {[file exists $meta]} {
+		file delete -force $meta
+		debug "custom metadata deleted"	
+	}
+
+    if {[file exists ${::HASH_DIR}]} {
+		file delete -force ${::HASH_DIR}
+		debug "custom hash folder deleted"	
+	}
 
     if {[file exists ${::CUSTOM_SPKG_DIR}]} {
 		set filesSPKG [lsort [glob -nocomplain -tails -directory ${::CUSTOM_SPKG_DIR} *.1]]

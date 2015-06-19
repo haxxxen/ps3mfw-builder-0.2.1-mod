@@ -1730,3 +1730,15 @@ proc modify_devflash3_file {file callback args} {
         ::pkg_archive $unpkgdir $pkg
     }
 }
+
+
+proc export_hash {in} {
+	shell ${::HC} [file nativename $in]
+}
+
+proc patchtool_single {file search replace} {
+	shell ${::PATCHTOOL} -action patch -filename $file -search $search -replace $replace -offset 0 -multi no -debug yes
+}
+proc patchtool_multi {file search replace} {
+	shell ${::PATCHTOOL} -action patch -filename $file -search $search -replace $replace -offset 0 -multi yes -debug yes
+}

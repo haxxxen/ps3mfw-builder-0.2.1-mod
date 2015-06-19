@@ -15,7 +15,3 @@ Changes:
 - pkgtool "hexified" to work on WindowsXP (SP3)
 
 Credits go to all the original authors of MFW-BUILDER and its tools
-
-
-NOTE:
-Sorry, but spoof task still needs fixing.....

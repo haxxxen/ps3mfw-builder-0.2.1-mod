@@ -9,26 +9,32 @@
 #
     
 # Priority: 30
-# Description: Patch Firmware for consoles with broken blu-ray drive
+# Description: Patch Firmware for consoles with broken blu-ray drive or broken Bluetooth
     
+# Option --remove-bt-firmware: remove Bluetooth firmware (ENABLING THIS WILL REMOVE BLUETOOTH FIRMWARE)
 # Option --remove-bd-revoke: remove BdpRevoke (ENABLING THIS WILL REMOVE BLU-RAY DRIVE FIRMWARE)
 # Option --remove-bd-firmware: remove BD firmware (ENABLING THIS WILL REMOVE BLU-RAY DRIVE FIRMWARE)
 # Option --patch-lv1-nobd: Select MLT's (3.55+) or zecoxao's (4.xx) noBD patch, to fake a working BLU-RAY Drive
 
-# Type --remove-bd: boolean
+# Type --remove: boolean
 # Type --patch-lv1-nobd: combobox { {MLT (3.55+)} {zecoxao (4.xx)} }
 
 namespace eval ::04_broken_bluray {
 
     array set ::04_broken_bluray::options {
-        --remove-bd-revoke true
-        --remove-bd-firmware true
+        --remove-bt-firmware false
+        --remove-bd-revoke false
+        --remove-bd-firmware false
         --patch-lv1-nobd ""
     }
     
     proc main {} {
+		if {$::04_broken_bluray::options(--remove-bt-firmware)} {
+			::modify_upl_file ::04_broken_bluray::callback_bt
+		}
+
 		if {$::04_broken_bluray::options(--remove-bd-revoke) || $::04_broken_bluray::options(--remove-bd-firmware)} {
-			::modify_upl_file ::04_broken_bluray::callback
+			::modify_upl_file ::04_broken_bluray::callback_bd
 		}
 
 		if {$::04_broken_bluray::options(--remove-bd-revoke) && $::04_broken_bluray::options(--remove-bd-firmware) && $::04_broken_bluray::options(--patch-lv1-nobd) == "MLT (3.55+)"} {
@@ -48,7 +54,22 @@ namespace eval ::04_broken_bluray {
 		}
     }
 
-    proc callback { file } {
+    proc callback_bt { file } {
+        log "Modifying XML file [file tail ${file}]"
+    
+        if {[package provide Tk] != "" } {
+           tk_messageBox -default ok -message "Removing bluetooth firmware packages press ok to continue" -icon warning
+        }
+
+        set xml [::xml::LoadFile $file]
+
+        if {$::04_broken_bluray::options(--remove-bt-firmware)} {
+          set xml [::remove_pkgs_from_upl_xml $xml "BT" "bluetooth firmware"]
+        }
+    
+        ::xml::SaveToFile $xml $file
+    }
+    proc callback_bd { file } {
 	
         log "Modifying XML file [file tail ${file}]"       
         set xml [::xml::LoadFile $file]
