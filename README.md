@@ -13,5 +13,6 @@ Changes:
 - glevand's 3.55 (OtherOS) tasks fixed to work with patchtool
 - personalized tasks
 - pkgtool "hexified" to work on WindowsXP (SP3)
+- modified version of COBRA's hashcalc app added, to make it work with MFW-Builder
 
 Credits go to all the original authors of MFW-BUILDER and its tools
