@@ -13,7 +13,7 @@
  
 # Option --patch-disable-epilepsy-message: [4.xx] Select Base Firmware
  
-# Type --patch-disable-epilepsy-message: combobox { {CEX MFW} {DEX MFW} {REBUG CFW} }
+# Type --patch-disable-epilepsy-message: combobox { {CEX} {DEX} {REBUG} }
  
 namespace eval ::16_patch_epilepsy {
  
@@ -22,14 +22,16 @@ namespace eval ::16_patch_epilepsy {
     }
  
     proc main {} {
-		if {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "CEX MFW"} {
-			::modify_devflash_file [file join dev_flash vsh module vsh.self] ::16_patch_epilepsy::patch_cex_self
-		} elseif {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "DEX MFW"} {
-			::modify_devflash_file [file join dev_flash vsh module vsh.self] ::16_patch_epilepsy::patch_self
-		} elseif {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "REBUG CFW"} {
-			set selfs {vsh.self vsh.self.swp}
-			::modify_devflash_files [file join dev_flash vsh module] $selfs ::16_patch_epilepsy::patch_self
-			::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::16_patch_epilepsy::patch_cex_self
+		if {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) != ""} {
+			if {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "CEX"} {
+				::modify_devflash_file [file join dev_flash vsh module vsh.self] ::16_patch_epilepsy::patch_cex_self
+			} elseif {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "DEX"} {
+				::modify_devflash_file [file join dev_flash vsh module vsh.self] ::16_patch_epilepsy::patch_self
+			} elseif {$::16_patch_epilepsy::options(--patch-disable-epilepsy-message) == "REBUG"} {
+				set selfs {vsh.self vsh.self.swp}
+				::modify_devflash_files [file join dev_flash vsh module] $selfs ::16_patch_epilepsy::patch_self
+				::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::16_patch_epilepsy::patch_cex_self
+			}
 		}
 	}
  

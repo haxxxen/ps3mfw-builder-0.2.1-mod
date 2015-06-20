@@ -11,12 +11,12 @@
 # Priority: 120
 # Description: Update or set Spoofer for MFW or REBUG Firmwares
 
-# Option --version: Select REBUG Firmware or leave empty for MFW
+# Option --version: Select CEX, DEX or REBUG Firmware
 # Option --spoof: Select Spoofer Version
-# Option --psn: Select PSN fix for lower MFW/CFW
+# Option --psn: Select PSN fix for lower MFW/CFW (4.66-)
 # Option --screen: Patch Screenshot Feature to vsh.self
 
-# Type --version: combobox { {REBUG} }
+# Type --version: combobox { {CEX} {DEX} {REBUG} }
 # Type --spoof: combobox { {4.75 65242 20150421 0001:CEX-ww 5283@svn+ssh://svn/ps3/svn/security/sdk_branches/release_475/trunk 50537@svn+ssh://svn/ps3/svn/sys/sdk_branches/release_475/trunk 16381@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/x3/branches/target47x 6255@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/paf/branches/target47x 94588@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/vsh/branches/target47x 96@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/sys_jp/branches/target47x 11554@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target101/ps1 11569@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target465/ps1_net 9246@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target202/ps1_new 9736@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target400/ps2 17227@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/lopnor/branches/target400/gx 17168@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/lopnor/branches/soft190/soft 10788@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target460/psp 4044@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emerald/current 20107@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/bdp/prof5/release :} {9.99 99999 99990909 0001:CEX-ww 5283@svn+ssh://svn/ps3/svn/security/sdk_branches/release_475/trunk 50537@svn+ssh://svn/ps3/svn/sys/sdk_branches/release_475/trunk 16381@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/x3/branches/target47x 6255@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/paf/branches/target47x 94588@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/vsh/branches/target47x 96@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/sys_jp/branches/target47x 11554@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target101/ps1 11569@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target465/ps1_net 9246@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target202/ps1_new 9736@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target400/ps2 17227@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/lopnor/branches/target400/gx 17168@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/lopnor/branches/soft190/soft 10788@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emu/branches/target460/psp 4044@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/emerald/current 20107@svn+ssh://svn.rd.scei.sony.co.jp/ps3/svn/bdp/prof5/release :} }
 # Type --psn: combobox { {Patch 1} {Patch 2} {Patch 3} }
 # Type --screen: boolean
@@ -36,27 +36,38 @@ namespace eval ::13_spoofer_update {
 			return -code error "  YOU HAVE NOT SELECTED SPOOFER VERSION !!!"
 		} else {
 			if {$::13_spoofer_update::options(--version) != ""} {
-				log "Patching REBUG's vsh.self.cexsp & vsh.self.swp to spoof Build and Version Number"
-					set selfs {vsh.self.cexsp vsh.self.swp}
-					::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_vsh_self
-				log "Patching version.txt.swp & index.dat.swp file to spoof all entries"
-					::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::13_spoofer_update::version_txt
+				if {$::13_spoofer_update::options(--version) == "CEX"} {
+					log "Patching CEX vsh.self to spoof Build and Version Number"
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_vsh_cex
+					log "Patching version.txt & index.dat file to spoof all entries"
+						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
+				} elseif {$::13_spoofer_update::options(--version) == "DEX"} {
+					log "Patching DEX vsh.self to spoof Build and Version Number"
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_vsh_dex
+					log "Patching version.txt & index.dat file to spoof all entries"
+						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
+				} elseif {$::13_spoofer_update::options(--version) == "REBUG"} {
+					log "Patching REBUG's vsh.self.cexsp & vsh.self.swp to spoof Build and Version Number"
+						::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::13_spoofer_update::patch_vsh_cex
+						::modify_devflash_file [file join dev_flash vsh module vsh.self.swp] ::13_spoofer_update::patch_vsh_dex
+					log "Patching version.txt.swp & index.dat.swp file to spoof all entries"
+						::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::13_spoofer_update::version_txt
+				}
 			} else {
-				log "Patching vsh.self to spoof Build and Version Number"
-					::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_vsh_self
-				log "Patching version.txt & index.dat file to spoof all entries"
-					::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
+				return -code error "  YOU HAVE TO SELECT FIRMWARE VERSION !!!"
 			}
 		}
 		if {$::13_spoofer_update::options(--psn) != ""} {
 			if {${::NEWMFW_VER} < "4.66"} {
 				if {$::13_spoofer_update::options(--version) != ""} {
-					log "Patching REBUG's vsh.self.cexsp & vsh.self.swp to enable SEN on lower MFW/CFW again."
-						set selfs {vsh.self.cexsp vsh.self.swp}
-						::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_psn
-				} else {
-					log "Patching vsh.self to enable SEN on lower MFW/CFW again."
-						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_psn
+					if {$::13_spoofer_update::options(--version) == "REBUG"} {
+						log "Patching REBUG's vsh.self.cexsp & vsh.self.swp to enable SEN on lower MFW/CFW again."
+							set selfs {vsh.self.cexsp vsh.self.swp}
+							::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_psn
+					} else {
+						log "Patching vsh.self to enable SEN on lower MFW/CFW again."
+							::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_psn
+					}
 				}
 			}
 		}
@@ -75,16 +86,55 @@ namespace eval ::13_spoofer_update {
 		}
     }
 
-    proc patch_vsh_self {self} {
-		::modify_self_file $self ::13_spoofer_update::patch_vsh_elf
+    proc patch_vsh_cex {self} {
+		::modify_self_file $self ::13_spoofer_update::patch_cex_elf
 	}
-    proc patch_vsh_elf {elf} {
+    proc patch_vsh_dex {self} {
+		::modify_self_file $self ::13_spoofer_update::patch_dex_elf
+	}
+    proc patch_cex_elf {elf} {
 		variable options
 		set release [lindex $options(--spoof) 0]
 		set build [lindex $options(--spoof) 1]
 		set major [lindex [split $release "."] 0]
 		set minor [lindex [split $release "."] 1]
-		log "Patching [file tail $elf] to spoof new Build and Version Number"
+		log "Patching CEX [file tail $elf] to spoof new Build and Version Number"
+		log "Patching Build Number"
+		# set search "[format %0.5d $fake_build]"
+		set search "\x15\x88\x09\xCF\x4F\x3C"
+		debug "search: $search"
+		set replace "[format %0.5d $build]"
+		debug "replace: $replace"
+		set offset 6
+		set mask 0			
+		# PATCH THE ELF BINARY
+			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
+		log "Patching Version Number"
+		# set search "[format %0.2d ${fake_major}].[format %0.2d ${fake_minor}]"
+        if {${::NEWMFW_VER} > "3.56"} {
+			set search "\x00\x00\x5F\x76\x6E\x74\x30\x30\x38\x00"
+		} else {
+			set search "\x39\x39\x2E\x39\x39\x00\x00\x00"
+		}
+		debug "search: $search"
+		set replace "[format %0.2d ${major}].[format %0.2d ${minor}]\x00\x00\x00\x00"
+		debug "replace: $replace"
+        if {${::NEWMFW_VER} > "3.56"} {
+			set offset 10
+		} else {
+			set offset 8
+		}
+		set mask 0			
+		# PATCH THE ELF BINARY
+			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
+    }
+    proc patch_dex_elf {elf} {
+		variable options
+		set release [lindex $options(--spoof) 0]
+		set build [lindex $options(--spoof) 1]
+		set major [lindex [split $release "."] 0]
+		set minor [lindex [split $release "."] 1]
+		log "Patching DEX [file tail $elf] to spoof new Build and Version Number"
 		log "Patching Build Number"
 		# set search "[format %0.5d $fake_build]"
 		set search "\x15\x88\x09\xCF\x4F\x3C"
@@ -511,11 +561,13 @@ namespace eval ::13_spoofer_update {
       puts -nonewline $fd $data
       close $fd
 	  if {$::13_spoofer_update::options(--version) != ""} {
-		  set index_dat_swp [file join [file dirname $filename] index.dat.swp]
-		  shell "dat" [file nativename $filename] [file nativename $index_dat_swp]
-	  } else {
-		  set index_dat [file join [file dirname $filename] index.dat]
-		  shell "dat" [file nativename $filename] [file nativename $index_dat]
+		  if {$::13_spoofer_update::options(--version) == "REBUG"} {
+			  set index_dat_swp [file join [file dirname $filename] index.dat.swp]
+			  shell "dat" [file nativename $filename] [file nativename $index_dat_swp]
+		  } else {
+			  set index_dat [file join [file dirname $filename] index.dat]
+			  shell "dat" [file nativename $filename] [file nativename $index_dat]
+		  }
 	  }
     }
 
