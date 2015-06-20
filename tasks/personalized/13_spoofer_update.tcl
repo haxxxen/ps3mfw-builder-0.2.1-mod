@@ -74,14 +74,16 @@ namespace eval ::13_spoofer_update {
 		if {$::13_spoofer_update::options(--screen)} {
 			set xml [file join dev_flash vsh resource explore xmb category_photo.xml]
 			if {$::13_spoofer_update::options(--version) != ""} {
-				log "Patching explore_category_photo.xml and REBUG's vsh.self file(s) to enable screenshot feature"
-					set selfs {vsh.self vsh.self.cexsp vsh.self.swp}
-					::modify_devflash_file $xml ::13_spoofer_update::callback_patch
-					::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_screen
-			} else {
-				log "Patching explore_category_photo.xml and vsh.self file to enable screenshot feature"
-					::modify_devflash_file $xml ::13_spoofer_update::callback_patch
-					::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_screen
+				if {$::13_spoofer_update::options(--version) == "REBUG"} {
+					log "Patching explore_category_photo.xml and REBUG's vsh.self file(s) to enable screenshot feature"
+						set selfs {vsh.self vsh.self.cexsp vsh.self.swp}
+						::modify_devflash_file $xml ::13_spoofer_update::callback_patch
+						::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_screen
+				} else {
+					log "Patching explore_category_photo.xml and vsh.self file to enable screenshot feature"
+						::modify_devflash_file $xml ::13_spoofer_update::callback_patch
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_screen
+				}
 			}
 		}
     }
@@ -560,14 +562,12 @@ namespace eval ::13_spoofer_update {
       set fd [open $filename w]
       puts -nonewline $fd $data
       close $fd
-	  if {$::13_spoofer_update::options(--version) != ""} {
-		  if {$::13_spoofer_update::options(--version) == "REBUG"} {
-			  set index_dat_swp [file join [file dirname $filename] index.dat.swp]
-			  shell "dat" [file nativename $filename] [file nativename $index_dat_swp]
-		  } else {
-			  set index_dat [file join [file dirname $filename] index.dat]
-			  shell "dat" [file nativename $filename] [file nativename $index_dat]
-		  }
+	  if {$::13_spoofer_update::options(--version) == "REBUG"} {
+		  set index_dat_swp [file join [file dirname $filename] index.dat.swp]
+		  shell "dat" [file nativename $filename] [file nativename $index_dat_swp]
+	  } else {
+		  set index_dat [file join [file dirname $filename] index.dat]
+		  shell "dat" [file nativename $filename] [file nativename $index_dat]
 	  }
     }
 
