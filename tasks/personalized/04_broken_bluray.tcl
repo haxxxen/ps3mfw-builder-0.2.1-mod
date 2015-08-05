@@ -170,6 +170,13 @@ namespace eval ::04_broken_bluray {
 				set mask 0				
 					catch_die {::patch_elf $elf $search $offset $replace $mask} \
 						"Unable to patch self [file tail $elf]"
+			log "Part 4" 1
+				set  search "\xF8\x01\x00\x90\x4B\xFF\xFF\x99\x2F\x83\x00\x00\x78\x63\x00\x20\x40\x9E\x00\x18"
+				set replace "\xF8\x01\x00\x90\x4B\xFF\xFF\x99\x2F\x83\x00\x00\x78\x63\x00\x20\x60\x00\x00\x00"
+				set offset 0
+				set mask 0				
+					catch_die {::patch_elf $elf $search $offset $replace $mask} \
+						"Unable to patch self [file tail $elf]"
 		} else {
 			return -code error "  ZECOXAO'S PATCHES ONLY WORK ON 4.XX FIRMWARES !!!"
 		}

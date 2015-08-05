@@ -50,15 +50,14 @@ namespace eval 05_patch_info {
 					catch_die {::patch_elf $info0 $search $offset $replace $mask} \
 						"Unable to patch file [file tail $info0]"
 			}
-			set pkg2 [file join ${::CUSTOM_UPDATE_DIR} ${pkg}.pkg]
 			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				::pkg_spkg_archive $unpkgdir $pkg2
+				file delete -force $pkg
+				::pkg_spkg_archive $unpkgdir $pkg
 				::copy_spkg
 			} else {
-				::pkg_archive $unpkgdir $pkg2
+				file delete -force $pkg
+				::pkg_archive $unpkgdir $pkg
 			}
-			file delete -force $pkg
-			file rename -force $pkg2 $pkg
 			file delete -force $unpkgdir
 				::unpkg_archive $pkg ${::CUSTOM_DEVFLASH_DIR}
 		}
@@ -98,15 +97,14 @@ namespace eval 05_patch_info {
 		}
 			::cospkg_package $cosunpkgdir [file join $cosdir content]
 		file delete -force $cosunpkgdir
-		set cos2 [file join ${::CUSTOM_UPDATE_DIR} ${cos}.new]
 		if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-			::pkg_spkg_archive $cosdir $cos2
+			file delete -force $cos
+			::pkg_spkg_archive $cosdir $cos
 			::copy_spkg
 		} else {
-			::pkg_archive $cosdir $cos2
+			file delete -force $cos
+			::pkg_archive $cosdir $cos
 		}
-		file delete -force $cos
-		file rename -force $cos2 $cos
 		file delete -force $cosdir
 
 		if {${::NEWMFW_VER} > "4.00"} {
@@ -124,15 +122,14 @@ namespace eval 05_patch_info {
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
 					"Unable to patch file [file tail $info0]"
-			set df32 [file join ${::CUSTOM_UPDATE_DIR} ${df3}.new]
 			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				::pkg_spkg_archive $df3dir $df32
+				file delete -force $df3
+				::pkg_spkg_archive $df3dir $df3
 				::copy_spkg
 			} else {
-				::pkg_archive $df3dir $df32
+				file delete -force $df3
+				::pkg_archive $df3dir $df3
 			}
-			file delete -force $df3
-			file rename -force $df32 $df3
 			file delete -force $df3dir
 
 			set bt [file join ${::CUSTOM_UPDATE_DIR} BLUETOOTH_FIRMWARE.pkg]
@@ -145,15 +142,14 @@ namespace eval 05_patch_info {
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
 					"Unable to patch file [file tail $info0]"
-			set bt2 [file join ${::CUSTOM_UPDATE_DIR} ${bt}.new]
 			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				::pkg_spkg_archive $btdir $bt2
+				file delete -force $bt
+				::pkg_spkg_archive $btdir $bt
 				::copy_spkg
 			} else {
-				::pkg_archive $btdir $bt2
+				file delete -force $bt
+				::pkg_archive $btdir $bt
 			}
-			file delete -force $bt
-			file rename -force $bt2 $bt
 			file delete -force $btdir
 
 			set multi [file join ${::CUSTOM_UPDATE_DIR} MULTI_CARD_FIRMWARE.pkg]
@@ -166,15 +162,14 @@ namespace eval 05_patch_info {
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
 					"Unable to patch file [file tail $info0]"
-			set multi2 [file join ${::CUSTOM_UPDATE_DIR} ${multi}.new]
 			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				::pkg_spkg_archive $mdir $multi2
+				file delete -force $multi
+				::pkg_spkg_archive $mdir $multi
 				::copy_spkg
 			} else {
-				::pkg_archive $mdir $multi2
+				file delete -force $multi
+				::pkg_archive $mdir $multi
 			}
-			file delete -force $multi
-			file rename -force $multi2 $multi
 			file delete -force $mdir
 		}
 
@@ -193,21 +188,20 @@ namespace eval 05_patch_info {
 			set upldir [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.unpkg]
 				::unpkg_archive $upl $upldir
 			set info0 [file join $upldir info0]
-			set search		"\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x19"
+			set search		"\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00"
 			set replace		"\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x20"
 			set offset 0
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
 					"Unable to patch file [file tail $info0]"
-			set upl2 [file join ${::CUSTOM_UPDATE_DIR} ${upl}.new]
 			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				::pkg_spkg_archive $upldir $upl2
+				file delete -force $upl
+				::pkg_spkg_archive $upldir $upl
 				::copy_spkg
 			} else {
-				::pkg_archive $upldir $upl2
+				file delete -force $upl
+				::pkg_archive $upldir $upl
 			}
-			file delete -force $upl
-			file rename -force $upl2 $upl
 			file delete -force $upldir
 		}
 	}
