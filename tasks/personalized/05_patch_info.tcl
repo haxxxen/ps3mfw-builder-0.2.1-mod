@@ -35,9 +35,9 @@ namespace eval 05_patch_info {
 		set cex2 [file join dev_flash vsh module software_update_plugin.sprx]
 			::modify_devflash_file $cex2 ::05_patch_info::cex_rename
 		set dex [file join dev_flash vsh module software_update_plugin.sprx.dex]
-			::modify_devflash_file $dex ::05_patch_info::dex_rename1
+			::modify_devflash_file $dex ::05_patch_info::dex_rename2
 		set dex2 [file join dev_flash vsh module sysconf_plugin.sprx.dex]
-			::modify_devflash_file $dex2 ::05_patch_info::dex_rename2
+			::modify_devflash_file $dex2 ::05_patch_info::dex_rename1
 
 		foreach pkg [lsort [glob -nocomplain [file join ${::CUSTOM_UPDATE_DIR} dev_flash_*]]] {
 			set unpkgdir [file join ${::CUSTOM_UPDATE_DIR} ${pkg}.unpkg]
