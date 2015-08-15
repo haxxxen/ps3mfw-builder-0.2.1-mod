@@ -37,6 +37,7 @@
 # Option --patch-lv1-otheros-plus-plus: OtherOS++ support (3.55 ONLY)
 # Option --patch-lv1-um-qa: Enable QA in Update Manager
 # Option --patch-lv1-ata-region0-access: Allow access to all regions of all storage devices
+# Option --patch-lv1-lv2mem: Patch Shutdown on LV2 memory modification
 
 # Type --fwtype: combobox { {3.xx} {4.xx} }
 # Type --patch-gameos-hdd-region-size: combobox { {22GB} {10GB} }
@@ -71,8 +72,8 @@ namespace eval ::03_patch_oos {
 	--patch-lv1-otheros-plus-plus false
         --patch-lv1-um-qa false
         --patch-lv1-ata-region0-access false
+        --patch-lv1-lv2mem false
     }
-        # --patch-lv1-lv2mem false
 
     proc main { } {
 		if {$::03_patch_oos::options(--fwtype) == ""} {
@@ -569,16 +570,27 @@ namespace eval ::03_patch_oos {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
         }
 
-        # if {$::03_patch_oos::options(--patch-lv1-lv2mem)} {
-            # log "Patching Hypervisor to remove LV2 memory protection"
+		if {$::03_patch_oos::options(--patch-lv1-lv2mem)} {
+			if {${::NEWMFW_VER} == "3.55"} {
+				log "Patching 3.55 Hypervisor to disable LV2 memory protection"
 
-            # set search  "\x2F\x83\x00\x3C\x40\x9E\x00\xCC"
-			# set replace "\x60\x00\x00\x00"
-			# set offset 12
-			# set mask 0			
-			# # PATCH THE ELF BINARY
-				# catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-        # }
+				set search  "\x41\x9E\x00\x94\x2B\x83\x00\x32"
+				set replace "\x60\x00\x00\x00\x2B\x83\x00\x32"
+				set offset 0
+				set mask 0			
+				# PATCH THE ELF BINARY
+					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
+			} elseif {${::NEWMFW_VER} >= "4.21"} {
+				log "Patching 4.21+ Hypervisor to disable LV2 memory protection"
+
+				set search  "\x41\x9E\x01\x18\x2B\x83\x00\x33"
+				set replace "\x60\x00\x00\x00\x2B\x83\x00\x33"
+				set offset 0
+				set mask 0			
+				# PATCH THE ELF BINARY
+					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
+			}
+        }
     }
 
     proc patch_emer {self} {

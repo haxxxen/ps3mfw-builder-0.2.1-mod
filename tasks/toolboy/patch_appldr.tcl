@@ -12,14 +12,16 @@
 # Description: PATCH: APPLDR - Miscellaneous
 
 # Option --patch-misc-rogero-patches: [3.xx/4.xx]  -->  Patch Appldr with misc ROGERO patches
-# Option --patch-appldr-fself-340: [3.xx]  -->  Patch Appldr to allow Fself (3.40-3.55) set debug true (Experimental!)
 # Option --patch-appldr-fself-330: [3.xx]  -->  Patch Appldr to allow Fself (3.10-3.30) set debug true (Experimental!)
+# Option --patch-appldr-fself-340: [3.xx]  -->  Patch Appldr to allow Fself (3.40) set debug true (Experimental!)
+# Option --patch-appldr-fself-355: [3.xx]  -->  Patch Appldr to allow Fself (3.55) set debug true (Experimental!)
 # Option --add-356keys-to-appldr341: [3.xx]  -->  Patch Appldr to add the 3.56 keys to appldr 3.41
 # Option --add-360keys-to-appldr355: [3.xx]  -->  Patch Appldr to add the 3.60 keys to appldr 3.55
 
 # Type --patch-misc-rogero-patches: boolean
-# Type --patch-appldr-340: boolean
 # Type --patch-appldr-330: boolean
+# Type --patch-appldr-340: boolean
+# Type --patch-appldr-355: boolean
 # Type --add-356keys-to-appldr341 boolean
 # Type --add-360keys-to-appldr355 boolean
 
@@ -27,8 +29,9 @@ namespace eval ::patch_appldr {
 
     array set ::patch_appldr::options {
 		--patch-misc-rogero-patches true
-        --patch-appldr-fself-340 false
         --patch-appldr-fself-330 false
+        --patch-appldr-fself-340 false
+        --patch-appldr-fself-355 false
 		--add-356keys-to-appldr341 false
         --add-360keys-to-appldr355 false 
     }
@@ -109,17 +112,6 @@ namespace eval ::patch_appldr {
 				log "SKIPPING Appldr-->Rogero patch 3/3....(not found in OFW < 3.60)"				
 			}
 		}		
-		# patch appldr for "fself 3.40"
-		if {$::patch_appldr::options(--patch-appldr-fself-340)} {
-		
-			log "Patching Appldr to allow Fself (3.40-3.55)"						 
-			set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
-			set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
-			set offset 7 
-			set mask 0				
-			# PATCH THE ELF BINARY
-            catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"      
-		}
 		# patch appldr for "fself 3.30"
 		if {$::patch_appldr::options(--patch-appldr-fself-330)} {
 		
@@ -127,6 +119,28 @@ namespace eval ::patch_appldr {
 			set search  "\x40\x80\x0e\x0d\x20\x00\x69\x09\x32\x00\x04\x80\x32\x80\x80"
 			set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
 			set offset 7  
+			set mask 0				
+			# PATCH THE ELF BINARY
+            catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"      
+		}
+		# patch appldr for "fself 3.40"
+		if {$::patch_appldr::options(--patch-appldr-fself-340)} {
+		
+			log "Patching Appldr to allow Fself (3.40)"						 
+			set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
+			set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x10\xF8\x80\x32\x80\x80"
+			set offset 7 
+			set mask 0				
+			# PATCH THE ELF BINARY
+            catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"      
+		}
+		# patch appldr for "fself 3.55"
+		if {$::patch_appldr::options(--patch-appldr-fself-355)} {
+		
+			log "Patching Appldr to allow Fself (3.55)"						 
+			set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
+			set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
+			set offset 7 
 			set mask 0				
 			# PATCH THE ELF BINARY
             catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"      
