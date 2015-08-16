@@ -34,6 +34,8 @@ namespace eval ::18_patch_gameboot {
 						::modify_devflash_file $coldboot_stereo ::18_patch_gameboot::add_stereo
 					set coldboot_multi [file join dev_flash vsh resource coldboot_multi.ac3]
 						::modify_devflash_file $coldboot_multi ::18_patch_gameboot::add_multi
+					set theme [file join dev_flash vsh resource theme 01.p3t]
+						::modify_devflash_file $theme ::18_patch_gameboot::remove_theme
 			}
 		}
     }
@@ -52,7 +54,7 @@ namespace eval ::18_patch_gameboot {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 			} elseif {${::NEWMFW_VER} >= "4.53"} {
 				log "Patching 4.53+ [file tail $elf] with Pattern"
-				set search      "\x2F\x89\x00\x00\x7B\xE3\x00\x20"
+				set search      "\x2F\x89\x00\x00\x7B\xC3\x00\x20"
 				set replace     "\x2F\x89\x00\x00\x38\x60\x00\x02"
 				set offset 0
 				set mask 0				
@@ -70,6 +72,9 @@ namespace eval ::18_patch_gameboot {
 		variable options
 		set multi [file join ${::CUSTOM_GAMEBOOT_DIR} gameboot_multi.ac3]
 		file copy -force [file join $multi] [file join ${::CUSTOM_DEV_RES} gameboot_multi.ac3]
+	}
+    proc remove_theme {file} {
+		file delete -force [file join ${::CUSTOM_DEV_RES} theme $file]
 	}
 }
 
