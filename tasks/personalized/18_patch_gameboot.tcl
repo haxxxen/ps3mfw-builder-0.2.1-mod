@@ -11,13 +11,16 @@
 # Priority: 160
 # Description: Re-enable GAMEBOOT sound and animation on 3.00+ MFW
 
+# Option --version: Select STANDARD CFW / MFW or REBUG Base Firmware
 # Option --patch-game: Patch game_ext_plugin.sprx to re-enable gameboot
 
+# Type --version: combobox { {STANDARD} {REBUG} }
 # Type --patch: boolean
 
 namespace eval ::18_patch_gameboot {
 
     array set ::18_patch_gameboot::options {
+      --version ""
       --patch-game true
     }
 
@@ -27,15 +30,25 @@ namespace eval ::18_patch_gameboot {
 			return -code error "  GAMEBOOT NEED TO BE RE-ENABLED ONLY ON 3.00+ FIRMWARES !!!"
 		} else {
 			if {$::18_patch_gameboot::options(--patch-game)} {
-				log "Patching gameboot sound and animation (by mysis??)"
+				log "Patching gameboot sound and animation (by mysis)"
 					set self [file join dev_flash vsh module game_ext_plugin.sprx]
 						::modify_devflash_file $self ::18_patch_gameboot::patch_game
 					set coldboot_stereo [file join dev_flash vsh resource coldboot_stereo.ac3]
 						::modify_devflash_file $coldboot_stereo ::18_patch_gameboot::add_stereo
 					set coldboot_multi [file join dev_flash vsh resource coldboot_multi.ac3]
 						::modify_devflash_file $coldboot_multi ::18_patch_gameboot::add_multi
-					set theme [file join dev_flash vsh resource theme 01.p3t]
-						::modify_devflash_file $theme ::18_patch_gameboot::remove_theme
+					if {($::18_patch_gameboot::options(--version) != "")} {
+						set theme [file join dev_flash vsh resource theme 01.p3t]
+						if {($::18_patch_gameboot::options(--version) != "REBUG")} {
+								log "Removing $theme from dev_flash package to get more freespace"
+									::modify_devflash_file $theme ::18_patch_gameboot::remove_theme
+						} else {
+							log "No need to remove $theme on REBUG CFW"
+						}
+					} else {
+						return -code error "  YOU HAVE TO SELECT FIRMWARE BASE VERSION !!!"
+					}
+					
 			}
 		}
     }
