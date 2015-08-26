@@ -33,6 +33,9 @@ small explanation of tasks:
 - patch_cinavia: This will let you remove cinavia copy-protection on hdd content
 - patch_gameboot: This will let you enable that old 2.78-OFW gameboot sound and animation. The sound files will be automatically copied to matching coldboot devflash package and also remove 01.p3t file, to give more freespace on devflash
 - patch_fself: This will let you run FSELFs on a CEX CFW for both kernels, even loading DEX kernel on CEX (my favourite :D)
-- patch_appldr_unsigned_apps: This will let you patch appldr for running unsigned apps, based on DEMONHADES. Now you can remove kakaroto's unsigned app vsh patch, which disables npdrm_fself on DEX. So no more shutdowns or blackscreens when kakaroto's patch is removed (also my favourite :D)
+- patch_appldr_unsigned_apps: This will let you patch (4.21 ONLY) appldr for running unsigned apps, based on DEMONHADES. Now you can remove kakaroto's unsigned app vsh patch, which disables npdrm_fself on DEX. So no more shutdowns or blackscreens when kakaroto's patch is removed (also my favourite :D)
+
+NOTE FOR COBRA CFWs:
+WHEN PATCHING A COBRA CFW, KEEP IN MIND TO UPDATE COBRA HASHES ON PROTECTED MODULES. MAYBE I WILL RELEASE A TASK TO PATCH HASHES AUTOMATICALLY IN STAGE2, BUT FOR NOW NO PLANS ON IT !!!
 
 Credits go to all the original authors of MFW-BUILDER and its tools. Also credits to mysis, who has made most of the patches!
