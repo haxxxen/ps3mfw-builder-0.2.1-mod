@@ -572,14 +572,15 @@ namespace eval ::03_patch_oos {
 
 		if {$::03_patch_oos::options(--patch-lv1-lv2mem)} {
 			if {${::NEWMFW_VER} == "3.55"} {
-				log "Patching 3.55 Hypervisor to disable LV2 memory protection"
+				# log "Patching 3.55 Hypervisor to disable LV2 memory protection"
+				log "SORRY, BUT CURRENTLY NOT SUPPORTED ON 3.55 !!!"
 
-				set search  "\x41\x9E\x00\x94\x2B\x83\x00\x32"
-				set replace "\x60\x00\x00\x00\x2B\x83\x00\x32"
-				set offset 0
-				set mask 0			
+				# set search  "\x41\x9E\x00\x94\x2B\x83\x00\x32"
+				# set replace "\x60\x00\x00\x00\x2B\x83\x00\x32"
+				# set offset 0
+				# set mask 0			
 				# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
+					# catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 			} elseif {${::NEWMFW_VER} >= "4.21"} {
 				log "Patching 4.21+ Hypervisor to disable LV2 memory protection"
 
