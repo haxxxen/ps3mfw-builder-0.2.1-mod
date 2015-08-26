@@ -126,8 +126,8 @@ namespace eval ::19_patch_fself {
 			log "Applying 3.41 APPLDR FSELF Patch...."
 
 				set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
-				set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x10\xF8\x80\x32\x80\x80"
-				set offset 7
+				set replace "\x10\xF8"
+				set offset 9
 				set mask 0
 					# PATCH THE ELF BINARY
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
@@ -137,8 +137,8 @@ namespace eval ::19_patch_fself {
 			log "Applying 3.55 APPLDR FSELF Patch...."
 
 				set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
-				set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
-				set offset 7
+				set replace "\x11\x73\x00"
+				set offset 9
 				set mask 0
 					# PATCH THE ELF BINARY
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
