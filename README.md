@@ -36,6 +36,6 @@ small explanation of tasks:
 - patch_appldr_unsigned_apps: This will let you patch (4.21 ONLY) appldr for running unsigned apps, based on DEMONHADES. Now you can remove kakaroto's unsigned app vsh patch, which disables npdrm_fself on DEX. So no more shutdowns or blackscreens when kakaroto's patch is removed (also my favourite :D)
 
 NOTE FOR COBRA CFWs:
-WHEN PATCHING A COBRA CFW, KEEP IN MIND TO UPDATE COBRA HASHES ON PROTECTED MODULES. MAYBE I WILL RELEASE A TASK TO PATCH HASHES AUTOMATICALLY IN STAGE2, BUT FOR NOW NO PLANS ON IT !!!
+When patching a cobra cfw, keep in mind to update cobra hashes on protected modules. Maybe i will release a task to patch hashes automatically in stage2, but for now no plans on it !!!
 
 Credits go to all the original authors of MFW-BUILDER and its tools. Also credits to mysis, who has made most of the patches!
