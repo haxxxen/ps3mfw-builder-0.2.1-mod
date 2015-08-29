@@ -33,6 +33,8 @@ namespace eval ::15_repair_hashes {
 		set st2 ${::ST2RBG}
 			::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		file delete -force [file join $ORI_DIR $module1.orig]
+		file copy -force [file join ${::HASH_DIR} $module1.log] [file join $ORI_DIR $module1.orig]
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
 
 		if {${::NEWMFW_VER} > "4.21"} {
@@ -43,6 +45,8 @@ namespace eval ::15_repair_hashes {
 			set st2 ${::ST2RBG}
 				::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
 			file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+			file delete -force [file join $ORI_DIR $module2.orig]
+			file copy -force [file join ${::HASH_DIR} $module2.log] [file join $ORI_DIR $module2.orig]
 			file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
 		}
 
@@ -53,7 +57,20 @@ namespace eval ::15_repair_hashes {
 		set st2 ${::ST2RBG}
 			::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		file delete -force [file join $ORI_DIR $module3.orig]
+		file copy -force [file join ${::HASH_DIR} $module3.log] [file join $ORI_DIR $module3.orig]
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
+
+		# set module3 "vsh.self.nrm"
+		# set hashorig3 [file join $ORI_DIR $module3.orig]
+		# copy_file -force $hashorig3 ${::HASH_DIR}
+			# ::modify_devflash_files [file join dev_flash vsh module] $module3 ::15_repair_hashes::copy_hash
+		# set st2 ${::ST2RBG}
+			# ::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
+		# file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		# file delete -force [file join $ORI_DIR $module3.orig]
+		# file copy -force [file join ${::HASH_DIR} $module3.log] [file join $ORI_DIR $module3.orig]
+		# file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
 
 		set module4 "vsh.self.cexsp"
 		set hashorig4 [file join $ORI_DIR $module4.orig]
@@ -62,6 +79,8 @@ namespace eval ::15_repair_hashes {
 		set st2 ${::ST2RBG}
 			::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		file delete -force [file join $ORI_DIR $module4.orig]
+		file copy -force [file join ${::HASH_DIR} $module4.log] [file join $ORI_DIR $module4.orig]
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
 
 		set module5 "vsh.self.swp"
@@ -71,7 +90,20 @@ namespace eval ::15_repair_hashes {
 		set st2 ${::ST2RBG}
 			::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		file delete -force [file join $ORI_DIR $module5.orig]
+		file copy -force [file join ${::HASH_DIR} $module5.log] [file join $ORI_DIR $module5.orig]
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
+
+		# set module5 "vsh.self"
+		# set hashorig5 [file join $ORI_DIR $module5.orig]
+		# copy_file -force $hashorig5 ${::HASH_DIR}
+			# ::modify_devflash_files [file join dev_flash vsh module] $module5 ::15_repair_hashes::copy_hash
+		# set st2 ${::ST2RBG}
+			# ::modify_devflash_files [file join dev_flash] $st2 ::15_repair_hashes::patch_st2
+		# file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.orig]]
+		# file delete -force [file join $ORI_DIR $module5.orig]
+		# file copy -force [file join ${::HASH_DIR} $module5.log] [file join $ORI_DIR $module5.orig]
+		# file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
     }
 
 	proc copy_hash {self} {
