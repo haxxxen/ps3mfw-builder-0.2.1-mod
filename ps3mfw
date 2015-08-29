@@ -76,8 +76,6 @@ set ::LV0OLD "appldr isoldr lv1ldr lv2ldr"
 set ::LV0NEW "appldr.self isoldr.self lv1ldr.self lv2ldr.self"
 set ::ISOSELF "aim_spu_module.self appldr.self isoldr.self lv1ldr.self lv2ldr.self manu_info_spu_module.self mc_iso_spu_module.self me_iso_for_ps2emu.self me_iso_spu_module.self sb_iso_spu_module.self sc_iso.self spp_verifier.self spu_pkg_rvk_verifier.self spu_token_processor.self spu_utoken_processor.self sv_iso_for_ps2emu.self sv_iso_spu_module.self"
 set ::HC "hc.exe"
-set ::CM "ps1emu/ps1_emu.self ps1emu/ps1_netemu.self pspemu/psp_emulator.self pspemu/release/emulator_api.sprx pspemu/release/emulator_drm.sprx pspemu/release/PEmuCoreLib.sprx sys/external/libsysutil_savedata_psp.sprx sys/external/libfs.sprx vsh/module/basic_plugins.sprx vsh/module/bdp_disccheck_plugin.sprx vsh/module/explore_category_game.sprx vsh/module/explore_plugin.sprx vsh/module/game_ext_plugin.sprx vsh/module/vsh.self"
-set ::CMRBG "ps1emu/ps1_emu.self ps1emu/ps1_netemu.self pspemu/psp_emulator.self pspemu/release/emulator_api.sprx pspemu/release/emulator_drm.sprx pspemu/release/PEmuCoreLib.sprx sys/external/libsysutil_savedata_psp.sprx sys/external/libfs.sprx vsh/module/basic_plugins.sprx vsh/module/bdp_disccheck_plugin.sprx vsh/module/explore_category_game.sprx vsh/module/explore_plugin.sprx vsh/module/game_ext_plugin.sprx vsh/module/vsh.self vsh/module/vsh.self.cexsp vsh/module/vsh.self.swp"
 set ::ST2 "stage2.bin"
 set ::ST2RBG "stage2.cex.bak stage2.dex.bak"
 

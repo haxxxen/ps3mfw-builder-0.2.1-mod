@@ -1672,6 +1672,33 @@ proc modify_iso_file {file callback args} {
 	}
 	log "ISOLATED MODULE successfully rebuilt"
 }
+proc modify_sce_file {file callback args} {
+	log "Modifying self/sprx [file tail $file]"
+	array set MySelfHdrs {
+		--KEYREV ""
+		--AUTHID ""
+		--VENDORID ""
+		--SELFTYPE ""
+		--APPVERSION ""
+		--FWVERSION ""
+		--CTRLFLAGS ""
+		--CAPABFLAGS ""
+		--INDIVSEED  ""
+		--COMPRESS ""
+	}
+	# read in the SELF hdr info to save off for re-signing
+	import_self_info $file MySelfHdrs	
+	# decrypt the self file
+	decrypt_self $file ${file}.elf
+	# call the "callback" function to do patching/etc
+	eval $callback ${file}.elf $args
+	# now re-sign the SELF file for final output
+	sign_elf ${file}.elf ${file}.self MySelfHdrs	
+	file rename -force ${file}.self $file
+	file delete ${file}.elf
+	# debug "Self successfully rebuilt"
+	log "Self successfully rebuilt"
+}
 
 
 proc selfrebuild {in out original} {
