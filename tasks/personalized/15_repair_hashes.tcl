@@ -84,6 +84,10 @@ namespace eval ::15_repair_hashes {
 		file delete -force [glob -nocomplain [file join ${::HASH_DIR} *.log]]
 
 		set module5 "vsh.self.swp"
+		if {${::NEWMFW_VER} > "4.21"} {
+			file delete -force [file join $ORI_DIR $module5.orig]
+			file copy -force [file join $ORI_DIR $module3.orig] [file join $ORI_DIR $module5.orig]
+		}
 		set hashorig5 [file join $ORI_DIR $module5.orig]
 		copy_file -force $hashorig5 ${::HASH_DIR}
 			::modify_devflash_files [file join dev_flash vsh module] $module5 ::15_repair_hashes::copy_hash
