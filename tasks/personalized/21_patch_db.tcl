@@ -38,12 +38,12 @@ namespace eval ::21_patch_db {
 			log "Reading [file tail $::CUSTOM_UPDATE_FLAGS_TXT] update flag : $read_data" 1
 				if {$read_data == "0100"} {
 					close $fp
-					log "4.25+ DEX OFW detected, patching LV1LDR....." 1
-					# return -code error "  SORRY, NO DEX 4.21+ OFW ALLOWED !!!"
-						set self "lv1ldr.self"
-						set path $::CUSTOM_COSUNPKG_DIR
-						set file [file join $path $self]
-							::modify_coreos_file $file ::21_patch_db::Do_DEX_Patches
+					# log "4.25+ DEX OFW detected, patching LV1LDR....." 1
+					return -code error "  SORRY, NO DEX 4.25+ OFW ALLOWED !!!"
+						# set self "lv1ldr.self"
+						# set path $::CUSTOM_COSUNPKG_DIR
+						# set file [file join $path $self]
+							# ::modify_coreos_file $file ::21_patch_db::Do_DEX_Patches
 				} else {
 					close $fp
 				}
@@ -60,29 +60,29 @@ namespace eval ::21_patch_db {
 			::modify_coreos_file $file ::21_patch_db::Do_PKG_Patches
     }
 
-    proc Do_DEX_Patches {self} {
-        log "Patching [file tail $self]"
-			::modify_iso_file $self ::21_patch_db::DEX_elf_Patches
-    }
-	proc DEX_elf_Patches {elf} {
-		log "Applying LV1LDR EID Patches....."
+    # proc Do_DEX_Patches {self} {
+        # log "Patching [file tail $self]"
+			# ::modify_iso_file $self ::21_patch_db::DEX_elf_Patches
+    # }
+	# proc DEX_elf_Patches {elf} {
+		# log "Applying LV1LDR EID Patches....."
 
-		log "Patch 1"
-			set search  "\x3F\xE0\x2B\x84\x3F\x83\x15\x05"
-			set replace "\x40\x80\x00\x03"
-			set offset 8
-			set mask 0
+		# log "Patch 1"
+			# set search  "\x3F\xE0\x2B\x84\x3F\x83\x15\x05"
+			# set replace "\x40\x80\x00\x03"
+			# set offset 8
+			# set mask 0
 				# PATCH THE ELF BINARY
-				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
+				# catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 
-		log "Patch 2"
-			set search  "\x12\x09\x45\x09\x24\xFF\xC0\xD0"
-			set replace "\x40\x80\x00\x03"
-			set offset 0
-			set mask 0
+		# log "Patch 2"
+			# set search  "\x12\x09\x45\x09\x24\xFF\xC0\xD0"
+			# set replace "\x40\x80\x00\x03"
+			# set offset 0
+			# set mask 0
 				# PATCH THE ELF BINARY
-				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-	}
+				# catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
+	# }
 
     proc Do_ISOLDR_Patches {self} {
         log "Patching [file tail $self]"
