@@ -76,8 +76,8 @@ set ::LV0OLD "appldr isoldr lv1ldr lv2ldr"
 set ::LV0NEW "appldr.self isoldr.self lv1ldr.self lv2ldr.self"
 set ::ISOSELF "aim_spu_module.self appldr.self isoldr.self lv1ldr.self lv2ldr.self manu_info_spu_module.self mc_iso_spu_module.self me_iso_for_ps2emu.self me_iso_spu_module.self sb_iso_spu_module.self sc_iso.self spp_verifier.self spu_pkg_rvk_verifier.self spu_token_processor.self spu_utoken_processor.self sv_iso_for_ps2emu.self sv_iso_spu_module.self"
 set ::HC "hc.exe"
-set ::ST2 "stage2.bin"
-set ::ST2RBG "stage2.cex.bak stage2.dex.bak"
+set ::ST2 "sys/stage2.bin"
+set ::ST2RBG "rebug/cobra/stage2.cex.bak rebug/cobra/stage2.dex.bak"
 
 if {$::options(--auto-cos)} {
 	set ::AUTOCOS "1"
