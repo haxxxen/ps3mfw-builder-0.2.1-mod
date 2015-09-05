@@ -572,6 +572,7 @@ namespace eval ::13_spoofer_update {
       set fd [open $filename w]
       puts -nonewline $fd $data
 	  close $fd
+	  log "Patching index.dat file to spoof all new entries"
 	  set index_dat [file join [file dirname $filename] index.dat]
 	  shell "dat" [file nativename $filename] [file nativename $index_dat]
     }
