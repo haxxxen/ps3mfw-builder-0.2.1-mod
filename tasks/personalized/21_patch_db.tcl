@@ -27,6 +27,10 @@ namespace eval ::21_patch_db {
 			return -code error "  YOU HAVE TO SELECT LV0 EXTRACT OPTION !!!"
 		}
 
+		if {!$::options(--sign-iso)} {
+			return -code error "  PLEASE SELECT ISO_REBUILDER OPTION. THIS MAKES IT MORE ORIGINALLY !!!"
+		}
+
 		set self "isoldr.self"
 		set path $::CUSTOM_COSUNPKG_DIR
 		set file [file join $path $self]
