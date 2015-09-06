@@ -8,7 +8,7 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 120
+# Priority: 100
 # Description: Update or set Spoofer for MFW or REBUG Firmwares
 
 # Option --version: Select CEX, DEX or REBUG Firmware
@@ -21,9 +21,9 @@
 # Type --psn: combobox { {Patch 1} {Patch 2} {Patch 3} }
 # Type --screen: boolean
 
-namespace eval ::13_spoofer_update {
+namespace eval ::11_spoofer_update {
 
-    array set ::13_spoofer_update::options {
+    array set ::11_spoofer_update::options {
       --version ""
       --spoof ""
       --psn ""
@@ -32,77 +32,77 @@ namespace eval ::13_spoofer_update {
 
     proc main {} {
 		variable options
-		if {$::13_spoofer_update::options(--spoof) == ""} {
+		if {$::11_spoofer_update::options(--spoof) == ""} {
 			return -code error "  YOU HAVE NOT SELECTED SPOOFER VERSION !!!"
 		} else {
-			if {$::13_spoofer_update::options(--version) != ""} {
-				if {$::13_spoofer_update::options(--version) == "CEX"} {
+			if {$::11_spoofer_update::options(--version) != ""} {
+				if {$::11_spoofer_update::options(--version) == "CEX"} {
 					log "Patching CEX vsh.self with new Build and Version Number"
-						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_vsh_cex
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::11_spoofer_update::patch_vsh_cex
 					log "Patching version.txt & index.dat files to spoof all entries"
-						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
-				} elseif {$::13_spoofer_update::options(--version) == "DEX"} {
+						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::11_spoofer_update::version_txt
+				} elseif {$::11_spoofer_update::options(--version) == "DEX"} {
 					log "Patching DEX vsh.self with new Build and Version Number"
-						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_vsh_dex
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::11_spoofer_update::patch_vsh_dex
 					log "Patching version.txt & index.dat files to spoof all entries"
-						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
-				} elseif {$::13_spoofer_update::options(--version) == "REBUG"} {
+						::modify_devflash_file [file join dev_flash vsh etc version.txt] ::11_spoofer_update::version_txt
+				} elseif {$::11_spoofer_update::options(--version) == "REBUG"} {
 					if {${::NEWMFW_VER} > "4.21"} {
 						log "Patching REBUG's vsh.self files with new Build and Version Number"
-							::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::13_spoofer_update::patch_vsh_cex
+							::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::11_spoofer_update::patch_vsh_cex
 							set selfs {vsh.self vsh.self.swp}
-							::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_vsh_dex
+							::modify_devflash_files [file join dev_flash vsh module] $selfs ::11_spoofer_update::patch_vsh_dex
 						log "Patching version.txt & index.dat files to spoof all entries"
-							::modify_devflash_file [file join dev_flash vsh etc version.txt] ::13_spoofer_update::version_txt
-							::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::13_spoofer_update::version_txt_swp
+							::modify_devflash_file [file join dev_flash vsh etc version.txt] ::11_spoofer_update::version_txt
+							::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::11_spoofer_update::version_txt_swp
 					} else {
 						log "Patching REBUG's vsh.self.cexsp & vsh.self.swp files with new Build and Version Number"
-							::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::13_spoofer_update::patch_vsh_cex
-							::modify_devflash_file [file join dev_flash vsh module vsh.self.swp] ::13_spoofer_update::patch_vsh_dex
+							::modify_devflash_file [file join dev_flash vsh module vsh.self.cexsp] ::11_spoofer_update::patch_vsh_cex
+							::modify_devflash_file [file join dev_flash vsh module vsh.self.swp] ::11_spoofer_update::patch_vsh_dex
 						log "Patching version.txt.swp & index.dat.swp files to spoof all entries"
-							::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::13_spoofer_update::version_txt_swp
+							::modify_devflash_file [file join dev_flash vsh etc version.txt.swp] ::11_spoofer_update::version_txt_swp
 					}
 				}
 			} else {
 				return -code error "  YOU HAVE TO SELECT FIRMWARE VERSION !!!"
 			}
 		}
-		if {$::13_spoofer_update::options(--psn) != ""} {
+		if {$::11_spoofer_update::options(--psn) != ""} {
 			if {${::NEWMFW_VER} < "4.66"} {
-				if {$::13_spoofer_update::options(--version) != ""} {
-					if {$::13_spoofer_update::options(--version) == "REBUG"} {
+				if {$::11_spoofer_update::options(--version) != ""} {
+					if {$::11_spoofer_update::options(--version) == "REBUG"} {
 						log "Patching REBUG's vsh.self.cexsp & vsh.self.swp to enable SEN on lower MFW/CFW again."
 							set selfs {vsh.self.cexsp vsh.self.swp}
-							::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_psn
+							::modify_devflash_files [file join dev_flash vsh module] $selfs ::11_spoofer_update::patch_psn
 					} else {
 						log "Patching vsh.self to enable SEN on lower MFW/CFW again."
-							::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_psn
+							::modify_devflash_file [file join dev_flash vsh module vsh.self] ::11_spoofer_update::patch_psn
 					}
 				}
 			}
 		}
-		if {$::13_spoofer_update::options(--screen)} {
+		if {$::11_spoofer_update::options(--screen)} {
 			set xml [file join dev_flash vsh resource explore xmb category_photo.xml]
-			if {$::13_spoofer_update::options(--version) != ""} {
-				if {$::13_spoofer_update::options(--version) == "REBUG"} {
+			if {$::11_spoofer_update::options(--version) != ""} {
+				if {$::11_spoofer_update::options(--version) == "REBUG"} {
 					log "Patching explore_category_photo.xml and REBUG's vsh.self file(s) to enable screenshot feature"
 						set selfs {vsh.self vsh.self.cexsp vsh.self.swp}
-						::modify_devflash_file $xml ::13_spoofer_update::callback_patch
-						::modify_devflash_files [file join dev_flash vsh module] $selfs ::13_spoofer_update::patch_screen
+						::modify_devflash_file $xml ::11_spoofer_update::callback_patch
+						::modify_devflash_files [file join dev_flash vsh module] $selfs ::11_spoofer_update::patch_screen
 				} else {
 					log "Patching explore_category_photo.xml and vsh.self file to enable screenshot feature"
-						::modify_devflash_file $xml ::13_spoofer_update::callback_patch
-						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::13_spoofer_update::patch_screen
+						::modify_devflash_file $xml ::11_spoofer_update::callback_patch
+						::modify_devflash_file [file join dev_flash vsh module vsh.self] ::11_spoofer_update::patch_screen
 				}
 			}
 		}
     }
 
     proc patch_vsh_cex {self} {
-		::modify_self_file $self ::13_spoofer_update::patch_cex_elf
+		::modify_self_file $self ::11_spoofer_update::patch_cex_elf
 	}
     proc patch_vsh_dex {self} {
-		::modify_self_file $self ::13_spoofer_update::patch_dex_elf
+		::modify_self_file $self ::11_spoofer_update::patch_dex_elf
 	}
     proc patch_cex_elf {elf} {
 		variable options
@@ -331,7 +331,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {security:(.*?):} $data "security:${security_string}${security_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {security:(.*?):(.*?):} $data "security:${security_string}${security_string2}:"]
 			} else {
 				set data [regsub {security:(.*?):} $data "security:${security_string}${security_string2}:"]
@@ -347,7 +347,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {system:(.*?):} $data "system:${system_string}${system_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {system:(.*?):(.*?):} $data "system:${system_string}${system_string2}:"]
 			} else {
 				set data [regsub {system:(.*?):} $data "system:${system_string}${system_string2}:"]
@@ -363,7 +363,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {x3:(.*?):} $data "x3:${x3_string}${x3_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {x3:(.*?):(.*?):} $data "x3:${x3_string}${x3_string2}:"]
 			} else {
 				set data [regsub {x3:(.*?):} $data "x3:${x3_string}${x3_string2}:"]
@@ -379,7 +379,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {paf:(.*?):} $data "paf:${paf_string}${paf_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {paf:(.*?):(.*?):} $data "paf:${paf_string}${paf_string2}:"]
 			} else {
 				set data [regsub {paf:(.*?):} $data "paf:${paf_string}${paf_string2}:"]
@@ -395,7 +395,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {vsh:(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {vsh:(.*?):(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
 			} else {
 				set data [regsub {vsh:(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
@@ -411,7 +411,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {sys_jp:(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {sys_jp:(.*?):(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
 			} else {
 				set data [regsub {sys_jp:(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
@@ -427,7 +427,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1emu:(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1emu:(.*?):(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
 			} else {
 				set data [regsub {ps1emu:(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
@@ -443,7 +443,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1netemu:(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1netemu:(.*?):(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
 			} else {
 				set data [regsub {ps1netemu:(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
@@ -459,7 +459,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1newemu:(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1newemu:(.*?):(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
 			} else {
 				set data [regsub {ps1newemu:(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
@@ -475,7 +475,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2emu:(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2emu:(.*?):(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
 			} else {
 				set data [regsub {ps2emu:(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
@@ -491,7 +491,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2gxemu:(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2gxemu:(.*?):(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
 			} else {
 				set data [regsub {ps2gxemu:(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
@@ -507,7 +507,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2softemu:(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2softemu:(.*?):(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
 			} else {
 				set data [regsub {ps2softemu:(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
@@ -523,7 +523,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {pspemu:(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {pspemu:(.*?):(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
 			} else {
 				set data [regsub {pspemu:(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
@@ -549,7 +549,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {bdp:(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {bdp:(.*?):(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
 			} else {
 				set data [regsub {bdp:(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
@@ -629,7 +629,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {security:(.*?):} $data "security:${security_string}${security_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {security:(.*?):(.*?):} $data "security:${security_string}${security_string2}:"]
 			} else {
 				set data [regsub {security:(.*?):} $data "security:${security_string}${security_string2}:"]
@@ -645,7 +645,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {system:(.*?):} $data "system:${system_string}${system_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {system:(.*?):(.*?):} $data "system:${system_string}${system_string2}:"]
 			} else {
 				set data [regsub {system:(.*?):} $data "system:${system_string}${system_string2}:"]
@@ -661,7 +661,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 			set data [regsub {x3:(.*?):} $data "x3:${x3_string}${x3_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {x3:(.*?):(.*?):} $data "x3:${x3_string}${x3_string2}:"]
 			} else {
 				set data [regsub {x3:(.*?):} $data "x3:${x3_string}${x3_string2}:"]
@@ -677,7 +677,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {paf:(.*?):} $data "paf:${paf_string}${paf_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {paf:(.*?):(.*?):} $data "paf:${paf_string}${paf_string2}:"]
 			} else {
 				set data [regsub {paf:(.*?):} $data "paf:${paf_string}${paf_string2}:"]
@@ -693,7 +693,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {vsh:(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {vsh:(.*?):(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
 			} else {
 				set data [regsub {vsh:(.*?):} $data "vsh:${vsh_string}${vsh_string2}:"]
@@ -709,7 +709,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {sys_jp:(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {sys_jp:(.*?):(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
 			} else {
 				set data [regsub {sys_jp:(.*?):} $data "sys_jp:${sys_jp_string}${sys_jp_string2}:"]
@@ -725,7 +725,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1emu:(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1emu:(.*?):(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
 			} else {
 				set data [regsub {ps1emu:(.*?):} $data "ps1emu:${ps1emu_string}${ps1emu_string2}:"]
@@ -741,7 +741,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1netemu:(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1netemu:(.*?):(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
 			} else {
 				set data [regsub {ps1netemu:(.*?):} $data "ps1netemu:${ps1netemu_string}${ps1netemu_string2}:"]
@@ -757,7 +757,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps1newemu:(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps1newemu:(.*?):(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
 			} else {
 				set data [regsub {ps1newemu:(.*?):} $data "ps1newemu:${ps1newemu_string}${ps1newemu_string2}:"]
@@ -773,7 +773,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2emu:(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2emu:(.*?):(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
 			} else {
 				set data [regsub {ps2emu:(.*?):} $data "ps2emu:${ps2emu_string}${ps2emu_string2}:"]
@@ -789,7 +789,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2gxemu:(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2gxemu:(.*?):(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
 			} else {
 				set data [regsub {ps2gxemu:(.*?):} $data "ps2gxemu:${ps2gxemu_string}${ps2gxemu_string2}:"]
@@ -805,7 +805,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {ps2softemu:(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {ps2softemu:(.*?):(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
 			} else {
 				set data [regsub {ps2softemu:(.*?):} $data "ps2softemu:${ps2softemu_string}${ps2softemu_string2}:"]
@@ -821,7 +821,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {pspemu:(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {pspemu:(.*?):(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
 			} else {
 				set data [regsub {pspemu:(.*?):} $data "pspemu:${pspemu_string}${pspemu_string2}:"]
@@ -847,7 +847,7 @@ namespace eval ::13_spoofer_update {
 		if {${::NEWMFW_VER} < "4.65"} {
 	        set data [regsub {bdp:(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
 		} elseif {${::NEWMFW_VER} == "4.65"} {
-			if {$::13_spoofer_update::options(--version) != ""} {
+			if {$::11_spoofer_update::options(--version) != ""} {
 				set data [regsub {bdp:(.*?):(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
 			} else {
 				set data [regsub {bdp:(.*?):} $data "bdp:${bdp_string}${bdp_string2}:"]
@@ -877,13 +877,13 @@ namespace eval ::13_spoofer_update {
 
 	proc callback_patch {path args} {		
         log "Patching Photo Category"
-		if {$::13_spoofer_update::options(--patch-screen)} {
+		if {$::11_spoofer_update::options(--patch-screen)} {
 			sed_in_place [file join $path] "sel://localhost/screenshot?category_photo.xml#seg_screenshot" "#seg_screenshot"
 		}
 	}
 
     proc patch_screen {self} {
-		::modify_self_file $self ::13_spoofer_update::screen_elf
+		::modify_self_file $self ::11_spoofer_update::screen_elf
 	}
     proc screen_elf {elf} {
 		log "Patch 1" 1
@@ -904,10 +904,10 @@ namespace eval ::13_spoofer_update {
     }
 
     proc patch_psn {self} {
-		::modify_self_file $self ::13_spoofer_update::psn_elf
+		::modify_self_file $self ::11_spoofer_update::psn_elf
 	}
     proc psn_elf {elf} {
-		if {$::13_spoofer_update::options(--psn) == "Patch 1"} {
+		if {$::11_spoofer_update::options(--psn) == "Patch 1"} {
 			log "SEN Enabler Patch 1 (credits to ps3ita team)"
 				set search  "\x2F\x80\x00\x02\x40\x9E\x00\x3C\x48\x00\x00\x10"
 				set replace "\x2F\x80\x00\x02\x60\x00\x00\x00\x00\x00\x00\x00"
@@ -917,7 +917,7 @@ namespace eval ::13_spoofer_update {
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 		}
 
-		if {$::13_spoofer_update::options(--psn) == "Patch 2"} {
+		if {$::11_spoofer_update::options(--psn) == "Patch 2"} {
 			log "SEN Enabler Patch 2 (credits to Evilnat)"
 				set search  "\x80\x1E\x00\x40\x2F\x80\x00\x00"
 				set replace "\x38\x00\x00\x00\x2F\x80\x00\x00"
@@ -927,7 +927,7 @@ namespace eval ::13_spoofer_update {
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 		}
 
-		if {$::13_spoofer_update::options(--psn) == "Patch 3"} {
+		if {$::11_spoofer_update::options(--psn) == "Patch 3"} {
 			log "SEN Enabler Patch 3 (credits to Evilnat)"
 				set search  "\x7C\x7B\x1B\x78\x41\x9E\x02\x60"
 				set replace "\x40\x9E\x00\x14"

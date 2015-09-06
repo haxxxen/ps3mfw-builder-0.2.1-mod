@@ -39,9 +39,9 @@
 # Type --language-replace: combobox {{} {English} {French} {German} {Italian} {Finnish} {Dutch} {Danish} {Swedish} {Spanish} {Russian} {Portugese} {Norwegian} {Korean} {ChineseTrad} {ChineseSimpl} {Japanese}}
 # Type --language-font: boolean
 
-namespace eval 12_customize_firmware {
+namespace eval customize_firmware {
 
-    array set ::12_customize_firmware::options {
+    array set ::customize_firmware::options {
         --customize-coldboot-raf ".raf"
         --customize-coldboot-stereo ".ac3"
         --customize-coldboot-multi ".ac3"
@@ -63,59 +63,59 @@ namespace eval 12_customize_firmware {
 		die "EXITING, As this script still needs to be fixed!!"		
 		
 		# setup the global vars for this script
-	    ::12_customize_firmware::set_var_cf
+	    ::customize_firmware::set_var_cf
         
-        if {[file exists $::12_customize_firmware::options(--customize-system-sound-rco)] == 0 } { 
-            log "Skipping xmb sounds, $::12_customize_firmware::options(--customize-system-sound-rco) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-system-sound-rco)] == 0 } { 
+            log "Skipping xmb sounds, $::customize_firmware::options(--customize-system-sound-rco) does not exist"
         } else {
-            ::modify_devflash_file $xmbSoundRCO ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-system-sound-rco)
+            ::modify_devflash_file $xmbSoundRCO ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-system-sound-rco)
         }
 
-        if {[file exists $::12_customize_firmware::options(--customize-coldboot-raf)] == 0 } {
-            log "Skipping coldboot.raf, $::12_customize_firmware::options(--customize-coldboot-raf) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-coldboot-raf)] == 0 } {
+            log "Skipping coldboot.raf, $::customize_firmware::options(--customize-coldboot-raf) does not exist"
         } else {
-            ::modify_devflash_file $coldboot_raf ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-coldboot-raf)
+            ::modify_devflash_file $coldboot_raf ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-coldboot-raf)
         }
 
-        if {[file exists $::12_customize_firmware::options(--customize-coldboot-stereo)] == 0 } {
-            log "Skipping coldboot_stereo, $::12_customize_firmware::options(--customize-coldboot-stereo) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-coldboot-stereo)] == 0 } {
+            log "Skipping coldboot_stereo, $::customize_firmware::options(--customize-coldboot-stereo) does not exist"
         } else {
-            ::modify_devflash_file $coldboot_stereo ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-coldboot-stereo)
+            ::modify_devflash_file $coldboot_stereo ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-coldboot-stereo)
         }
 
-        if {[file exists $::12_customize_firmware::options(--customize-coldboot-multi)] == 0 } {
-            log "Skipping coldboot_multi, $::12_customize_firmware::options(--customize-coldboot-multi) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-coldboot-multi)] == 0 } {
+            log "Skipping coldboot_multi, $::customize_firmware::options(--customize-coldboot-multi) does not exist"
         } else {
-            ::modify_devflash_file $coldboot_multi ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-coldboot-multi)
+            ::modify_devflash_file $coldboot_multi ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-coldboot-multi)
         }
         
-        if {[file exists $::12_customize_firmware::options(--customize--health-screen)] == 0 } {
-            log "Skipping health_screen, $::12_customize_firmware::options(--customize--health-screen) does not exist"
+        if {[file exists $::customize_firmware::options(--customize--health-screen)] == 0 } {
+            log "Skipping health_screen, $::customize_firmware::options(--customize--health-screen) does not exist"
         } else {
-            ::modify_rco_file $health_screen ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize--health-screen)
+            ::modify_rco_file $health_screen ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize--health-screen)
         }
 		
-		if {[file exists $::12_customize_firmware::options(--customize-firmware-xmb-wave)] == 0 } {
-            log "Skipping xmb_wave, $::12_customize_firmware::options(--customize-firmware-xmb-wave) does not exist"
+		if {[file exists $::customize_firmware::options(--customize-firmware-xmb-wave)] == 0 } {
+            log "Skipping xmb_wave, $::customize_firmware::options(--customize-firmware-xmb-wave) does not exist"
         } else {
-            ::modify_devflash_file $xmb_wave ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-firmware-xmb-wave)
+            ::modify_devflash_file $xmb_wave ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-firmware-xmb-wave)
         }
         
-        if {[file exists $::12_customize_firmware::options(--customize-game-boot-rco)] == 0 } {
-            log "Skipping Game Boot logos, $::12_customize_firmware::options(--customize-game-boot-rco) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-game-boot-rco)] == 0 } {
+            log "Skipping Game Boot logos, $::customize_firmware::options(--customize-game-boot-rco) does not exist"
         } else {
-            ::modify_devflash_file $gameBootRCO ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-game-boot-rco)
+            ::modify_devflash_file $gameBootRCO ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-game-boot-rco)
         }
         
-        if {[file exists $::12_customize_firmware::options(--customize-theme-src)] == 0} {
-            log "Skipping theme, $::12_customize_firmware::options(--customize-theme-src) does not exist"
+        if {[file exists $::customize_firmware::options(--customize-theme-src)] == 0} {
+            log "Skipping theme, $::customize_firmware::options(--customize-theme-src) does not exist"
         } else {
-            ::modify_devflash_file $theme ::12_customize_firmware::copy_customized_file $::12_customize_firmware::options(--customize-theme-src)
+            ::modify_devflash_file $theme ::customize_firmware::copy_customized_file $::customize_firmware::options(--customize-theme-src)
         }
         
-        if {$::12_customize_firmware::options(--customize-fw-version) != ""} {
+        if {$::customize_firmware::options(--customize-fw-version) != ""} {
             log "Patching fw version in XMB settings"
-            ::modify_rco_file $fw_version ::12_customize_firmware::callback_fwversion
+            ::modify_rco_file $fw_version ::customize_firmware::callback_fwversion
         }
         
         if {[file exists $arg] != 0} {
@@ -133,7 +133,7 @@ namespace eval 12_customize_firmware {
         
         if {[file exists $lp] != 0} {
             delete_file $langpackDir
-            extract_tar $::12_customize_firmware::options(--language-pack) $langpackDir
+            extract_tar $::customize_firmware::options(--language-pack) $langpackDir
             
             if {$::language_pack::options(--language-font)} {
                 foreach fontFile $fontFiles {
@@ -173,8 +173,8 @@ namespace eval 12_customize_firmware {
 	
 	proc set_var_cf { } {
 	    variable options
-        set arg $::12_customize_firmware::options(--customize-embedded-app)
-        set lp $::12_customize_firmware::options(--language-pack)
+        set arg $::customize_firmware::options(--customize-embedded-app)
+        set lp $::customize_firmware::options(--language-pack)
         set fontPrefix "SCE-PS3-"
         set fontFiles {{CP-R-KANA} {DH-R-CGB} {MT-BI-LATIN} {MT-B-LATIN} {MT-I-LATIN} {MT-R-LATIN} {NR-B-JPN} {NR-L-JPN} {NR-R-EXT} {NR-R-JPN} {RD-BI-LATIN} {RD-B-LATIN} {RD-B-LATIN2} {RD-I-LATIN} {RD-LI-LATIN} {RD-L-LATIN} {RD-L-LATIN2} {RD-R-LATIN} {RD-R-LATIN2} {SR-R-EXT} {SR-R-JPN} {SR-R-LATIN} {SR-R-LATIN2} {VR-R-LATIN} {VR-R-LATIN2} {YG-B-KOR} {YG-L-KOR} {YG-R-KOR}}
         set devflashFontFile [file join dev_flash data font $fontPrefix$fontFile.TTF]
@@ -200,52 +200,52 @@ namespace eval 12_customize_firmware {
     
     proc callback_fwversion { path args } {
         log "Patching English.xml into [file tail $path]"
-        sed_in_place [file join $path English.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path English.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching German.xml into [file tail $path]"
-        sed_in_place [file join $path German.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path German.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Korean.xml into [file tail $path]"
-        sed_in_place [file join $path Korean.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Korean.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Russian.xml into [file tail $path]"
-        sed_in_place [file join $path Russian.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Russian.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Swedish.xml into [file tail $path]"
-        sed_in_place [file join $path Swedish.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Swedish.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Spanish.xml into [file tail $path]"
-        sed_in_place [file join $path Spanish.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Spanish.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Portugese.xml into [file tail $path]"
-        sed_in_place [file join $path Portugese.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Portugese.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Norwegian.xml into [file tail $path]"
-        sed_in_place [file join $path Norwegian.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Norwegian.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Japanese.xml into [file tail $path]"
-        sed_in_place [file join $path Japanese.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Japanese.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Italian.xml into [file tail $path]"
-        sed_in_place [file join $path Italian.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Italian.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching French.xml into [file tail $path]"
-        sed_in_place [file join $path French.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path French.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Finnish.xml into [file tail $path]"
-        sed_in_place [file join $path Finnish.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Finnish.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Dutch.xml into [file tail $path]"
-        sed_in_place [file join $path Dutch.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Dutch.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching Danish.xml into [file tail $path]"
-        sed_in_place [file join $path Danish.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path Danish.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching ChineseTrad.xml into [file tail $path]"
-        sed_in_place [file join $path ChineseTrad.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path ChineseTrad.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         log "Patching ChineseSimpl.xml into [file tail $path]"
-        sed_in_place [file join $path ChineseSimpl.xml] %1.1 %1.1$::12_customize_firmware::options(--customize-fw-version)
+        sed_in_place [file join $path ChineseSimpl.xml] %1.1 %1.1$::customize_firmware::options(--customize-fw-version)
         
         if {$::patch_xmb::options(--fix-typo-sysconf-Italian)} {
             ::patch_xmb::callback_fix_typo_sysconf_Italian
@@ -268,7 +268,7 @@ namespace eval 12_customize_firmware {
     proc callback_rco {path src mode name} {
         variable options
         if {$mode == "0" } {
-            set dst [file join $path $::12_customize_firmware::options(--language-replace).xml]
+            set dst [file join $path $::customize_firmware::options(--language-replace).xml]
 		}
 		
 		if {$mode == "1" } {

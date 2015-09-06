@@ -8,16 +8,16 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 190
+# Priority: 170
 # Description: Patch 4.XX OFW for dualboot installations
 
 # Option --patch-db: Patch selfs to disable ECDSA signature
 
 # Type --patch-db: boolean
 
-namespace eval ::21_patch_db {
+namespace eval ::19_patch_db {
 
-    array set ::21_patch_db::options {
+    array set ::19_patch_db::options {
         --patch-db true
     }
 
@@ -43,7 +43,7 @@ namespace eval ::21_patch_db {
 						# set self "lv1ldr.self"
 						# set path $::CUSTOM_COSUNPKG_DIR
 						# set file [file join $path $self]
-							# ::modify_coreos_file $file ::21_patch_db::Do_DEX_Patches
+							# ::modify_coreos_file $file ::19_patch_db::Do_DEX_Patches
 				} else {
 					close $fp
 				}
@@ -52,17 +52,17 @@ namespace eval ::21_patch_db {
 		set self "isoldr.self"
 		set path $::CUSTOM_COSUNPKG_DIR
 		set file [file join $path $self]
-			::modify_coreos_file $file ::21_patch_db::Do_ISOLDR_Patches
+			::modify_coreos_file $file ::19_patch_db::Do_ISOLDR_Patches
 
 		set self "spu_pkg_rvk_verifier.self"
 		set path $::CUSTOM_COSUNPKG_DIR
 		set file [file join $path $self]
-			::modify_coreos_file $file ::21_patch_db::Do_PKG_Patches
+			::modify_coreos_file $file ::19_patch_db::Do_PKG_Patches
     }
 
     # proc Do_DEX_Patches {self} {
         # log "Patching [file tail $self]"
-			# ::modify_iso_file $self ::21_patch_db::DEX_elf_Patches
+			# ::modify_iso_file $self ::19_patch_db::DEX_elf_Patches
     # }
 	# proc DEX_elf_Patches {elf} {
 		# log "Applying LV1LDR EID Patches....."
@@ -86,7 +86,7 @@ namespace eval ::21_patch_db {
 
     proc Do_ISOLDR_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_iso_file $self ::21_patch_db::ISOLDR_elf_Patches
+			::modify_iso_file $self ::19_patch_db::ISOLDR_elf_Patches
     }
 	proc ISOLDR_elf_Patches {elf} {
 		log "Applying ISOLDR ECDSA Patches....."
@@ -109,7 +109,7 @@ namespace eval ::21_patch_db {
 
     proc Do_PKG_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_iso_file $self ::21_patch_db::PKG_elf_Patches
+			::modify_iso_file $self ::19_patch_db::PKG_elf_Patches
     }
 	proc PKG_elf_Patches {elf} {
 		log "Applying SPU_PKG_RVK_VERIFIER ECDSA Patches....."

@@ -8,7 +8,7 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 
 
-# Priority: 130
+# Priority: 110
 # Description: REBUG COBRA update task
 
 # Option --vsh-self: vsh.self file
@@ -27,9 +27,9 @@
 # Type --vsh-swp: file open {"Self File" {.self.swp}}
 # Type --vsh-cexsp: file open {"Self File" {*.self.cexsp}}
 
-namespace eval ::14_cobra_selfs {
+namespace eval ::12_cobra_selfs {
 
-    array set ::14_cobra_selfs::options {
+    array set ::12_cobra_selfs::options {
         --vsh-self ""
         --replace-stage1 ""
         --replace-stage2 ""
@@ -50,37 +50,37 @@ namespace eval ::14_cobra_selfs {
         if {[file exists $options(--vsh-self)] == 0 } {
             log "Skipping file, $options(--vsh-self) does not exist"
         } else {
-            ::modify_devflash_file ${self} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--vsh-self)
+            ::modify_devflash_file ${self} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--vsh-self)
         }
         if {[file exists $options(--replace-stage1)] == 0 } {
             log "Skipping file, $options(--replace-stage1) does not exist"
         } else {
-            ::modify_devflash_file ${st1} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--replace-stage1)
+            ::modify_devflash_file ${st1} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--replace-stage1)
         }
         if {[file exists $options(--replace-stage2)] == 0 } {
             log "Skipping file, $options(--replace-stage2) does not exist"
         } else {
-            ::modify_devflash_file ${st2} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--replace-stage2)
+            ::modify_devflash_file ${st2} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--replace-stage2)
         }
         if {[file exists $options(--index-dat)] == 0 } {
             log "Skipping dat, $options(--index-dat) does not exist"
         } else {
-            ::modify_devflash_file ${dat} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--index-dat)
+            ::modify_devflash_file ${dat} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--index-dat)
         }
         if {[file exists $options(--version-txt)] == 0 } {
             log "Skipping txt, $options(--version-txt) does not exist"
         } else {
-            ::modify_devflash_file ${txt} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--version-txt)
+            ::modify_devflash_file ${txt} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--version-txt)
         }
         if {[file exists $options(--vsh-swp)] == 0 } {
             log "Skipping file, $options(--vsh-swp) does not exist"
         } else {
-            ::modify_devflash_file ${swp} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--vsh-swp)
+            ::modify_devflash_file ${swp} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--vsh-swp)
         }
         if {[file exists $options(--vsh-cexsp)] == 0 } {
             log "Skipping file, $options(--vsh-cexsp) does not exist"
         } else {
-            ::modify_devflash_file ${cexsp} ::14_cobra_selfs::copy_devflash_file $::14_cobra_selfs::options(--vsh-cexsp)
+            ::modify_devflash_file ${cexsp} ::12_cobra_selfs::copy_devflash_file $::12_cobra_selfs::options(--vsh-cexsp)
         }
     }
     

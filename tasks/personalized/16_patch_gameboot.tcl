@@ -8,7 +8,7 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 160
+# Priority: 140
 # Description: Re-enable GAMEBOOT sound and animation on 3.00+ MFW
 
 # Option --version: Select STANDARD CFW / MFW or REBUG Base Firmware
@@ -17,9 +17,9 @@
 # Type --version: combobox { {STANDARD} {REBUG} }
 # Type --patch: boolean
 
-namespace eval ::18_patch_gameboot {
+namespace eval ::16_patch_gameboot {
 
-    array set ::18_patch_gameboot::options {
+    array set ::16_patch_gameboot::options {
       --version ""
       --patch-game true
     }
@@ -29,19 +29,19 @@ namespace eval ::18_patch_gameboot {
 		if {${::NEWMFW_VER} < "3.00"} {
 			return -code error "  GAMEBOOT NEED TO BE RE-ENABLED ONLY ON 3.00+ FIRMWARES !!!"
 		} else {
-			if {$::18_patch_gameboot::options(--patch-game)} {
+			if {$::16_patch_gameboot::options(--patch-game)} {
 				log "Patching gameboot sound and animation (by mysis)"
 					set self [file join dev_flash vsh module game_ext_plugin.sprx]
-						::modify_devflash_file $self ::18_patch_gameboot::patch_game
+						::modify_devflash_file $self ::16_patch_gameboot::patch_game
 					set coldboot_stereo [file join dev_flash vsh resource coldboot_stereo.ac3]
-						::modify_devflash_file $coldboot_stereo ::18_patch_gameboot::add_stereo
+						::modify_devflash_file $coldboot_stereo ::16_patch_gameboot::add_stereo
 					set coldboot_multi [file join dev_flash vsh resource coldboot_multi.ac3]
-						::modify_devflash_file $coldboot_multi ::18_patch_gameboot::add_multi
-					if {($::18_patch_gameboot::options(--version) != "")} {
+						::modify_devflash_file $coldboot_multi ::16_patch_gameboot::add_multi
+					if {($::16_patch_gameboot::options(--version) != "")} {
 						set theme [file join dev_flash vsh resource theme 01.p3t]
-						if {($::18_patch_gameboot::options(--version) != "REBUG")} {
+						if {($::16_patch_gameboot::options(--version) != "REBUG")} {
 								log "Removing $theme from dev_flash package to get more freespace"
-									::modify_devflash_file $theme ::18_patch_gameboot::remove_theme
+									::modify_devflash_file $theme ::16_patch_gameboot::remove_theme
 						} else {
 							log "No need to remove $theme on REBUG CFW"
 						}
@@ -54,10 +54,10 @@ namespace eval ::18_patch_gameboot {
     }
 
     proc patch_game {self} {
-		::modify_self_file $self ::18_patch_gameboot::game_elf
+		::modify_self_file $self ::16_patch_gameboot::game_elf
 	}
     proc game_elf {elf} {
-        if {$::18_patch_gameboot::options(--patch-game) } {
+        if {$::16_patch_gameboot::options(--patch-game) } {
 			if {${::NEWMFW_VER} < "4.53"} {
 				log "Patching 3.00-4.50 [file tail $elf] with Pattern"
 				set search      "\x38\x80\x00\x00\x7B\xE3\x00\x20"

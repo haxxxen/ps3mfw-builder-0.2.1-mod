@@ -8,37 +8,37 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
  
-# Priority: 150
+# Priority: 130
 # Description: Remove CINAVIA Copy Protection on HDD Content
  
 # Option --patch-disable-cinavia: Select Base Firmware
  
 # Type --patch-disable-cinavia: combobox { {CEX} {REBUG} }
  
-namespace eval ::17_patch_cinavia {
+namespace eval ::15_patch_cinavia {
  
-    array set ::17_patch_cinavia::options {
+    array set ::15_patch_cinavia::options {
         --patch-disable-cinavia ""
     }
  
     proc main {} {
-		if {$::17_patch_cinavia::options(--patch-disable-cinavia) != ""} {
-			if {$::17_patch_cinavia::options(--patch-disable-cinavia) == "CEX"} {
+		if {$::15_patch_cinavia::options(--patch-disable-cinavia) != ""} {
+			if {$::15_patch_cinavia::options(--patch-disable-cinavia) == "CEX"} {
 				set selfs {bdp_BDMV.self bdp_BDVD.self}
-				::modify_devflash_file [file join dev_flash vsh module videoplayer_plugin.sprx] ::17_patch_cinavia::patch_sprx
-				::modify_devflash_files [file join dev_flash bdplayer] $selfs ::17_patch_cinavia::patch_self
-			} elseif {$::17_patch_cinavia::options(--patch-disable-cinavia) == "REBUG"} {
+				::modify_devflash_file [file join dev_flash vsh module videoplayer_plugin.sprx] ::15_patch_cinavia::patch_sprx
+				::modify_devflash_files [file join dev_flash bdplayer] $selfs ::15_patch_cinavia::patch_self
+			} elseif {$::15_patch_cinavia::options(--patch-disable-cinavia) == "REBUG"} {
 				set selfs {bdp_BDMV.self bdp_BDVD.self}
-				::modify_devflash_files [file join dev_flash bdplayer] $selfs ::17_patch_cinavia::patch_self
+				::modify_devflash_files [file join dev_flash bdplayer] $selfs ::15_patch_cinavia::patch_self
 			}
 		}
 	}
  
     proc patch_sprx { self } {
-			::modify_self_file $self ::17_patch_cinavia::patch_prx
+			::modify_self_file $self ::15_patch_cinavia::patch_prx
     }
     proc patch_self { self } {
-			::modify_self_file $self ::17_patch_cinavia::patch_elf
+			::modify_self_file $self ::15_patch_cinavia::patch_elf
     }
  
     proc patch_prx { elf } {

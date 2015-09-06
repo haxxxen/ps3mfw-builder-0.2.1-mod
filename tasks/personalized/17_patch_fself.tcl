@@ -8,7 +8,7 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 170
+# Priority: 150
 # Description: Enable FSELFs on CEX CFW / MFW or REBUG CFWs
 
 # Option --version: Select CEX 4.XX, REBUG 4.XX or 3.41 / 3.55 Base Firmware
@@ -17,9 +17,9 @@
 # Type --version: combobox { {CEX 4.XX} {REBUG REX 4.XX} {REBUG D-REX 4.XX} {3.41 / 3.55 CEX / REBUG} }
 # Type --patch-fself: boolean
 
-namespace eval ::19_patch_fself {
+namespace eval ::17_patch_fself {
 
-    array set ::19_patch_fself::options {
+    array set ::17_patch_fself::options {
 		--version ""
         --patch-fself true
     }
@@ -32,44 +32,44 @@ namespace eval ::19_patch_fself {
 			}
 		}
 
-		if {$::19_patch_fself::options(--version) == ""} {
+		if {$::17_patch_fself::options(--version) == ""} {
 			return -code error "  YOU HAVE TO SELECT FIRMWARE BASE VERSION !!!"
 		}
 
 		if {${::NEWMFW_VER} >= "4.20"} {
 			set vsh [file join dev_flash vsh module vsh.self]
-				::modify_devflash_file $vsh ::19_patch_fself::Do_VSH_Patches
+				::modify_devflash_file $vsh ::17_patch_fself::Do_VSH_Patches
 
-			if {($::19_patch_fself::options(--version) != "CEX 4.XX")} {
+			if {($::17_patch_fself::options(--version) != "CEX 4.XX")} {
 				set vshs {vsh/module/vsh.self.cexsp vsh/module/vsh.self.swp}
-					::modify_devflash_files [file join dev_flash] $vshs ::19_patch_fself::Do_VSH_Patches
-				if {($::19_patch_fself::options(--version) == "REBUG REX 4.XX")} {
+					::modify_devflash_files [file join dev_flash] $vshs ::17_patch_fself::Do_VSH_Patches
+				if {($::17_patch_fself::options(--version) == "REBUG REX 4.XX")} {
 					set lv2dex "lv2Dkernel.self"
-						::modify_coreos_file $lv2dex ::19_patch_fself::Do_LV2_Patches
+						::modify_coreos_file $lv2dex ::17_patch_fself::Do_LV2_Patches
 				} else {
 					set lv2 "lv2Ckernel.self"
-						::modify_coreos_file $lv2 ::19_patch_fself::Do_LV2_Patches
+						::modify_coreos_file $lv2 ::17_patch_fself::Do_LV2_Patches
 				}
 			}
 
 			set lv2 "lv2_kernel.self"
-				::modify_coreos_file $lv2 ::19_patch_fself::Do_LV2_Patches
+				::modify_coreos_file $lv2 ::17_patch_fself::Do_LV2_Patches
 
 			set self "appldr.self"
 			set path $::CUSTOM_COSUNPKG_DIR
 			set file [file join $path $self]
-				::modify_coreos_file $file ::19_patch_fself::Do_APPLDR_Patches
+				::modify_coreos_file $file ::17_patch_fself::Do_APPLDR_Patches
 		} else {
-			if {($::19_patch_fself::options(--version) == "3.41 / 3.55 CEX / REBUG")} {
+			if {($::17_patch_fself::options(--version) == "3.41 / 3.55 CEX / REBUG")} {
 				set self "appldr"
-					::modify_coreos_file $self ::19_patch_fself::Do_APPLDR_Patches
+					::modify_coreos_file $self ::17_patch_fself::Do_APPLDR_Patches
 			}
 		}
     }
 
     proc Do_VSH_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_self_file $self ::19_patch_fself::VSH_elf_Patches
+			::modify_self_file $self ::17_patch_fself::VSH_elf_Patches
     }
 	proc VSH_elf_Patches {elf} {
 		log "Applying VSH FSELF Patch...."
@@ -84,7 +84,7 @@ namespace eval ::19_patch_fself {
 
     proc Do_LV2_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_self_file $self ::19_patch_fself::LV2_elf_Patches
+			::modify_self_file $self ::17_patch_fself::LV2_elf_Patches
     }
 	proc LV2_elf_Patches {elf} {
 		log "Applying LV2_KERNEL FSELF Patch...."
@@ -99,7 +99,7 @@ namespace eval ::19_patch_fself {
 
     proc Do_APPLDR_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_iso_file $self ::19_patch_fself::APPLDR_elf_Patches
+			::modify_iso_file $self ::17_patch_fself::APPLDR_elf_Patches
     }
 	proc APPLDR_elf_Patches {elf} {
 		if {${::NEWMFW_VER} >= "4.20"} {

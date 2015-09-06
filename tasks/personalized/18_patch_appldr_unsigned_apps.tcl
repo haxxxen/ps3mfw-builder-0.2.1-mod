@@ -8,16 +8,16 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 180
+# Priority: 160
 # Description: Patch APPLDR to to allow unsigned apps (REPLACES KAKAROTO'S VSH PATCHES)
 
 # Option --patch-appldr-unsigned-apps: Patch appldr with JFW DH patterns (4.21 only)
 
 # Type --patch-appldr-unsigned-apps: boolean
 
-namespace eval ::20_patch_appldr_unsigned_apps {
+namespace eval ::18_patch_appldr_unsigned_apps {
 
-    array set ::20_patch_appldr_unsigned_apps::options {
+    array set ::18_patch_appldr_unsigned_apps::options {
 		--patch-appldr-unsigned-apps true
     }
 
@@ -37,18 +37,18 @@ namespace eval ::20_patch_appldr_unsigned_apps {
 			set self "appldr.self"
 			set path $::CUSTOM_COSUNPKG_DIR
 			set file [file join $path $self]
-				::modify_coreos_file $file ::20_patch_appldr_unsigned_apps::Do_APPLDR_Patches
+				::modify_coreos_file $file ::18_patch_appldr_unsigned_apps::Do_APPLDR_Patches
 		}
     }
 
     proc Do_APPLDR_Patches {self} {
         log "Patching [file tail $self]"
-			::modify_iso_file $self ::20_patch_appldr_unsigned_apps::APPLDR_elf_Patches
+			::modify_iso_file $self ::18_patch_appldr_unsigned_apps::APPLDR_elf_Patches
     }
 	proc APPLDR_elf_Patches {elf} {
 		log "Applying APPLDR unsigned apps Patches based on JFW DH 3.56 MA...."
 
-		if {$::20_patch_appldr_unsigned_apps::options(--patch-appldr-unsigned-apps)} {
+		if {$::18_patch_appldr_unsigned_apps::options(--patch-appldr-unsigned-apps)} {
 			log "Patch 1"
 			set search  "\x21\x00\x0E\x03\x04\x00\x28\x03\x33\x12\x84\x80\x12\x00\x0D\x8A\x21\x00\x0C\x03"
 			set replace "\x00\x20\x00\x00\x04\x00\x28\x03\x33\x12\x84\x80\x12\x00\x0D\x8A\x00\x20\x00\x00"

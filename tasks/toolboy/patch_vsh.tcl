@@ -26,9 +26,9 @@
 # Type --customize-fw-ssl-cer: file open {"SSL Certificate" {cer}}
 # Type --customize-fw-change-cer: combobox {{DNAS} {Proxy} {ALL} {CA01.cer} {CA02.cer} {CA03.cer} {CA04.cer} {CA05.cer} {CA23.cer} {CA06.cer} {CA07.cer} {CA08.cer} {CA09.cer} {CA10.cer} {CA11.cer} {CA12.cer} {CA13.cer} {CA14.cer} {CA15.cer} {CA16.cer} {CA17.cer} {CA18.cer} {CA19.cer} {CA20.cer} {CA21.cer} {CA22.cer} {CA24.cer} {CA25.cer} {CA26.cer} {CA27.cer} {CA28.cer} {CA29.cer} {CA30.cer} {CA31.cer} {CA32.cer} {CA33.cer} {CA34.cer} {CA35.cer} {CA36.cer}}
 
-namespace eval ::11_patch_vsh {
+namespace eval ::patch_vsh {
 
-    array set ::11_patch_vsh::options {
+    array set ::patch_vsh::options {
 		--patch-rogero-vsh-patches false
 		--allow-unsigned-app false
 		--patch-vsh-react-psn-v2-4x true
@@ -43,58 +43,58 @@ namespace eval ::11_patch_vsh {
 
     proc main { } {
         variable options
-        set src $::11_patch_vsh::options(--customize-fw-ssl-cer)
-        set dst $::11_patch_vsh::options(--customize-fw-change-cer)
+        set src $::patch_vsh::options(--customize-fw-ssl-cer)
+        set dst $::patch_vsh::options(--customize-fw-change-cer)
         set path [file join dev_flash data cert]
 				
 		
      
 		# if "retail/debug pkg" options, then patch "nas_plugin.sprx"
-        if {$::11_patch_vsh::options(--allow-pseudoretail-pkg) || $::11_patch_vsh::options(--allow-debug-pkg) || $::11_patch_vsh::options(--allow-retail-pkg-dex)} {
+        if {$::patch_vsh::options(--allow-pseudoretail-pkg) || $::patch_vsh::options(--allow-debug-pkg) || $::patch_vsh::options(--allow-retail-pkg-dex)} {
             set self [file join dev_flash vsh module nas_plugin.sprx]
-            ::modify_devflash_file $self ::11_patch_vsh::patch_self
+            ::modify_devflash_file $self ::patch_vsh::patch_self
         }
         # if "unsigned/psn" patches enabled, patch "vsh.self"
-        if {$::11_patch_vsh::options(--allow-unsigned-app) || $::11_patch_vsh::options(--patch-vsh-react-psn-v2-4x) || $::11_patch_vsh::options(--patch-rogero-vsh-patches) ||
-			$::11_patch_vsh::options(--patch-vsh-no-delete-actdat)} {
+        if {$::patch_vsh::options(--allow-unsigned-app) || $::patch_vsh::options(--patch-vsh-react-psn-v2-4x) || $::patch_vsh::options(--patch-rogero-vsh-patches) ||
+			$::patch_vsh::options(--patch-vsh-no-delete-actdat)} {
             set self [file join dev_flash vsh module vsh.self]
-            ::modify_devflash_file $self ::11_patch_vsh::patch_self
+            ::modify_devflash_file $self ::patch_vsh::patch_self
         }		
 		
         # if "--customize-fw-ssl-cer" is defined, patch it
-        if {$::11_patch_vsh::options(--customize-fw-ssl-cer) != ""} {
+        if {$::patch_vsh::options(--customize-fw-ssl-cer) != ""} {
             if {[file exists $src] == 0 } {
                 die "Source SSL CA public certificate file $src does not exist"
             } elseif {[string equal $dst "DNAS"] == 1} {
                 log "Changing DNAS SSL CA public certificates to [file tail $dst]" 1
                 set dst "CA01.cer CA02.cer CA03.cer CA04.cer CA05.cer"
-                ::modify_devflash_files $path $dst ::11_patch_vsh::copy_customized_file $src
+                ::modify_devflash_files $path $dst ::patch_vsh::copy_customized_file $src
             } elseif {[string equal $dst "Proxy"] == 1} {
                 log "Changing SSL CA public certificates to [file tail $src]" 1
                 set dst "CA06.cer CA07.cer CA08.cer CA09.cer CA10.cer CA11.cer CA12.cer CA13.cer CA14.cer CA15.cer CA16.cer CA17.cer CA18.cer CA19.cer CA20.cer CA21.cer CA22.cer CA23.cer CA24.cer CA25.cer CA26.cer CA27.cer CA28.cer CA29.cer CA30.cer CA31.cer CA32.cer CA33.cer CA34.cer CA35.cer CA36.cer"
-                ::modify_devflash_files $path $dst ::11_patch_vsh::copy_customized_file $src
+                ::modify_devflash_files $path $dst ::patch_vsh::copy_customized_file $src
             } elseif {[string equal $dst "ALL"] == 1} {
                 log "Changing ALL SSL CA public certificates to [file tail $dst]" 1
                 set dst "CA01.cer CA02.cer CA03.cer CA04.cer CA05.cer CA06.cer CA07.cer CA08.cer CA09.cer CA10.cer CA11.cer CA12.cer CA13.cer CA14.cer CA15.cer CA16.cer CA17.cer CA18.cer CA19.cer CA20.cer CA21.cer CA22.cer CA23.cer CA24.cer CA25.cer CA26.cer CA27.cer CA28.cer CA29.cer CA30.cer CA31.cer CA32.cer CA33.cer CA34.cer CA35.cer CA36.cer"
-                ::modify_devflash_files $path $dst ::11_patch_vsh::copy_customized_file $src
+                ::modify_devflash_files $path $dst ::patch_vsh::copy_customized_file $src
             } else {
                 log "Changing SSL CA public certificate $dst to [file tail $src]" 1
                 set dst [file join $path [lindex $dst 0]]
-                ::modify_devflash_file $dst ::11_patch_vsh::copy_customized_file $src
+                ::modify_devflash_file $dst ::patch_vsh::copy_customized_file $src
             }
         }
 		# if "--disable-cinavia-protection-4x" enabled, patch it
-		if {$::11_patch_vsh::options(--disable-cinavia-protection-4x)} {
+		if {$::patch_vsh::options(--disable-cinavia-protection-4x)} {
 		    log "Swapping videoplayer_plugin.sprx from Debug FW to Retail one..."
 			log "...to disable cinavia protection"
-			::11_patch_vsh::swappCinavia
+			::patch_vsh::swappCinavia
 		}
     }		
 	
 	# proc for dispatching to the appropriate func to path the
 	# desired "self" file
     proc patch_self {self} { 		
-		::modify_self_file $self ::11_patch_vsh::patch_elf		
+		::modify_self_file $self ::patch_vsh::patch_elf		
     }
 
 	# proc for patching "nas_plugin.sprx" file
@@ -105,7 +105,7 @@ namespace eval ::11_patch_vsh {
 		if { [string first "nas_plugin.sprx" $elf 0] != -1 } {		
 			
 			# if "--allow-pseudoretail-pkg" enabled, patch it
-			if {$::11_patch_vsh::options(--allow-pseudoretail-pkg) } {
+			if {$::patch_vsh::options(--allow-pseudoretail-pkg) } {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #			
 				# (patch seems fine, NO mask req'd)
 				#
@@ -124,7 +124,7 @@ namespace eval ::11_patch_vsh {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"   
 			}			
 			# if "--allow-retail-pkg-dex" enabled, patch it
-			if {$::11_patch_vsh::options(--allow-retail-pkg-dex) } {
+			if {$::patch_vsh::options(--allow-retail-pkg-dex) } {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #	
 				#
 				# verified OFW ver. 3.55 - 4.55+
@@ -140,7 +140,7 @@ namespace eval ::11_patch_vsh {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"        
 			}			
 			# if "--allow-debug-pkg" enabled, patch it
-			if {$::11_patch_vsh::options(--allow-debug-pkg) } {
+			if {$::patch_vsh::options(--allow-debug-pkg) } {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #						
 				#
 				# verified OFW ver. 3.55 - 4.55+
@@ -168,7 +168,7 @@ namespace eval ::11_patch_vsh {
 			# patch VSH.self for ROGERO patches
 			# there are TWO of these patches, easier to
 			# just use the "MULTI" patch to hit them both in one shot
-			if {$::11_patch_vsh::options(--patch-rogero-vsh-patches)} {	
+			if {$::patch_vsh::options(--patch-rogero-vsh-patches)} {	
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #			
 				# (patch seems fine, NO mask req'd)
 				#
@@ -230,7 +230,7 @@ namespace eval ::11_patch_vsh {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"											
 			}			
 			# if "--allow-unsigned-app" enabled, patch it
-			if {$::11_patch_vsh::options(--allow-unsigned-app)} {
+			if {$::patch_vsh::options(--allow-unsigned-app)} {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #			
 				# (patch seems fine, NO mask req'd)
 				#
@@ -266,7 +266,7 @@ namespace eval ::11_patch_vsh {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"        
 			}
 			# if "--patch-vsh-react-psn-v2-4x" enabled, patch it
-			if {$::11_patch_vsh::options(--patch-vsh-react-psn-v2-4x)} {
+			if {$::patch_vsh::options(--patch-vsh-react-psn-v2-4x)} {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #							
 				#
 				# verified OFW ver. 3.55 - 4.55+
@@ -293,7 +293,7 @@ namespace eval ::11_patch_vsh {
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"        
 			}
 			# if "--patch-vsh-no-delete-actdat" enabled, patch it
-			if {$::11_patch_vsh::options(--patch-vsh-no-delete-actdat)} {
+			if {$::patch_vsh::options(--patch-vsh-no-delete-actdat)} {
 				# <><> --- OPTIMIZED FOR 'PATCHTOOL' --- <><> #							
 				#
 				# verified OFW ver. 3.55 - 4.55+
@@ -473,4 +473,4 @@ namespace eval ::11_patch_vsh {
     }
 }
 #
-# ############  END OF 11_patch_vsh.TCL ######################################
+# ############  END OF patch_vsh.TCL ######################################
