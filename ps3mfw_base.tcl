@@ -701,34 +701,16 @@ proc import_self_info {in array} {
 }
 
 proc modify_self_file {file callback args} {
-	if {$::options(--sign-iso)} {
-		if {$file == ${::ISOSELF}} {
-			log "Modifying ISOLATED MODULE [file tail $file]"
-			# if {$file == "lv0"} {
-				# catch_die {extract_lv0 ${::CUSTOM_COSUNPKG_DIR} "lv0" MyLV0Hdrs} "ERROR: Could not extract LV0"
-			# }
-			decrypt_self $file ${file}.elf
-			eval $callback ${file}.elf $args
-			sign_iso_elf ${file}.elf ${file}.self $file
-			file rename -force ${file}.self $file
-			file delete ${file}.elf
-			# debug "ISOLATED Self successfully rebuilt"
-			log "ISOLATED Self successfully rebuilt"
-		}
-	}
+	log "Modifying self/sprx [file tail $file]"
 	if {$::options(--sign-self)} {
-		if {$file != ${::ISOSELF}} {
-			log "Modifying self/sprx [file tail $file]"
-			decrypt_self $file ${file}.elf
-			eval $callback ${file}.elf $args
-			sign_self_elf ${file}.elf ${file}.self $file
-			file rename -force ${file}.self $file
-			file delete ${file}.elf
-			# debug "Self successfully rebuilt"
-			log "Self successfully rebuilt"
-		}
+		decrypt_self $file ${file}.elf
+		eval $callback ${file}.elf $args
+		sign_self_elf ${file}.elf ${file}.self $file
+		file rename -force ${file}.self $file
+		file delete ${file}.elf
+		# debug "Self successfully rebuilt"
+		log "Self successfully rebuilt"
 	} else {
-		log "Modifying self/sprx file: [file tail $file]"
 		array set MySelfHdrs {
 			--KEYREV ""
 			--AUTHID ""
@@ -801,7 +783,7 @@ proc modify_devflash_files {path files callback args} {
     foreach file $files {
 	
         set file [file join $path $file]			
-        log "Modifying dev_flash file: [file tail $file] in devflash file"
+        log "Modifying dev_flash file: [file tail $file] in devflash package"
         
         set tar_file [find_devflash_archive ${::CUSTOM_DEVFLASH_DIR} $file]        
         if {$tar_file == ""} {
@@ -1375,21 +1357,14 @@ proc modify_rco_files {path rco_files callback args} {
 
 
 # func for modifying the "UPL.xml.pkg" file
-proc modify_upl_file {callback args} {	
-	
-    log "Modifying UPL.xml file"	
+proc modify_upl_file {callback args} {
+    log "Modifying UPL.xml file"
     set file "content"
-    
     set pkg [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.pkg]
     set unpkgdir [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.unpkg]
-	set orgunpkgdir [file join ${::ORIGINAL_UPDATE_DIR} UPL.xml.unpkg]
 
-	# unpkg the archive in the 'MFW' dir
     ::unpkg_archive $pkg $unpkgdir
-	# unpkg the archive in the 'OFW' dir (for importing content info)
-    ::unpkg_archive $pkg $orgunpkgdir	
 
-	# verify 'file' is writable/etc before it's patched
     if {[file writable [file join $unpkgdir $file]] } {
         eval $callback [file join $unpkgdir $file] $args
     } elseif { ![file exists [file join $unpkgdir $file]] } {
@@ -1397,7 +1372,7 @@ proc modify_upl_file {callback args} {
     } else {
         die "File $file is not writable in $unpkgdir"
     }
-	
+
 	# if we are >= 3.56 FW, we need to build the new
 	# "spkg" headers, otherwise use normal pkg build	
 	if {[file exists ${::ORIGINAL_SPKG_TAR}]} {    
@@ -1410,54 +1385,32 @@ proc modify_upl_file {callback args} {
     catch_die {file delete -force ${unpkgdir}} "Could not delete directory:$unpkgdir for cleanup"
 }
 proc get_header_key_upl_xml { file key message } {
+    log "Getting \"$message\" information from UPL.xml" 1
 
-    debug "Getting \"$message\" information from UPL.xml"	
-	set verbosemode no
-	# if verbose mode enabled
-	if { $::options(--task-verbose) } {
-		set verbosemode yes
-	} 
-
-	# load xml file
     set xml [::xml::LoadFile $file]
     set data [::xml::GetData $xml "UpdatePackageList:Header:$key"]
     if {$data != ""} {
-		if {$verbosemode == yes} {
-			log "$key:$data"
-		}
+        log "$key: $data"
         return $data
     }
     return ""
 }
 proc set_header_key_upl_xml { file key replace message } {
+    log "Setting \"$message\" information in UPL.xml" 1
 
-    log "Setting \"$message\" information in UPL.xml" 1	
-	set finaldata ""
     set xml [::xml::LoadFile $file]
 
-	# search the 'xml' data, and try to find the data
-	# based on the 'key'
     set search [::xml::GetData $xml "UpdatePackageList:Header:$key"]
-    if {$search != "" } {	
-	
+    if {$search != "" } {
+        log "$key: $search -> $replace"
         set fd [open $file r]
-		fconfigure $fd -translation binary 
         set xml [read $fd]
-        close $fd     
-		
-		# iterate through the 'xml' data, and replace the line
-		# with the found data
-		set lines [split $xml \x0A]
-		foreach line $lines {
-			if { [regsub ($search) $line $replace line] } {
-				log "replaced: $key: $search -> $replace"						
-			}
-			append finaldata $line\x0A
-		}
-        # write out final data
+        close $fd
+
+        set xml [string map [list $search $replace] $xml]
+
         set fd [open $file w]
-		fconfigure $fd -translation binary
-        puts -nonewline $fd $finaldata
+        puts -nonewline $fd $xml
         close $fd
         return $search
     }
