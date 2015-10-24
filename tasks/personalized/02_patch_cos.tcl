@@ -196,8 +196,8 @@ namespace eval ::02_patch_cos {
 			log "Patching APPLDR SIG CHECK (credits to habib)......"			
 			if {${::NEWMFW_VER} >= "3.55"} {
 				set search  "\x40\xFF\xFF\x82\x34\x00\xC0\x80"
-				set replace "\x40\x80\x00\x03"
-				set offset 12
+				set replace "\x40\x80\x00\x02"
+				set offset 0
 				set mask 0			
 				# PATCH THE ELF BINARY\x40\xFF\xFF\x82\x34\x00\xC0\x80
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
