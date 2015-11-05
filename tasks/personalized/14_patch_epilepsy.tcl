@@ -52,14 +52,6 @@ namespace eval ::14_patch_epilepsy {
 			set mask 0			
 				# PATCH THE ELF BINARY
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-
-            log "Patching [file tail $elf] to disable coldboot view sleep on CEX CFW (credits to mysis&co)"
-			set search  "\x88\x1D\x00\x07\x2F\x80\x00\x00\x40\x9E"
-			set replace "\x38\x00\x00\x01\x3C\x60\x00\x00"
-			set offset 52
-			set mask 0			
-				# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
 		}
     }
     proc patch_elf { elf } {
@@ -69,14 +61,6 @@ namespace eval ::14_patch_epilepsy {
 			set search  "\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x01\x00\xff\xff\xff\xff"
 			set replace "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x00\xff\xff\xff\xff"
 			set offset 0
-			set mask 0			
-				# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-
-            log "Patching [file tail $elf] to disable coldboot view sleep on REBUG/DEX CFW (credits to mysis&co)"
-			set search  "\x88\x1D\x00\x07\x2F\x80\x00\x00\x40\x9E"
-			set replace "\x38\x00\x00\x01\x3C\x60\x00\x00"
-			set offset 52
 			set mask 0			
 				# PATCH THE ELF BINARY
 					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
