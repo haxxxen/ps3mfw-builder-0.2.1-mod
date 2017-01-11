@@ -83,23 +83,6 @@ proc build_mfw {input output tasks} {
 		set ::AUTOCOS "1"
     }
 
-	set ::3XX_CEX "0"
-	if {$::options(--3XX-CEX)} {
-		set ::3XX_CEX "1"
-	}
-	set ::3XX_DEX "0"
-	if {$::options(--3XX-DEX)} {
-		set ::3XX_DEX "1"
-	}
-	set ::4XX_CEX "0"
-	if {$::options(--4XX-CEX)} {
-		set ::4XX_CEX "1"
-	}
-	set ::4XX_DEX "0"
-	if {$::options(--4XX-DEX)} {
-		set ::4XX_DEX "1"
-	}
-
     set ::selected_tasks [sort_tasks ${tasks}]
 
     # print out ego info
@@ -235,8 +218,10 @@ proc build_mfw {input output tasks} {
 
 	log "Please WAIT....Building new PUP TAR file(s)....."	
 
-	if {$::options(--3XX-CEX)} {
-		create_cex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	if {$::options(--341-CEX)} {
+		create_cex_tar341_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	} elseif {$::options(--355-CEX)} {
+		create_cex_tar355_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
 	} elseif {$::options(--3XX-DEX)} {
 		create_dex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
 	} elseif {$::options(--4XX-CEX)} {

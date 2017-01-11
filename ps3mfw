@@ -9,7 +9,8 @@
 #
 set ::PS3MFW_VERSION "0.2.1"
 
-# Option --3XX-CEX: 3.xx CEX Base Firmware
+# Option --341-CEX: 3.41 CEX Base Firmware
+# Option --355-CEX: 3.55 CEX Base Firmware
 # Option --3XX-DEX: 3.xx DEX Base Firmware
 # Option --4XX-CEX: 4.xx CEX Base Firmware
 # Option --4XX-DEX: 4.xx DEX Base Firmware
@@ -25,7 +26,8 @@ set ::PS3MFW_VERSION "0.2.1"
 # Option --silent: Disable log output 
 
 array set ::options {
-	--3XX-CEX false
+	--341-CEX false
+	--355-CEX false
 	--3XX-DEX false
 	--4XX-CEX false
 	--4XX-DEX false
@@ -91,15 +93,22 @@ set ::LV2D "lv2Dkernel.self"
 set ::HC "hc.exe"
 set ::ST2 "sys/stage2.bin"
 set ::ST2RBG "rebug/cobra/stage2.cex.bak rebug/cobra/stage2.dex.bak"
-set ::3XX_CEX "0"
+set ::341_CEX "0"
+set ::355_CEX "0"
 set ::3XX_DEX "0"
 set ::4XX_CEX "0"
 set ::4XX_DEX "0"
 
-if {$::options(--3XX-CEX)} {
-	set ::3XX_CEX "1"
+if {$::options(--341-CEX)} {
+	set ::341_CEX "1"
 } else {
-	set ::3XX_CEX "0"
+	set ::341_CEX "0"
+}
+
+if {$::options(--355-CEX)} {
+	set ::355_CEX "1"
+} else {
+	set ::355_CEX "0"
 }
 
 if {$::options(--3XX-DEX)} {
@@ -120,8 +129,8 @@ if {$::options(--4XX-DEX)} {
 	set ::4XX_DEX "0"
 }
 
-unset ::options(--3XX-CEX)
-unset ::options(--3XX-DEX)
+##unset ::options(--3XX-CEX)
+##unset ::options(--3XX-DEX)
 
 if {$::options(--auto-cos)} {
 	set ::AUTOCOS "1"

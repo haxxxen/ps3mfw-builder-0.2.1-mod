@@ -9,7 +9,7 @@
 #
 
 # Priority: 60
-# Description: Add folder to main folder structure (devflash000 pkg)
+# Description: Add folder To Firmware
 
 
 # Option --folder-enable-00: Add (empty!) folder to main folder structure
@@ -23,7 +23,7 @@ namespace eval 07_add_folder {
     array set ::07_add_folder::options {
 	
 		--folder-enable-00 true
-		--file-loc "any folder"
+		--file-loc "rebug/packages/PS3_GAME/USRDIR/img"
     }
 
     proc main {} {
@@ -37,6 +37,7 @@ namespace eval 07_add_folder {
 			extract_tar $tar $unpkgdir2
 			file mkdir [file join ${::CUSTOM_PUP_DIR} dev_flash $::07_add_folder::options(--file-loc)]
 			file delete -force $tar
+			# ::create_tar_content $tar ${::CUSTOM_PUP_DIR} dev_flash
 			if {${::NEWMFW_VER} >= ${::OFW_2NDGEN_BASE}} {    
 				if {$::options(--4XX-CEX)} {
 					::create_cex_tar4_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
@@ -44,8 +45,10 @@ namespace eval 07_add_folder {
 					::create_dex_tar4_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
 				}
 			} else {
-				if {$::options(--3XX-CEX)} {
-					::create_cex_tar3_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
+				if {$::options(--341-CEX)} {
+					::create_cex_tar341_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
+				} elseif {$::options(--355-CEX)} {
+					::create_cex_tar355_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
 				} elseif {$::options(--3XX-DEX)} {
 					::create_dex_tar3_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
 				}

@@ -349,48 +349,93 @@ proc extract_tar {tar dest} {
     catch_die {::tar::untar $tar -dir $dest} "Could not untar file: $tar"
 }
 #new fixed tarball rebuild functions
-proc create_cex_tar3_000 {tar directory files} {
+proc create_cex_tar341_000 {tar directory files} {
 		set debug [file tail $tar]
 		if {$debug == "content" } {
 			set debug [file tail [file dirname $tar]]
 		}
-		debug "Creating CEX 3.xx dev_flash tar file $debug"
+		debug "Creating CEX 3.41 dev_flash tar file $debug"
 		set pwd [pwd]
 		cd $directory
-		catch_die {::tar::create_cex3_000 $tar $files} "Could not create CEX 3.xx dev_flash tar file $tar"
+		catch_die {::tar::create_cex341_000 $tar $files} "Could not create CEX 3.41 dev_flash tar file $tar"
 		cd $pwd
 	}
-proc create_cex_tar3_content {tar directory files} {
+proc create_cex_tar341_content {tar directory files} {
 		set debug [file tail $tar]
 		if {$debug == "content" } {
 			set debug [file tail [file dirname $tar]]
 		}
-		debug "Creating CEX 3.xx dev_flash tar file $debug"
+		debug "Creating CEX 3.41 dev_flash tar file $debug"
 		set pwd [pwd]
 		cd $directory
-		catch_die {::tar::create_cex3_content $tar $files} "Could not create CEX 3.xx dev_flash tar file $tar"
+		catch_die {::tar::create_cex341_content $tar $files} "Could not create CEX 3.41 dev_flash tar file $tar"
 		cd $pwd
 	}
-proc create_cex_tar3_update {tar directory files} {
+proc create_cex_tar341_update {tar directory files} {
 		set debug [file tail $tar]
 		if {$debug == "update_files" } {
 			set debug [file tail [file dirname $tar]]
 		}
-		debug "Creating CEX 3.xx update tar file $debug"
+		debug "Creating CEX 3.41 update tar file $debug"
 		set pwd [pwd]
 		cd $directory
-		catch_die {::tar::create_cex3_update $tar $files} "Could not create CEX 3.xx update tar file $tar"
+		catch_die {::tar::create_cex341_update $tar $files} "Could not create CEX 3.41 update tar file $tar"
 		cd $pwd
 	}
-proc create_cex_tar3_dev3 {tar directory files} {
+proc create_cex_tar341_dev3 {tar directory files} {
 		set debug [file tail $tar]
 		if {$debug == "content" } {
 			set debug [file tail [file dirname $tar]]
 		}
-		debug "Creating CEX 3.xx dev_flash3 tar file $debug"
+		debug "Creating CEX 3.41 dev_flash3 tar file $debug"
 		set pwd [pwd]
 		cd $directory
-		catch_die {::tar::create_cex3_dev3 $tar $files} "Could not create CEX 3.xx dev_flash3 tar file $tar"
+		catch_die {::tar::create_cex341_dev3 $tar $files} "Could not create CEX 3.41 dev_flash3 tar file $tar"
+		cd $pwd
+	}
+
+proc create_cex_tar355_000 {tar directory files} {
+		set debug [file tail $tar]
+		if {$debug == "content" } {
+			set debug [file tail [file dirname $tar]]
+		}
+		debug "Creating CEX 3.55 dev_flash tar file $debug"
+		set pwd [pwd]
+		cd $directory
+		catch_die {::tar::create_cex355_000 $tar $files} "Could not create CEX 3.55 dev_flash tar file $tar"
+		cd $pwd
+	}
+proc create_cex_tar355_content {tar directory files} {
+		set debug [file tail $tar]
+		if {$debug == "content" } {
+			set debug [file tail [file dirname $tar]]
+		}
+		debug "Creating CEX 3.55 dev_flash tar file $debug"
+		set pwd [pwd]
+		cd $directory
+		catch_die {::tar::create_cex355_content $tar $files} "Could not create CEX 3.55 dev_flash tar file $tar"
+		cd $pwd
+	}
+proc create_cex_tar355_update {tar directory files} {
+		set debug [file tail $tar]
+		if {$debug == "update_files" } {
+			set debug [file tail [file dirname $tar]]
+		}
+		debug "Creating CEX 3.55 update tar file $debug"
+		set pwd [pwd]
+		cd $directory
+		catch_die {::tar::create_cex355_update $tar $files} "Could not create CEX 3.55 update tar file $tar"
+		cd $pwd
+	}
+proc create_cex_tar355_dev3 {tar directory files} {
+		set debug [file tail $tar]
+		if {$debug == "content" } {
+			set debug [file tail [file dirname $tar]]
+		}
+		debug "Creating CEX 3.55 dev_flash3 tar file $debug"
+		set pwd [pwd]
+		cd $directory
+		catch_die {::tar::create_cex355_dev3 $tar $files} "Could not create CEX 3.55 dev_flash3 tar file $tar"
 		cd $pwd
 	}
 
@@ -934,8 +979,10 @@ proc modify_devflash_file {file callback args} {
 	# create the tar file
 	# '-nodirs' = do NOT include directories in tar file
 	# '-nofinalpad'  === NO ZERO PADDING appended to file at end
-	if {$::options(--3XX-CEX)} {
-		create_cex_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+	if {$::options(--341-CEX)} {
+		create_cex_tar341_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+	} elseif {$::options(--355-CEX)} {
+		create_cex_tar355_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--3XX-DEX)} {
 		create_dex_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--4XX-CEX)} {
@@ -988,8 +1035,10 @@ proc modify_devflash_files {path files callback args} {
 		# create the tar file
 		# '-nodirs' = do NOT include directories in tar file
 		# '-nofinalpad'  === NO ZERO PADDING appended to file at end				
-		if {$::options(--3XX-CEX)} {
-			create_cex_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		if {$::options(--341-CEX)} {
+			create_cex_tar341_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		} elseif {$::options(--355-CEX)} {
+			create_cex_tar355_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--3XX-DEX)} {
 			create_dex_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--4XX-CEX)} {
@@ -1885,8 +1934,10 @@ proc modify_devflash3_file {file callback args} {
         die "File $file is not writable in ${::CUSTOM_DEVFLASH3_DIR}"
     }	
 	# create the tar file
-	if {$::options(--3XX-CEX)} {
-		create_cex_tar3_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
+	if {$::options(--341-CEX)} {
+		create_cex_tar341_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
+	} elseif {$::options(--355-CEX)} {
+		create_cex_tar355_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--3XX-DEX)} {
 		create_dex_tar3_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--4XX-CEX)} {
