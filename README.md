@@ -15,6 +15,8 @@ Changes:
 - pkgtool "hexified" to work on WindowsXP (SP3)
 - modified version of COBRA's hashcalc app added, to make it work with MFW-Builder
 - COBRA CFWs can be patched now and hashes can be directly replaced in stage2 file(s)
+- tarball creation routine with permissions and user/group name fixed. You can create tars, just like originals. Already modified
+firmwares can be fixed, by selecting "replace devflash file manual" and then add from every devflash pkg a single file to task. Examples from REBUG 4.21 and 4.81 OFW are included in replace_deflash folder. Additionally you have to choose replace_devflash3 task (don't forget the global option to extract!!!), to fix devflash3 tar as well. To fix devflash000 tar, just choose add folder and leave the box empty
 
 small explanation of tasks:
 - patch_cos: Has all basic COREOS patches you would need for a standard MFW and is based on toolboy. I only have added appldr lv2memory protection removal patch and appldr signature patch to be able to exit FSM on 4.XX (NOTE: For lv0 patches on 4.XX, you have to select lv0 extract option. Also current payloads are not working for DEX MFW thanks to Joonie for reporting)
@@ -26,14 +28,14 @@ small explanation of tasks:
 - patch_rsod: Patch basic_plugins.sprx with RSOD bypass, to be able to boot to XMB -> it does not fix the error!
 - patch_premo: It has all remote-play patches as well as mysis' advanced sfo patch
 - change_xml_files: This can replace automatically any XMB xml file. You only have to choose the path to your modified file. When empty, it skips the file and none will be replaced
-- spoofer_update: This will let you update or set a spoofer on any MFW or CFW. It also has advanced SEN patches, but those do not only work on 4.3+ CFWs
-- cobra_selfs: This is based on REBUG COBRA only and will let you replace automatically vsh(s), cobra stage2 files and index.dat / version.txt. Leave empty box for now replacement.
+- spoofer_update: This will let you update or set a spoofer on any MFW or CFW. It also has advanced SEN patches, but those do only work on 4.3+ CFWs
+- cobra_selfs: This is based on REBUG COBRA only and will let you replace automatically vsh(s), cobra stage2 files and index.dat / version.txt. Leave empty box for no replacement.
 - patch_epilepsy: This will let you patch out that extra health screen, with epilepsy warning
 - patch_cinavia: This will let you remove cinavia copy-protection on hdd content
 - patch_gameboot: This will let you enable that old 2.78-OFW gameboot sound and animation. The sound files will be automatically copied to matching coldboot devflash package and also remove 01.p3t file, to give more freespace on devflash
 - patch_fself: This will let you run FSELFs on a CEX CFW for both kernels, even loading DEX kernel on CEX
 - patch_appldr_unsigned_apps: This will let you patch (4.21 ONLY) appldr for running unsigned apps, based on DEMONHADES. Now you can remove kakaroto's unsigned app vsh patch, which disables npdrm_fself on DEX. So no more shutdowns or blackscreens when kakaroto's patch is removed on a CEX CFW
-- repair_hashes: This will let you repair modified COBRA hashes yourself without recompiling new stage2 file(s). It is reduced only to basic_plugins.sprx, game_ext_plugin.sprx, vsh.self, vsh.self.cexsp and vsh.self.swp, but those modules are the only ones that can be patched with MFW-Builder and besides, the others do not need to get patched. Just select any patch task for any of these modules and select the repair_hashes task. It will run always at the very last instance, so other patches can be applied beforehand. You can also patch manually and then just run the task, it will do everything itself. NOTE: For official REBUG COBRAs you have to first select the spoofer task and let it patch all vsh files, to get same hashes in the end! It only works for REBUG 4.21-4.75 COBRA, DARKNET 4.70 v5 COBRA and habib 4.75 v4 COBRA for now and only for original version.
+- repair_hashes: This will let you repair modified COBRA hashes yourself without recompiling new stage2 file(s). It is reduced only to basic_plugins.sprx, game_ext_plugin.sprx, vsh.self, vsh.self.cexsp and vsh.self.swp, but those modules are the only ones that can be patched with MFW-Builder and besides, the others do not need to get patched. Just select any patch task for any of these modules and select the repair_hashes task. It will run always at the very last instance, so other patches can be applied beforehand. You can also patch manually and then just run the task, it will do everything itself. NOTE: For official REBUG COBRAs you have to first select the spoofer task and let it patch all vsh files, to get same hashes in the end! It only works for REBUG 4.21-4.80 COBRA, DARKNET 4.70 v5/4.81 COBRA and habib 4.75 v4 COBRA for now and only for original version.
 - patch_db: This will let you patch a 4.xx OFW, to disable ECDSA checks, that it can be installed on CFW for dualboot setups.
 
 NOTE FOR COBRA CFWs:

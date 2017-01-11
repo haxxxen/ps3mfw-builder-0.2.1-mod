@@ -8,43 +8,44 @@
 # License ("GPL") version 3, as published by the Free Software Foundation.
 #
 
-# Priority: 40
-# Description: REX2DREX: Patch REBUG 3.55.4 / 4.21.2 REX to D-REX
+# Priority: 50
+# Description: DREX2REX: Patch REBUG 3.55.4 / 4.21.2 D-REX to REX
 
 
-# Option --spoof: Set DEBUG Firmware version
+# Option --spoof: Set RETAIL Firmware version
 
-# Type --spoof: combobox { {99.99 99999 DEX} }
+# Type --spoof: combobox { {4.21 99999 CEX-ww 20120630} }
 
-namespace eval 05_patch_info {
+namespace eval 06_patch_info2 {
 
-    array set ::05_patch_info::options {
+    array set ::06_patch_info2::options {
 	
-		--spoof "99.99 99999 DEX"
+		--spoof "4.21 99999 20120630 CEX-ww"
    }
 
     proc main {} {
         variable options
+
 		debug "Patching [file tail $::CUSTOM_UPDATE_FLAGS_TXT]"
 		set fd [open $::CUSTOM_UPDATE_FLAGS_TXT w]
-		puts -nonewline $fd "0100"
+		puts -nonewline $fd "0000"
 		close $fd
 
 		set cex [file join dev_flash vsh module sysconf_plugin.sprx]
-			::modify_devflash_file $cex ::05_patch_info::cex_rename
+			::modify_devflash_file $cex ::06_patch_info2::cex_rename
 		set cex2 [file join dev_flash vsh module software_update_plugin.sprx]
-			::modify_devflash_file $cex2 ::05_patch_info::cex_rename
-		set dex [file join dev_flash vsh module software_update_plugin.sprx.dex]
-			::modify_devflash_file $dex ::05_patch_info::dex_rename1
-		set dex2 [file join dev_flash vsh module sysconf_plugin.sprx.dex]
-			::modify_devflash_file $dex2 ::05_patch_info::dex_rename2
+			::modify_devflash_file $cex2 ::06_patch_info2::cex_rename
+		set dex [file join dev_flash vsh module software_update_plugin.sprx.cex]
+			::modify_devflash_file $dex ::06_patch_info2::dex_rename1
+		set dex2 [file join dev_flash vsh module sysconf_plugin.sprx.cex]
+			::modify_devflash_file $dex2 ::06_patch_info2::dex_rename2
 
 		foreach pkg [lsort [glob -nocomplain [file join ${::CUSTOM_UPDATE_DIR} dev_flash_*]]] {
 			set unpkgdir [file join ${::CUSTOM_UPDATE_DIR} ${pkg}.unpkg]
 				::unpkg_archive $pkg $unpkgdir
 			foreach info0 [lsort [glob -nocomplain [file join $unpkgdir info0]]] {
-				set search		"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-				set replace		"\xA0\x00\x00\x00"
+				set search		"\x00\x00\x00\x00\xA0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+				set replace		"\x00"
 				set offset 4
 				set mask 0				
 					catch_die {::patch_elf $info0 $search $offset $replace $mask} \
@@ -66,8 +67,8 @@ namespace eval 05_patch_info {
 		set cosdir [file join ${::CUSTOM_UPDATE_DIR} CORE_OS_PACKAGE.unpkg]
 			::unpkg_archive $cos $cosdir
 		set info0 [file join $cosdir info0]
-		set search		"\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-		set replace		"\xA0\x00\x00\x00"
+		set search		"\x00\x00\x00\x00\xA0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+		set replace		"\x40"
 		set offset 4
 		set mask 0				
 			catch_die {::patch_elf $info0 $search $offset $replace $mask} \
@@ -75,26 +76,9 @@ namespace eval 05_patch_info {
 
 		set cosunpkgdir [file join ${::CUSTOM_UPDATE_DIR} CORE_OS_PACKAGE]
 			::cosunpkg_package [file join $cosdir content] $cosunpkgdir
-		file rename -force [file join $cosunpkgdir lv2_kernel.self] [file join $cosunpkgdir lv2Ckernel.self]
-		file rename -force [file join $cosunpkgdir lv2Dkernel.self] [file join $cosunpkgdir lv2_kernel.self]
+		file rename -force [file join $cosunpkgdir lv2_kernel.self] [file join $cosunpkgdir lv2Dkernel.self]
+		file rename -force [file join $cosunpkgdir lv2Ckernel.self] [file join $cosunpkgdir lv2_kernel.self]
 		set txt [file join $cosunpkgdir list.txt]
-		if {[file exists [file join $txt]]} {
-			if {${::NEWMFW_VER} < ${::OFW_2NDGEN_BASE}} {
-				set search		"\x44\x6B\x65\x72\x6E\x65\x6C\x2E\x73\x65\x6C\x66\x0A\x6C\x76\x32\x6C\x64\x72\x0A\x6C\x76\x32\x5F"
-				set replace		"\x5F\x6B\x65\x72\x6E\x65\x6C\x2E\x73\x65\x6C\x66\x0A\x6C\x76\x32\x6C\x64\x72\x0A\x6C\x76\x32\x43"
-				set offset 0
-				set mask 0				
-					catch_die {::patch_elf $txt $search $offset $replace $mask} \
-						"Unable to patch file [file tail $txt]"
-			} else {
-				set search		"\x44\x6B\x65\x72\x6E\x65\x6C\x2E\x73\x65\x6C\x66\x0A\x6C\x76\x32\x5F"
-				set replace		"\x5F\x6B\x65\x72\x6E\x65\x6C\x2E\x73\x65\x6C\x66\x0A\x6C\x76\x32\x43"
-				set offset 0
-				set mask 0				
-					catch_die {::patch_elf $txt $search $offset $replace $mask} \
-						"Unable to patch file [file tail $txt]"
-			}
-		}
 			::cospkg_package $cosunpkgdir [file join $cosdir content]
 		file delete -force $cosunpkgdir
 		if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
@@ -112,12 +96,12 @@ namespace eval 05_patch_info {
 			set df3dir [file join ${::CUSTOM_UPDATE_DIR} ${df3}.unpkg]
 				::unpkg_archive $df3 $df3dir
 			set info0 [file join $df3dir info0]
+			set search		"\x00\x00\x00\x00\xA0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 			if {${::NEWMFW_VER} >= "4.21"} {
-				set search		"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+				set replace		"\x00"
 			} else {
-				set search		"\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+				set replace		"\x40"
 			}
-			set replace		"\xA0\x00\x00\x00"
 			set offset 4
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
@@ -136,8 +120,8 @@ namespace eval 05_patch_info {
 			set btdir [file join ${::CUSTOM_UPDATE_DIR} BLUETOOTH_FIRMWARE.unpkg]
 				::unpkg_archive $bt $btdir
 			set info0 [file join $btdir info0]
-			set search		"\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-			set replace		"\xA0\x00\x00\x00"
+			set search		"\x00\x00\x00\x00\xA0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+			set replace		"\x40"
 			set offset 4
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
@@ -156,8 +140,8 @@ namespace eval 05_patch_info {
 			set mdir [file join ${::CUSTOM_UPDATE_DIR} MULTI_CARD_FIRMWARE.unpkg]
 				::unpkg_archive $multi $mdir
 			set info0 [file join $mdir info0]
-			set search		"\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
-			set replace		"\xA0\x00\x00\x00"
+			set search		"\x00\x00\x00\x00\xA0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+			set replace		"\x40"
 			set offset 4
 			set mask 0				
 				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
@@ -175,39 +159,16 @@ namespace eval 05_patch_info {
 
 		set release [lindex $options(--spoof) 0]
 		set build [lindex $options(--spoof) 1]
-		set target [lindex $options(--spoof) 2]
-		set auth [lindex $options(--spoof) 1]
-		set bdate [lindex $options(--spoof) 3]
+		set bdate [lindex $options(--spoof) 2]
+		set target [lindex $options(--spoof) 3]
 		if {$build != ""} {
 			log "Patching UPL.xml"
-			::modify_upl_file ::05_patch_info::upl_xml
-		}
-
-		if {${::NEWMFW_VER} >= "4.21"} {
-			set upl [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.pkg]
-			set upldir [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.unpkg]
-				::unpkg_archive $upl $upldir
-			set info0 [file join $upldir info0]
-			set search		"\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00"
-			set replace		"\x00\x00\x00\x03\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x20"
-			set offset 0
-			set mask 0				
-				catch_die {::patch_elf $info0 $search $offset $replace $mask} \
-					"Unable to patch file [file tail $info0]"
-			if {[file exists [file join ${::ORIGINAL_SPKG_TAR}]]} {
-				file delete -force $upl
-				::pkg_spkg_archive $upldir $upl
-				::copy_spkg
-			} else {
-				file delete -force $upl
-				::pkg_archive $upldir $upl
-			}
-			file delete -force $upldir
+			::modify_upl_file ::06_patch_info2::upl_xml
 		}
 	}
 
     proc cex_rename {self} {
-		file rename -force $self $self.cex
+		file rename -force $self $self.dex
 	}
     proc dex_rename1 {self} {
 		set dst [file join ${::CUSTOM_DEV2_DIR} vsh module software_update_plugin.sprx]
@@ -236,39 +197,37 @@ namespace eval 05_patch_info {
       set target [regsub "^target:" $results {}]
       return [string trim $target]
     }
-    proc get_fw_auth {filename} {
-      debug "Getting firmware auth from [file tail $filename]"
-      set results [grep "^auth:" $filename]
-      set auth [string trim [regsub "^auth:" $results {}] ":"]
-      return [string trim $auth]
-    }
-    proc upl_xml {filename} {
+
+	proc upl_xml {filename} {
       variable options
       set release [lindex $options(--spoof) 0]
       set build [lindex $options(--spoof) 1]
-      set target [lindex $options(--spoof) 2]
-      set bdate [lindex $options(--spoof) 3]
+      set bdate [lindex $options(--spoof) 2]
+      set target [lindex $options(--spoof) 3]
       set major [lindex [split $release "."] 0]
       set minor [lindex [split $release "."] 1]
       set nano "0"
       debug "Setting UPL.xml.pkg :: release to ${release} :: build to ${build},${bdate} :: target to ${target}"
+
       set search [::get_header_key_upl_xml $filename Version Version]
-      set replace "[format %0.2d ${major}].[format %0.2d ${minor}]"
+      set replace "[format %0.2d ${major}].[format %0.2d ${minor}][format %0.2d ${nano}]"
       if { $search != "" && $search != $replace } {
         set xml [::set_header_key_upl_xml $filename Version "${replace}" Version]
         if { $xml == "" } {
           die "spoof failed:: search: $search :: replace: $replace"
         }
       }
+
       set search [::get_header_key_upl_xml $filename Build Build]
-      set replace "${build}"
-      if { $search != "" && $search != $replace } {
+      set replace "${build},${bdate}"
+      if { $search != "" } {
         set xml [::set_header_key_upl_xml $filename Build "${replace}" Build]
         if { $xml == "" } {
           die "spoof failed:: search: $search :: replace: $replace"
         }
       }
-      set search [::get_header_key_upl_xml $filename Product Product]
+
+	  set search [::get_header_key_upl_xml $filename Product Product]
       set replace "${target}"
       if { $search != "" && $search != $replace } {
         set xml [::set_header_key_upl_xml $filename Product "${replace}" Product]

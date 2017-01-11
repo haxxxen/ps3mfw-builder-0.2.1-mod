@@ -30,7 +30,7 @@
 # Option --patch-sppverifier-ecdsa-check: [3.xx/4.xx]  ISO: --> Patch SPP Verifier to disable ECDSA check (spp_verifier.self)
 # Option --patch-sputoken-ecdsa-check: [3.xx/4.xx]  ISO: --> Patch SPU Token Processor to disable ECDSA check (spu_token_processor.self)
 
-# Type --patch-lv0-ldrs-fself: combobox { {4.XX} {3.10-3.30} {3.40-3.55} }
+# Type --patch-lv0-ldrs-fself: combobox { {3.10-3.30} {3.40-3.55} }
 # Type --patch: boolean
 
 
@@ -220,23 +220,7 @@ namespace eval ::02_patch_cos {
 		log "DONE APPLDR PATCHES" 1
 	}
 	proc FSELF_elf_Patches {elf} {
-		if {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "4.XX"} {
-			log "Patching 4.XX APPLDR to allow FSELF"
-				log "Patch 1"
-				set search  "\x04\x00\x29\x03\x33\x04\x60\x80\x7E\x00\x01\x8A\x56\xC0\x05\x04"
-				set replace "\x04\x00\x29\x03\x40\x80\x00\x03\x7E\x00\x01\x8A\x56\xC0\x05\x04"
-				set offset 0
-				set mask 0
-					# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-				log "Patch 2"
-				set search  "\x24\xFE\x00\xD7\x04\x00\x06\xD4\x24\xFD\xC0\xD8\x04\x00\x05\x56"
-				set replace "\x24\xFE\x00\xD7\x40\x80\x00"
-				set offset 0
-				set mask 0
-					# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-		} elseif {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "3.40-3.55"} {
+		if {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "3.40-3.55"} {
 			log "Patching 3.xx APPLDR to allow fself"
             log "Patching Appldr to allow Fself (3.40-3.55)"
             set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"

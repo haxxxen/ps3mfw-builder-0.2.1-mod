@@ -61,12 +61,6 @@ proc pack_custom_pup {dir pup} {
     catch_die {pup_create ${dir} ${pup} $build} "Error packing PUP file [file tail ${pup}]"
 }
 
-# proc export_hash {in} {
-	# variable options
-	# set flag "|"
-	# shell ${::HC} $in $flag clip
-    # catch_die {export_hash_clip ${in} ${flag} clip} "Error hashing PUP file [file tail ${in}]"
-# }
 
 proc build_mfw {input output tasks} {
     global options
@@ -88,6 +82,23 @@ proc build_mfw {input output tasks} {
 	if {$::options(--auto-cos)} {
 		set ::AUTOCOS "1"
     }
+
+	set ::3XX_CEX "0"
+	if {$::options(--3XX-CEX)} {
+		set ::3XX_CEX "1"
+	}
+	set ::3XX_DEX "0"
+	if {$::options(--3XX-DEX)} {
+		set ::3XX_DEX "1"
+	}
+	set ::4XX_CEX "0"
+	if {$::options(--4XX-CEX)} {
+		set ::4XX_CEX "1"
+	}
+	set ::4XX_DEX "0"
+	if {$::options(--4XX-DEX)} {
+		set ::4XX_DEX "1"
+	}
 
     set ::selected_tasks [sort_tasks ${tasks}]
 
@@ -135,9 +146,7 @@ proc build_mfw {input output tasks} {
 	
 	# extract "custom_update.tar
     extract_tar ${::ORIGINAL_UPDATE_TAR} ${::ORIGINAL_UPDATE_DIR}
-	# if {$::options(--base)} {
-		# extract_tar ${::ORIGINAL_SPKG_TAR} ${::ORIGINAL_SPKG_DIR}
-	# }
+
 	log "Searching for new SPKG tar....." 1
     if {[file exists ${::ORIGINAL_SPKG_TAR}]} {
 		log "\"spkg_hdr.tar\" found in working dir. Using \"NEW PKG\" routine" 1
@@ -220,15 +229,30 @@ proc build_mfw {input output tasks} {
     eval lappend files [lsort [glob -nocomplain -tails -directory ${::CUSTOM_UPDATE_DIR} *.img]]
 	debug "img's added to list"
     eval lappend files [lsort [glob -nocomplain -tails -directory ${::CUSTOM_UPDATE_DIR} dev_flash3_*]]
-	debug "dev_flash 3 added to list"
+	debug "dev_flash3 added to list"
     eval lappend files [lsort [glob -nocomplain -tails -directory ${::CUSTOM_UPDATE_DIR} dev_flash_*]]
 	debug "dev_flash added to list"
 
 	log "Please WAIT....Building new PUP TAR file(s)....."	
-	create_tar ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+
+	if {$::options(--3XX-CEX)} {
+		create_cex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	} elseif {$::options(--3XX-DEX)} {
+		create_dex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	} elseif {$::options(--4XX-CEX)} {
+		create_cex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	} elseif {$::options(--4XX-DEX)} {
+		create_dex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	}
 	log "\"update_files.tar\" created" 1
     if {[file exists ${::ORIGINAL_SPKG_TAR}] && [file exists ${::CUSTOM_SPKG_DIR}]} {
-		create_tar ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		if {$::options(--3XX-DEX)} {
+			create_dex_tar3_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		} elseif {$::options(--4XX-CEX)} {
+			create_cex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		} elseif {$::options(--4XX-DEX)} {
+			create_dex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		}
 		log "\"spkg_hdr.tar\" created" 1
 	}
 

@@ -9,6 +9,10 @@
 #
 set ::PS3MFW_VERSION "0.2.1"
 
+# Option --3XX-CEX: 3.xx CEX Base Firmware
+# Option --3XX-DEX: 3.xx DEX Base Firmware
+# Option --4XX-CEX: 4.xx CEX Base Firmware
+# Option --4XX-DEX: 4.xx DEX Base Firmware
 # Option --tool-debug: Enable TOOL(s) DEBUG mode
 # Option --task-verbose: Show verbose TASK output
 # Option --debug-log: Show verbose DEBUGGING information
@@ -21,13 +25,17 @@ set ::PS3MFW_VERSION "0.2.1"
 # Option --silent: Disable log output 
 
 array set ::options {
-	--tool-debug false
-	--task-verbose false			
-	--debug-log false
+	--3XX-CEX false
+	--3XX-DEX false
+	--4XX-CEX false
+	--4XX-DEX false
+	--tool-debug true
+	--task-verbose true			
+	--debug-log true
 	--build-dir ""
 	--gui true	
-	--sign-iso false
-	--sign-self false
+	--sign-iso true
+	--sign-self true
 	--auto-cos false
 	--debug-console false
 	--dev3 false
@@ -74,10 +82,46 @@ set ::PKG "pkg"
 set ::LV0SELF "lv0"
 set ::LV0OLD "appldr isoldr lv1ldr lv2ldr"
 set ::LV0NEW "appldr.self isoldr.self lv1ldr.self lv2ldr.self"
-set ::ISOSELF "aim_spu_module.self appldr.self isoldr.self lv1ldr.self lv2ldr.self manu_info_spu_module.self mc_iso_spu_module.self me_iso_for_ps2emu.self me_iso_spu_module.self sb_iso_spu_module.self sc_iso.self spp_verifier.self spu_pkg_rvk_verifier.self spu_token_processor.self spu_utoken_processor.self sv_iso_for_ps2emu.self sv_iso_spu_module.self"
+set ::ISOSELF {aim_spu_module.self appldr.self isoldr.self lv1ldr.self lv2ldr.self manu_info_spu_module.self mc_iso_spu_module.self me_iso_for_ps2emu.self me_iso_spu_module.self sb_iso_spu_module.self sc_iso.self spp_verifier.self spu_pkg_rvk_verifier.self spu_token_processor.self spu_utoken_processor.self sv_iso_for_ps2emu.self sv_iso_spu_module.self}
+set ::LV12 {lv1.self lv2_kernel.self lv2Ckernel.self lv2Dkernel.self}
+set ::LV1 "lv1.self"
+set ::LV2 "lv2_kernel.self"
+set ::LV2C "lv2Ckernel.self"
+set ::LV2D "lv2Dkernel.self"
 set ::HC "hc.exe"
 set ::ST2 "sys/stage2.bin"
 set ::ST2RBG "rebug/cobra/stage2.cex.bak rebug/cobra/stage2.dex.bak"
+set ::3XX_CEX "0"
+set ::3XX_DEX "0"
+set ::4XX_CEX "0"
+set ::4XX_DEX "0"
+
+if {$::options(--3XX-CEX)} {
+	set ::3XX_CEX "1"
+} else {
+	set ::3XX_CEX "0"
+}
+
+if {$::options(--3XX-DEX)} {
+	set ::3XX_DEX "1"
+} else {
+	set ::3XX_DEX "0"
+}
+
+if {$::options(--4XX-CEX)} {
+	set ::4XX_CEX "1"
+} else {
+	set ::4XX_CEX "0"
+}
+
+if {$::options(--4XX-DEX)} {
+	set ::4XX_DEX "1"
+} else {
+	set ::4XX_DEX "0"
+}
+
+unset ::options(--3XX-CEX)
+unset ::options(--3XX-DEX)
 
 if {$::options(--auto-cos)} {
 	set ::AUTOCOS "1"

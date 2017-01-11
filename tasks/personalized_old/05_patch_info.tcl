@@ -35,9 +35,9 @@ namespace eval 05_patch_info {
 		set cex2 [file join dev_flash vsh module software_update_plugin.sprx]
 			::modify_devflash_file $cex2 ::05_patch_info::cex_rename
 		set dex [file join dev_flash vsh module software_update_plugin.sprx.dex]
-			::modify_devflash_file $dex ::05_patch_info::dex_rename1
+			::modify_devflash_file $dex ::05_patch_info::dex_rename2
 		set dex2 [file join dev_flash vsh module sysconf_plugin.sprx.dex]
-			::modify_devflash_file $dex2 ::05_patch_info::dex_rename2
+			::modify_devflash_file $dex2 ::05_patch_info::dex_rename1
 
 		foreach pkg [lsort [glob -nocomplain [file join ${::CUSTOM_UPDATE_DIR} dev_flash_*]]] {
 			set unpkgdir [file join ${::CUSTOM_UPDATE_DIR} ${pkg}.unpkg]
@@ -112,7 +112,7 @@ namespace eval 05_patch_info {
 			set df3dir [file join ${::CUSTOM_UPDATE_DIR} ${df3}.unpkg]
 				::unpkg_archive $df3 $df3dir
 			set info0 [file join $df3dir info0]
-			if {${::NEWMFW_VER} >= "4.21"} {
+			if {${::NEWMFW_VER} == "4.21"} {
 				set search		"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
 			} else {
 				set search		"\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
@@ -183,7 +183,7 @@ namespace eval 05_patch_info {
 			::modify_upl_file ::05_patch_info::upl_xml
 		}
 
-		if {${::NEWMFW_VER} >= "4.21"} {
+		if {${::NEWMFW_VER} == "4.21"} {
 			set upl [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.pkg]
 			set upldir [file join ${::CUSTOM_UPDATE_DIR} UPL.xml.unpkg]
 				::unpkg_archive $upl $upldir
@@ -210,11 +210,11 @@ namespace eval 05_patch_info {
 		file rename -force $self $self.cex
 	}
     proc dex_rename1 {self} {
-		set dst [file join ${::CUSTOM_DEV2_DIR} vsh module software_update_plugin.sprx]
+		set dst [file join ${::CUSTOM_DEV2_DIR} vsh module sysconf_plugin.sprx]
 		file rename -force $self $dst
 	}
     proc dex_rename2 {self} {
-		set dst [file join ${::CUSTOM_DEV2_DIR} vsh module sysconf_plugin.sprx]
+		set dst [file join ${::CUSTOM_DEV2_DIR} vsh module software_update_plugin.sprx]
 		file rename -force $self $dst
 	}
 
@@ -251,7 +251,7 @@ namespace eval 05_patch_info {
       set major [lindex [split $release "."] 0]
       set minor [lindex [split $release "."] 1]
       set nano "0"
-      debug "Setting UPL.xml.pkg :: release to ${release} :: build to ${build},${bdate} :: target to ${target}"
+      debug "Setting UPL.xml.pkg :: release to ${release} :: build to ${build},${bdate}"
       set search [::get_header_key_upl_xml $filename Version Version]
       set replace "[format %0.2d ${major}].[format %0.2d ${minor}]"
       if { $search != "" && $search != $replace } {
