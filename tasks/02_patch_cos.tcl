@@ -9,9 +9,8 @@
 #
 
 # Priority: 10
-# Description: Patch LV0 / LV1 / LV2	[FOR 4.XX MFW SELECT LV0 EXTRACT OPTION]
+# Description: Patch LV0 / LV1 / LV2	[For 4.xx MFW select lv0 extract option]
 
-# Option --patch-lv0-ldrs-fself: [3.xx]  LV0: --> Patch LV0 appldr to enable fself
 # Option --patch-lv0-nodescramble-lv1ldr: [3.xx/4.xx]  LV0: --> Patch LV0 to disable LV0 descrambling of LV1LDR
 # Option --patch-lv0-ldrs-ecdsa-checks: [3.xx/4.xx]  LV0: --> Patch LV0 LDRS to disable ECDSA checks in ALL LV0-loaders
 # Option --patch-lv0-ldrs-sig-check: [3.xx/4.xx]  LV0: --> Patch LV0 appldr to disable sig check (AKA EXIT FSM ON 4.xx)
@@ -30,7 +29,6 @@
 # Option --patch-sppverifier-ecdsa-check: [3.xx/4.xx]  ISO: --> Patch SPP Verifier to disable ECDSA check (spp_verifier.self)
 # Option --patch-sputoken-ecdsa-check: [3.xx/4.xx]  ISO: --> Patch SPU Token Processor to disable ECDSA check (spu_token_processor.self)
 
-# Type --patch-lv0-ldrs-fself: combobox { {4.XX} {3.10-3.30} {3.40-3.55} }
 # Type --patch: boolean
 
 
@@ -38,7 +36,6 @@ namespace eval ::02_patch_cos {
 	
 	# just create empty globals for the binary search/replace/offset strings
     array set ::02_patch_cos::options {	
-		--patch-lv0-ldrs-fself ""
 		--patch-lv0-nodescramble-lv1ldr false
 		--patch-lv0-ldrs-ecdsa-checks false
 		--patch-lv0-ldrs-sig-check false
@@ -107,13 +104,13 @@ namespace eval ::02_patch_cos {
 					::modify_coreos_files $selfs ::02_patch_cos::ECDSA_Patches
 			}
 		}
-		if {$::02_patch_cos::options(--patch-lv0-ldrs-sig-check) || $::02_patch_cos::options(--patch-lv0-ldrs-lv2mem) || $::02_patch_cos::options(--patch-lv0-ldrs-fself) != ""} {
+		if {$::02_patch_cos::options(--patch-lv0-ldrs-sig-check) || $::02_patch_cos::options(--patch-lv0-ldrs-lv2mem) != ""} {
 			if {${::NEWMFW_VER} < "3.60"} {
 				set self "appldr"
 					::modify_coreos_file $self ::02_patch_cos::APPLDR_Patches
 			} else {
-				set self "appldr.self"
-					::modify_coreos_file $self ::02_patch_cos::APPLDR_Patches
+				# set self "appldr.self"
+					# ::modify_coreos_file $self ::02_patch_cos::APPLDR_Patches
 			}
 		}
 
@@ -189,7 +186,6 @@ namespace eval ::02_patch_cos {
 	proc APPLDR_Patches {self} {
         ::modify_iso_file $self ::02_patch_cos::SIG_elf_Patches
         ::modify_iso_file $self ::02_patch_cos::LV2MEM_elf_Patches
-        ::modify_iso_file $self ::02_patch_cos::FSELF_elf_Patches
 	}
 	proc SIG_elf_Patches {elf} {
 		if {$::02_patch_cos::options(--patch-lv0-ldrs-sig-check)} {
@@ -216,44 +212,6 @@ namespace eval ::02_patch_cos {
 				# PATCH THE ELF BINARY
 				catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
 			}
-		}
-		log "DONE APPLDR PATCHES" 1
-	}
-	proc FSELF_elf_Patches {elf} {
-		if {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "4.XX"} {
-			log "Patching 4.XX APPLDR to allow FSELF"
-				log "Patch 1"
-				set search  "\x04\x00\x29\x03\x33\x04\x60\x80\x7E\x00\x01\x8A\x56\xC0\x05\x04"
-				set replace "\x04\x00\x29\x03\x40\x80\x00\x03\x7E\x00\x01\x8A\x56\xC0\x05\x04"
-				set offset 0
-				set mask 0
-					# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-				log "Patch 2"
-				set search  "\x24\xFE\x00\xD7\x04\x00\x06\xD4\x24\xFD\xC0\xD8\x04\x00\x05\x56"
-				set replace "\x24\xFE\x00\xD7\x40\x80\x00"
-				set offset 0
-				set mask 0
-					# PATCH THE ELF BINARY
-					catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]"
-		} elseif {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "3.40-3.55"} {
-			log "Patching 3.xx APPLDR to allow fself"
-            log "Patching Appldr to allow Fself (3.40-3.55)"
-            set search  "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x00\x04\x80\x32\x80\x80"
-            set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
-			set offset 7
-			set mask 0				
-				catch_die {::patch_elf $elf $search $offset $replace $mask} \
-					"Unable to patch self [file tail $elf]"
-		} elseif {$::02_patch_cos::options(--patch-lv0-ldrs-fself) == "3.10-3.30"} {
-			log "Patching 3.30 APPLDR to allow fself"
-            log "Patching Appldr to allow Fself (3.10-3.30)"
-            set search  "\x40\x80\x0e\x0d\x20\x00\x69\x09\x32\x00\x04\x80\x32\x80\x80"
-            set replace "\x40\x80\x0e\x0c\x20\x00\x57\x83\x32\x11\x73\x00\x32\x80\x80"
-			set offset 7
-			set mask 0				
-				catch_die {::patch_elf $elf $search $offset $replace $mask} \
-					"Unable to patch self [file tail $elf]"
 		}
 		log "DONE APPLDR PATCHES" 1
 	}

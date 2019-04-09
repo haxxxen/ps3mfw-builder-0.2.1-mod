@@ -802,7 +802,7 @@ proc extract_lv0 {path file array} {
 	}
 	# export LV0 contents.....
 	append fullpath ".elf"	
-	shell ${::LV0TOOL} -option export -filename ${file}.elf -filepath $path	
+	shell ${::LV0TOOL} -option export -filename ${file}.elf -filepath $path
 	# debug "3.60+ LOADERS EXTRACTED SUCCESSFULLY!"
 	log "3.60+ LOADERS EXTRACTED SUCCESSFULLY!"
 }
@@ -989,7 +989,10 @@ proc modify_devflash_file {file callback args} {
 		create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+        die "Please select Base Firmware in global options"
 	}
+
 			    
     set pkg [file join ${::CUSTOM_UPDATE_DIR} $pkg_file]
     set unpkgdir [file join ${::CUSTOM_DEVFLASH_DIR} $pkg_file]
@@ -1045,6 +1048,8 @@ proc modify_devflash_files {path files callback args} {
 			create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		} elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+			die "Please select Base Firmware in global options"
 		}
 		        
         set pkg [file join ${::CUSTOM_UPDATE_DIR} $pkg_file]
@@ -1944,6 +1949,8 @@ proc modify_devflash3_file {file callback args} {
 		create_cex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
+    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+        die "Please select Base Firmware in global options"
 	}
     set pkg [file join ${::CUSTOM_UPDATE_DIR} $pkg_file]
     set unpkgdir [file join ${::CUSTOM_DEVFLASH3_DIR} $pkg_file]
@@ -1967,3 +1974,30 @@ proc patchtool_single {file search replace} {
 proc patchtool_multi {file search replace} {
 	shell ${::PATCHTOOL} -action patch -filename $file -search $search -replace $replace -offset 0 -multi yes -debug yes
 }
+
+
+# if {!$::options(--341-CEX)) || (!$::options(--355-CEX)) || (!$::options(--3XX-DEX)) || (!$::options(--4XX-CEX)) || (!$::options(--4XX-DEX))} {
+	# if {!$::options(--355-CEX)} {
+		# if {!$::options(--3XX-DEX)} {
+			# if {!$::options(--4XX-CEX)} {
+				# if {!$::options(--4XX-DEX))} {
+					# return -code error "  YOU HAVE TO SELECT BASE FIRMWARE IN GLOBAL OPTIONS !!!"
+				# }
+			# }
+		# }
+	# }
+# }
+# if {[(!$::options(--341-CEX)) || 
+	# ( !$::options(--355-CEX)) || 
+	# ( !$::options(--3XX-DEX)) || 
+	# ( !$::options(--4XX-CEX)) || 
+	# ( !$::options(--4XX-DEX))]} {
+	# return -code error "  YOU HAVE TO SELECT BASE FIRMWARE IN GLOBAL OPTIONS !!!"
+# }
+
+# if {!$::options(--sign-iso)} {
+	# return -code error "  PLEASE SELECT ISO_REBUILDER OPTION. THIS MAKES IT MORE ORIGINALLY !!!"
+# }
+# if {(!$::options(--341-CEX)) || (!$::options(--355-CEX)) || (!$::options(--3XX-DEX)) || (!$::options(--4XX-CEX)) || (!$::options(--4XX-DEX))} {
+	# return -code error "  YOU HAVE TO SELECT BASE FIRMWARE IN GLOBAL OPTIONS !!!"
+# }

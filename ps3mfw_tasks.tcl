@@ -95,6 +95,10 @@ proc build_mfw {input output tasks} {
         die "Input file does not exist"
     }
 
+	# if {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+        # die "Please select Base Firmware in global options"
+	# }
+
     log "Selected tasks : ${::selected_tasks}"
 
     if {[info exists ::env(HOME)]} {
@@ -228,6 +232,8 @@ proc build_mfw {input output tasks} {
 		create_cex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+        die "Please select Base Firmware in global options"
 	}
 	log "\"update_files.tar\" created" 1
     if {[file exists ${::ORIGINAL_SPKG_TAR}] && [file exists ${::CUSTOM_SPKG_DIR}]} {
@@ -237,6 +243,8 @@ proc build_mfw {input output tasks} {
 			create_cex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		} elseif {!$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+			die "Please select Base Firmware in global options"
 		}
 		log "\"spkg_hdr.tar\" created" 1
 	}

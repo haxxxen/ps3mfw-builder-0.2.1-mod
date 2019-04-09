@@ -20,7 +20,7 @@ set ::PS3MFW_VERSION "0.2.1"
 # Option --build-dir: Build directory for temporary files
 # Option --sign-iso: Sign isolated module(s) with iso_rebuilder
 # Option --sign-self: Sign self/sprx(s) with self_rebuilder
-# Option --auto-cos: Extract / Modify / Repack LV0	(MFW 3.6+ ONLY)
+# Option --auto-cos: Extract / Modify / Repack LV0	(MFW 3.6+ only)
 # Option --debug-console: Show console
 # Option --dev3: Extract devflash3
 # Option --silent: Disable log output 
@@ -129,8 +129,11 @@ if {$::options(--4XX-DEX)} {
 	set ::4XX_DEX "0"
 }
 
-##unset ::options(--3XX-CEX)
 ##unset ::options(--3XX-DEX)
+##unset ::options(--341-CEX)
+##unset ::options(--355-CEX)
+##unset ::options(--4XX-DEX)
+##unset ::options(--4XX-CEX)
 
 if {$::options(--auto-cos)} {
 	set ::AUTOCOS "1"
@@ -295,6 +298,7 @@ set ::ORIGINAL_UPDATE_DIR [file join ${::ORIGINAL_PUP_DIR} update_files]
 set ::ORIGINAL_PKG_DIR [file join ${::ORIGINAL_UPDATE_DIR} CORE_OS_PACKAGE.pkg]
 set ::ORIGINAL_UNPKG_DIR [file join ${::ORIGINAL_UPDATE_DIR} CORE_OS_PACKAGE.unpkg]
 set ::ORIGINAL_COSUNPKG_DIR [file join ${::ORIGINAL_UPDATE_DIR} CORE_OS_PACKAGE]
+set ::ORIGINAL_UPDATE_FLAGS_TXT [file join ${::ORIGINAL_PUP_DIR} update_flags.txt]
 
 # update (MFW) base files
 set ::CUSTOM_VERSION_TXT [file join ${::CUSTOM_PUP_DIR} version.txt]

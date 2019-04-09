@@ -15,6 +15,7 @@
 # Option --remove-bd-revoke: remove BdpRevoke (ENABLING THIS WILL REMOVE BLU-RAY DRIVE FIRMWARE)
 # Option --remove-bd-firmware: remove BD firmware (ENABLING THIS WILL REMOVE BLU-RAY DRIVE FIRMWARE)
 # Option --patch-lv1-nobd: Select MLT's (3.55+) or zecoxao's (4.xx) noBD patch, to fake a working BLU-RAY Drive
+# Description: (For noBD, select both BD options and zecoxao's lv1 patch)
 
 # Type --remove: boolean
 # Type --patch-lv1-nobd: combobox { {MLT (3.55+)} {zecoxao (4.xx)} }

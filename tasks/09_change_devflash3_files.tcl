@@ -9,7 +9,7 @@
 #
  
 # Priority: 80
-# Description: Change files in devflash3 manually	[SELECT DEVFLASH3 EXTRACT OPTION]
+# Description: Change files in devflash3 manually	[Select devflash3 extract option]
 
 # Option --change-filenames: Filenames to change (must start with 'dev_flash3/')
 

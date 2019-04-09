@@ -15,13 +15,14 @@ Changes:
 - pkgtool "hexified" to work on WindowsXP (SP3)
 - modified version of COBRA's hashcalc app added, to make it work with MFW-Builder
 - COBRA CFWs can be patched now and hashes can be directly replaced in stage2 file(s)
-- tarball creation routine with permissions and user/group name fixed. You can create tars, just like originals. Already modified
-firmwares can be fixed, by selecting "replace devflash file manual" and then add from every devflash pkg a single file to task. Examples from REBUG 4.21 and 4.81 OFW are included in replace_deflash folder. Additionally you have to choose replace_devflash3 task (don't forget the global option to extract!!!), to fix devflash3 tar as well. To fix devflash000 tar, just choose add folder and leave the box empty
+- fixed tar creation routine, so now you HAVE to select a base firmware version, or else it will fail
+- added a batch script to update keys. you have to type in the firmware version first in format XXX (e.g. 484)
+  and then in format X00XX (e.g. 40084). keys will then automatically generated based on 4.81 set of keys
 
 small explanation of tasks:
 - patch_cos: Has all basic COREOS patches you would need for a standard MFW and is based on toolboy. I only have added appldr lv2memory protection removal patch and appldr signature patch to be able to exit FSM on 4.XX (NOTE: For lv0 patches on 4.XX, you have to select lv0 extract option. Also current payloads are not working for DEX MFW thanks to Joonie for reporting)
 - patch_oos: glevand's task ported to work with 4.XX MFW as well. You can now make a 4.XX OtherOS++ pup, so no more 3.55 times
-- broken_bluray: It is an AIO task for a FULL noBD or noBluetooth MFW
+- broken_bluray: It is an AIO task for a FULL noBD or noBluetooth MFW. for a noBD MFW, select both BD options and also zecoxao's lv1 patch
 - patch_info: This will patch old 3.55.4 / 4.21.2 REX CFW to a FULL working D-REX version
 - change_devflash_files: Use this task whenever you want to replace any devflash file. This has to be done manually though, and keep in mind that you have to close windows explorer when you have replaced. Otherwise windoof will lock the folder and mfwbuilder cannot proceed with script and spits an error.
 - change_devflash3_files: Experimental ! this works same like change_devflash_files, only with devflash3
