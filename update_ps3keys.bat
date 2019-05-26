@@ -1,5 +1,5 @@
 @echo off
-copy templat\keydat .\keydat
+copy templat\key.dat .\keydat
 
 echo Updating ps3keys...
 set /p ver=Type in new PS3 Firmware Version (e.g. for 4.84 type 484): 
