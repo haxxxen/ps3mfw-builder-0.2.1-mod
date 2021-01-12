@@ -95,7 +95,8 @@ proc build_mfw {input output tasks} {
         die "Input file does not exist"
     }
 
-	# if {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+	# if {!{$::options(--auto-cos)} {
+	# if {${::341_CEX} == "0" || ${::355_CEX} == "0" || ${::3XX_DEX} == "0" || ${::4XX_CEX} == "0" || ${::4XX_DEX} == "0" || ${::4XX_DEH} == "0"} {
         # die "Please select Base Firmware in global options"
 	# }
 
@@ -232,8 +233,10 @@ proc build_mfw {input output tasks} {
 		create_cex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
-        die "Please select Base Firmware in global options"
+	} elseif {$::options(--4XX-DEH)} {
+		create_deh_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+	} else {
+		die "Please select Base Firmware in global options"
 	}
 	log "\"update_files.tar\" created" 1
     if {[file exists ${::ORIGINAL_SPKG_TAR}] && [file exists ${::CUSTOM_SPKG_DIR}]} {
@@ -243,17 +246,36 @@ proc build_mfw {input output tasks} {
 			create_cex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
-		} elseif {!$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+		} elseif {$::options(--4XX-DEH)} {
+			create_deh_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		} else {
 			die "Please select Base Firmware in global options"
 		}
 		log "\"spkg_hdr.tar\" created" 1
 	}
 
+    # Check for update_flags.txt if CEX, DEX, DECR, SEX
+	log "Checking Target Firmware"
+    if {[file exists ${::ORIGINAL_UPDATE_FLAGS_TXT}]} {
+		debug "Getting PUP version from: [file tail $dir]"
+		set fd [open [file join ${::ORIGINAL_UPDATE_FLAGS_TXT}] r]
+		set flag [string trim [read $fd]]
+		close $fd
+		return $flag
+		if {${flag} == "0100"} {
+			set tid_str "DEX"
+		} elseif {${flag} == "0300"} {
+			set tid_str "SEX"
+		} elseif {${flag} == "0000"} {
+			set tid_str "CEX"
+		}
+    } else {set tid_str "DECR"}
+
 	# cleanup any previous output builds
-	set final_output "${::OUT_FILE}_$::OFW_MAJOR_VER.$::OFW_MINOR_VER.PS3UPDAT.PUP"
+	set final_output "${::OUT_FILE}_$::OFW_MAJOR_VER.$::OFW_MINOR_VER.$tid_str-PS3UPDAT.PUP"
 	catch_die {file delete -force -- ${::OUT_FILE}} "Could not cleanup output files"
 	
 	# finalize the completed PUP
     pack_custom_pup ${::CUSTOM_PUP_DIR} ${final_output}
-	log "CUSTOM FIMWARE VER:$::OFW_MAJOR_VER.$::OFW_MINOR_VER BUILD COMPLETE!!!"
+	log "CUSTOM FIMWARE VER:$::OFW_MAJOR_VER.$::OFW_MINOR_VER BUILD-$tid_str COMPLETE!!!"
 }

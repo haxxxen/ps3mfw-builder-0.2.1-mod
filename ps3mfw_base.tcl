@@ -607,6 +607,62 @@ proc create_dex_tar4_dev3 {tar directory files} {
 		cd $pwd
 	}
 
+proc create_deh_tar4_000 {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 4.xx dev_flash tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh4_000 $tar $files} "Could not create DECR 4.xx dev_flash tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar4_content {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 4.xx dev_flash tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh4_content $tar $files} "Could not create DECR 4.xx dev_flash tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar4_update {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "update_files" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 4.xx update tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh4_update $tar $files} "Could not create DECR 4.xx update tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar4_spkg {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "spkg_hdr" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 4.xx spkg tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh4_spkg $tar $files} "Could not create DECR 4.xx spkg tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar4_dev3 {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 4.xx dev_flash3 tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh4_dev3 $tar $files} "Could not create DECR 4.xx dev_flash3 tar file $tar"
+	cd $pwd
+}
+
 
 # PKG functions
 proc unpkg_devflash_all {updatedir outdir} {
@@ -989,7 +1045,9 @@ proc modify_devflash_file {file callback args} {
 		create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
-    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+	} elseif {$::options(--4XX-DEH)} {
+		create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+    } else {
         die "Please select Base Firmware in global options"
 	}
 
@@ -1048,7 +1106,9 @@ proc modify_devflash_files {path files callback args} {
 			create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
-		} elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+		} elseif {$::options(--4XX-DEH)} {
+			create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		} else {
 			die "Please select Base Firmware in global options"
 		}
 		        
@@ -1949,7 +2009,9 @@ proc modify_devflash3_file {file callback args} {
 		create_cex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
-    } elseif {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
+	} elseif {$::options(--4XX-DEH)} {
+		create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+    } else {
         die "Please select Base Firmware in global options"
 	}
     set pkg [file join ${::CUSTOM_UPDATE_DIR} $pkg_file]

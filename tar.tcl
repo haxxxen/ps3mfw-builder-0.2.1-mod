@@ -810,8 +810,9 @@ proc ::tar::createHeader_cex4_000 {name followlinks} {
 			set mode 00[file attributes $name -permissions]
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
-			set mode 0000644
-			if {$stat(type) == "directory"} {set mode 0000775}
+			if {$stat(type) == "directory" && $stat(name) == "dev_flash"}
+				set mode 0000775
+			else set mode 0000755
 		}
 		
 		set size 00000000000
@@ -905,7 +906,7 @@ proc ::tar::createHeader_cex4_update {name followlinks} {
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
 			set mode 0000644
-			if {$stat(type) == "directory"} {set mode 0000775}
+			if {$stat(type) == "directory"} {set mode 0000644}
 		}
 		
 		set size 00000000000
@@ -952,7 +953,7 @@ proc ::tar::createHeader_cex4_spkg {name followlinks} {
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
 			set mode 0000755
-			if {$stat(type) == "directory"} {set mode 0000775}
+			# if {$stat(type) == "directory"} {set mode 0000775}
 		}
 		
 		set size 00000000000
@@ -1000,7 +1001,7 @@ proc ::tar::createHeader_cex4_dev3 {name followlinks} {
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
 			set mode 0000755
-			if {$stat(type) == "directory"} {set mode 0040755}
+			# if {$stat(type) == "directory"} {set mode 0040755}
 		}
 		
 		set size 00000000000
@@ -1047,7 +1048,7 @@ proc ::tar::createHeader_dex4_000 {name followlinks} {
 			set mode 00[file attributes $name -permissions]
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
-			set mode 0100644
+			set mode 0040775
 			if {$stat(type) == "directory"} {set mode 0040775}
 		}
 		
@@ -1143,7 +1144,7 @@ proc ::tar::createHeader_dex4_update {name followlinks} {
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
 			set mode 0000644
-			if {$stat(type) == "directory"} {set mode 0000775}
+			# if {$stat(type) == "directory"} {set mode 0000775}
 		}
 		
 		set size 00000000000
@@ -1191,7 +1192,7 @@ proc ::tar::createHeader_dex4_spkg {name followlinks} {
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
 			set mode 0000755
-			if {$stat(type) == "directory"} {set mode 0000775}
+			# if {$stat(type) == "directory"} {set mode 0000775}
 		}
 		
 		set size 00000000000
@@ -1238,7 +1239,246 @@ proc ::tar::createHeader_dex4_dev3 {name followlinks} {
 			set mode 00[file attributes $name -permissions]
 			if {$stat(type) == "link"} {set linkname [file link $name]}
 		} else {
-			set mode 0100775
+			set mode 0040775
+			if {$stat(type) == "directory"} {set mode 0040775}
+		}
+		
+		set size 00000000000
+		if {$stat(type) == "file"} {
+			set size [format %.11o $stat(size)]
+		}
+		
+		set name [string trimleft $name /]
+		if {[string length $name] > 255} {
+			return -code error "path name over 255 chars"
+		} elseif {[string length $name] > 100} {
+			set prefix [string range $name 0 end-100]
+			set name [string range $name end-99 end]
+		}
+
+		set header [binary format a100a8A8A8A12A12A8a1a100A6a2a32a32a8a8a155a12 \
+								  $name $mode $uid\x00 $gid\x00 $size\x00 $mtime\x00 {} $type \
+								  $linkname ustar " " $uname $gname $devmajor $devminor $prefix {}]
+
+		binary scan $header c* tmp
+		set cksum 0
+		foreach x $tmp {incr cksum $x}
+
+		return [string replace $header 148 155 [binary format A8 0[format %o $cksum]\x00]]
+	}
+
+proc ::tar::createHeader_deh4_000 {name followlinks} {
+		foreach x {linkname prefix devmajor devminor} {set $x ""}
+		
+		if {$followlinks} {
+			file stat $name stat
+		} else {
+			file lstat $name stat
+		}
+		
+		set type [string map {file 0 directory 5 characterSpecial 3 blockSpecial 4 fifo 6 link 2 socket A} $stat(type)]
+		set uid "0001041"
+		set gid "0000764"
+		set mtime [format %.11o $stat(mtime)]
+		
+		set uname "kanee"
+		set gname "kanee"
+		if {$::tcl_platform(platform) == "unix"} {
+			set mode 00[file attributes $name -permissions]
+			if {$stat(type) == "link"} {set linkname [file link $name]}
+		} else {
+			set mode 0040700
+			if {$stat(type) == "directory"} {set mode 0040700}
+		}
+		
+		set size 00000000000
+		if {$stat(type) == "file"} {
+			set size [format %.11o $stat(size)]
+		}
+		
+		set name [string trimleft $name /]
+		if {[string length $name] > 255} {
+			return -code error "path name over 255 chars"
+		} elseif {[string length $name] > 100} {
+			set prefix [string range $name 0 end-100]
+			set name [string range $name end-99 end]
+		}
+
+		set header [binary format a100a8A8A8A12A12A8a1a100A6a2a32a32a8a8a155a12 \
+								  $name $mode $uid\x00 $gid\x00 $size\x00 $mtime\x00 {} $type \
+								  $linkname ustar " " $uname $gname $devmajor $devminor $prefix {}]
+
+		binary scan $header c* tmp
+		set cksum 0
+		foreach x $tmp {incr cksum $x}
+
+		return [string replace $header 148 155 [binary format A8 0[format %o $cksum]\x00]]
+	}
+proc ::tar::createHeader_deh4_content {name followlinks} {
+		foreach x {linkname prefix devmajor devminor} {set $x ""}
+		
+		if {$followlinks} {
+			file stat $name stat
+		} else {
+			file lstat $name stat
+		}
+		
+		set type [string map {file 0 directory 5 characterSpecial 3 blockSpecial 4 fifo 6 link 2 socket A} $stat(type)]
+		set uid "0001041"
+		set gid "0000764"
+		set mtime [format %.11o $stat(mtime)]
+		
+		set uname "kanee"
+		set gname "kanee"
+		if {$::tcl_platform(platform) == "unix"} {
+			set mode 00[file attributes $name -permissions]
+			if {$stat(type) == "link"} {set linkname [file link $name]}
+		} else {
+			set mode 0100600
+			if {$stat(type) == "directory"} {set mode 0040700}
+		}
+		
+		set size 00000000000
+		if {$stat(type) == "file"} {
+			set size [format %.11o $stat(size)]
+		}
+		
+		set name [string trimleft $name /]
+		if {[string length $name] > 255} {
+			return -code error "path name over 255 chars"
+		} elseif {[string length $name] > 100} {
+			set prefix [string range $name 0 end-100]
+			set name [string range $name end-99 end]
+		}
+
+		set header [binary format a100a8A8A8A12A12A8a1a100A6a2a32a32a8a8a155a12 \
+								  $name $mode $uid\x00 $gid\x00 $size\x00 $mtime\x00 {} $type \
+								  $linkname ustar " " $uname $gname $devmajor $devminor $prefix {}]
+
+		binary scan $header c* tmp
+		set cksum 0
+		foreach x $tmp {incr cksum $x}
+
+		return [string replace $header 148 155 [binary format A8 0[format %o $cksum]\x00]]
+	}
+proc ::tar::createHeader_deh4_update {name followlinks} {
+		foreach x {linkname prefix devmajor devminor} {set $x ""}
+		
+		if {$followlinks} {
+			file stat $name stat
+		} else {
+			file lstat $name stat
+		}
+		
+		set type [string map {file 0 directory 5 characterSpecial 3 blockSpecial 4 fifo 6 link 2 socket A} $stat(type)]
+		# if {[file exists $name]} continue
+		set uid "0001762"
+		set gid "0001274"
+		set mtime [format %.11o $stat(mtime)]
+		
+		set uname "make_pup2"
+		set gname "psnes"
+		if {$::tcl_platform(platform) == "unix"} {
+			set mode 00[file attributes $name -permissions]
+			if {$stat(type) == "link"} {set linkname [file link $name]}
+		} else {
+			set mode 0000600
+			# if {$stat(type) == "directory"} {set mode 0000600}
+		}
+		
+		set size 00000000000
+		if {$stat(type) == "file"} {
+			set size [format %.11o $stat(size)]
+		}
+		
+		set name [string trimleft $name /]
+		if {[string length $name] > 255} {
+			return -code error "path name over 255 chars"
+		} elseif {[string length $name] > 100} {
+			set prefix [string range $name 0 end-100]
+			set name [string range $name end-99 end]
+		}
+
+		set header [binary format a100a8A8A8A12A12A8a1a100A6a2a32a32a8a8a155a12 \
+								  $name $mode $uid\x00 $gid\x00 $size\x00 $mtime\x00 {} $type \
+								  $linkname ustar " " $uname $gname $devmajor $devminor $prefix {}]
+
+		binary scan $header c* tmp
+		set cksum 0
+		foreach x $tmp {incr cksum $x}
+
+		return [string replace $header 148 155 [binary format A8 0[format %o $cksum]\x00]]
+	}
+proc ::tar::createHeader_deh4_spkg {name followlinks} {
+		foreach x {linkname prefix devmajor devminor} {set $x ""}
+		
+		if {$followlinks} {
+			file stat $name stat
+		} else {
+			file lstat $name stat
+		}
+		
+		set type [string map {file 0 directory 5 characterSpecial 3 blockSpecial 4 fifo 6 link 2 socket A} $stat(type)]
+		# if {[file exists $name]} continue
+		set uid "0001762"
+		set gid "0001274"
+		set mtime [format %.11o $stat(mtime)]
+		
+		set uname "make_pup2"
+		set gname "psnes"
+		if {$::tcl_platform(platform) == "unix"} {
+			set mode 00[file attributes $name -permissions]
+			if {$stat(type) == "link"} {set linkname [file link $name]}
+		} else {
+			set mode 0000755
+			if {$stat(type) == "directory"} {set mode 0000755}
+		}
+		
+		set size 00000000000
+		if {$stat(type) == "file"} {
+			set size [format %.11o $stat(size)]
+		}
+		
+		set name [string trimleft $name /]
+		if {[string length $name] > 255} {
+			return -code error "path name over 255 chars"
+		} elseif {[string length $name] > 100} {
+			set prefix [string range $name 0 end-100]
+			set name [string range $name end-99 end]
+		}
+
+		set header [binary format a100a8A8A8A12A12A8a1a100A6a2a32a32a8a8a155a12 \
+								  $name $mode $uid\x00 $gid\x00 $size\x00 $mtime\x00 {} $type \
+								  $linkname ustar " " $uname $gname $devmajor $devminor $prefix {}]
+
+		binary scan $header c* tmp
+		set cksum 0
+		foreach x $tmp {incr cksum $x}
+
+		return [string replace $header 148 155 [binary format A8 0[format %o $cksum]\x00]]
+	}
+proc ::tar::createHeader_deh4_dev3 {name followlinks} {
+		foreach x {linkname prefix devmajor devminor} {set $x ""}
+		
+		if {$followlinks} {
+			file stat $name stat
+		} else {
+			file lstat $name stat
+		}
+		
+		set type [string map {file 0 directory 5 characterSpecial 3 blockSpecial 4 fifo 6 link 2 socket A} $stat(type)]
+		# if {[file exists $name]} continue
+		set uid "0000764"
+		set gid "0000764"
+		set mtime [format %.11o $stat(mtime)]
+		
+		set uname "kanee"
+		set gname "kanee"
+		if {$::tcl_platform(platform) == "unix"} {
+			set mode 00[file attributes $name -permissions]
+			if {$stat(type) == "link"} {set linkname [file link $name]}
+		} else {
+			set mode 0040775
 			if {$stat(type) == "directory"} {set mode 0040775}
 		}
 		
@@ -1858,6 +2098,133 @@ proc ::tar::create_dex4_dev3 {tar files args} {
 		fconfigure $fh -encoding binary -translation lf -eofchar {}
 		foreach x [recurseDirs $files $dereference] {
 			writefile_dex4_dev3 $x $fh $dereference
+		}
+		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
+
+		close $fh
+		return $tar
+	}
+
+proc ::tar::writefile_deh4_000 {in out followlinks} {
+		 puts -nonewline $out [createHeader_deh4_000 $in $followlinks]
+		 set size 0
+		 if {[file type $in] == "file" || ($followlinks && [file type $in] == "link")} {
+			 set in [::open $in]
+			 fconfigure $in -encoding binary -translation lf -eofchar {}
+			 set size [fcopy $in $out]
+			 close $in
+		 }
+		 puts -nonewline $out [string repeat \x00 [pad $size]]
+	}
+proc ::tar::writefile_deh4_content {in out followlinks} {
+		 puts -nonewline $out [createHeader_deh4_content $in $followlinks]
+		 set size 0
+		 if {[file type $in] == "file" || ($followlinks && [file type $in] == "link")} {
+			 set in [::open $in]
+			 fconfigure $in -encoding binary -translation lf -eofchar {}
+			 set size [fcopy $in $out]
+			 close $in
+		 }
+		 puts -nonewline $out [string repeat \x00 [pad $size]]
+	}
+proc ::tar::writefile_deh4_update {in out followlinks} {
+		 puts -nonewline $out [createHeader_deh4_update $in $followlinks]
+		 set size 0
+		 if {[file type $in] == "file" || ($followlinks && [file type $in] == "link")} {
+			 set in [::open $in]
+			 fconfigure $in -encoding binary -translation lf -eofchar {}
+			 set size [fcopy $in $out]
+			 close $in
+		 }
+		 puts -nonewline $out [string repeat \x00 [pad $size]]
+	}
+proc ::tar::writefile_deh4_spkg {in out followlinks} {
+		 puts -nonewline $out [createHeader_deh4_spkg $in $followlinks]
+		 set size 0
+		 if {[file type $in] == "file" || ($followlinks && [file type $in] == "link")} {
+			 set in [::open $in]
+			 fconfigure $in -encoding binary -translation lf -eofchar {}
+			 set size [fcopy $in $out]
+			 close $in
+		 }
+		 puts -nonewline $out [string repeat \x00 [pad $size]]
+	}
+proc ::tar::writefile_deh4_dev3 {in out followlinks} {
+		 puts -nonewline $out [createHeader_deh4_dev3 $in $followlinks]
+		 set size 0
+		 if {[file type $in] == "file" || ($followlinks && [file type $in] == "link")} {
+			 set in [::open $in]
+			 fconfigure $in -encoding binary -translation lf -eofchar {}
+			 set size [fcopy $in $out]
+			 close $in
+		 }
+		 puts -nonewline $out [string repeat \x00 [pad $size]]
+	}
+
+proc ::tar::create_deh4_000 {tar files args} {
+		set dereference 0
+		parseOpts {dereference 0} $args
+		
+		set fh [::open $tar w+]
+		fconfigure $fh -encoding binary -translation lf -eofchar {}
+		foreach x [recurseDirs $files $dereference] {
+			writefile_deh4_000 $x $fh $dereference
+		}
+		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
+
+		close $fh
+		return $tar
+	}
+proc ::tar::create_deh4_content {tar files args} {
+		set dereference 0
+		parseOpts {dereference 0} $args
+		
+		set fh [::open $tar w+]
+		fconfigure $fh -encoding binary -translation lf -eofchar {}
+		foreach x [recurseDirs $files $dereference] {
+			writefile_deh4_content $x $fh $dereference
+		}
+		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
+
+		close $fh
+		return $tar
+	}
+proc ::tar::create_deh4_update {tar files args} {
+		set dereference 0
+		parseOpts {dereference 0} $args
+		
+		set fh [::open $tar w+]
+		fconfigure $fh -encoding binary -translation lf -eofchar {}
+		foreach x [recurseDirs $files $dereference] {
+			writefile_deh4_update $x $fh $dereference
+		}
+		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
+
+		close $fh
+		return $tar
+	}
+proc ::tar::create_deh4_spkg {tar files args} {
+		set dereference 0
+		parseOpts {dereference 0} $args
+		
+		set fh [::open $tar w+]
+		fconfigure $fh -encoding binary -translation lf -eofchar {}
+		foreach x [recurseDirs $files $dereference] {
+			writefile_deh4_spkg $x $fh $dereference
+		}
+		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
+
+		close $fh
+		return $tar
+	}
+proc ::tar::create_deh4_dev3 {tar files args} {
+		set dereference 0
+		parseOpts {dereference 0} $args
+		
+		set fh [::open $tar w+]
+		fconfigure $fh -encoding binary -translation lf -eofchar {}
+		foreach x [recurseDirs $files $dereference] {
+			writefile_deh4_dev3 $x $fh $dereference
 		}
 		puts -nonewline $fh [string repeat \x00 6656]; # For some reason, normal tar puts 13 EOBs instead of 2
 
