@@ -117,6 +117,25 @@ proc build_mfw {input output tasks} {
     # PREPARE PS3UPDAT.PUP for modification
     unpack_source_pup ${input} ${::ORIGINAL_PUP_DIR}
 	
+    # Check for update_flags.txt if CEX, DEX, DECR, SEX
+	log "Checking Target Firmware"
+    if {![file exists ${::ORIGINAL_UPDATE_FLAGS_TXT}]} {
+		debug "Getting Target Firmware from: [file tail ${::ORIGINAL_UPDATE_FLAGS_TXT}]"
+		set tid_str "DECR"
+    } else {
+		set fdf [open [file join ${::ORIGINAL_UPDATE_FLAGS_TXT}] r]
+		set flag [string trim [read $fdf]]
+		close $fdf
+		if {${flag} == "0100"} {
+			set tid_str "DEX"
+		} elseif {${flag} == "0300"} {
+			set tid_str "SEX"
+		} elseif {${flag} == "0000"} {
+			set tid_str "CEX"
+		}
+	}
+	log "Target Firmware = '$tid_str'"
+
 	# set the pup version into a variable so commands later can check it and do fw specific thingy's
 	# save off the "OFW MAJOR.MINOR" into a global for usage throughout
 	debug "checking pup version"
@@ -253,23 +272,6 @@ proc build_mfw {input output tasks} {
 		}
 		log "\"spkg_hdr.tar\" created" 1
 	}
-
-    # Check for update_flags.txt if CEX, DEX, DECR, SEX
-	log "Checking Target Firmware"
-    if {[file exists ${::ORIGINAL_UPDATE_FLAGS_TXT}]} {
-		debug "Getting PUP version from: [file tail $dir]"
-		set fd [open [file join ${::ORIGINAL_UPDATE_FLAGS_TXT}] r]
-		set flag [string trim [read $fd]]
-		close $fd
-		return $flag
-		if {${flag} == "0100"} {
-			set tid_str "DEX"
-		} elseif {${flag} == "0300"} {
-			set tid_str "SEX"
-		} elseif {${flag} == "0000"} {
-			set tid_str "CEX"
-		}
-    } else {set tid_str "DECR"}
 
 	# cleanup any previous output builds
 	set final_output "${::OUT_FILE}_$::OFW_MAJOR_VER.$::OFW_MINOR_VER.$tid_str-PS3UPDAT.PUP"
