@@ -5,7 +5,8 @@ NOTES:
 - This modified mfwbuilder's purpose is mainly to modify all the different CFW flavours
 - PLEASE DO NOT TRY A MFW WITHOUT HARDWARE FLASHER
 - Please check Base firmware option, so correct tarballs can be produced (each version/target has its own)
-- AGAIN PLEASE DO NOT FORGET TO HAVE A HARDWARE FLASHER AT HAND, especially when modifying any coreos file or using
+- Check only one option of resigning routine, either self-/isorebuilder (which makes the files more genuine), or scetool
+- AGAIN, PLEASE DO NOT FORGET TO HAVE A HARDWARE FLASHER AT HAND, especially when modifying any coreos file or using
 NAND PS3
 
 Changes:
