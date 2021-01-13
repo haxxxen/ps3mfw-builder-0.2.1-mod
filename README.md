@@ -1,6 +1,11 @@
 # ps3mfw-builder-0.2.1-mod
 modified version of toolboy's MFW-Builder (and original MFW-Builder 0.2.1)
 
+NOTES:
+- This modified mfwbuilder's purpose is mainly to modify all the different CFW flavours
+- PLEASE DO NOT TRY A MFW WITHOUT HARDWARE FLASHER
+- Please check Base firmware option, so correct tarballs can be produced (each version/target has its own)
+
 Changes:
 
 - using old routines to repack tar archive, packages and CORE_OS
@@ -44,3 +49,4 @@ NOTE FOR COBRA CFWs:
 When patching a COBRA CFW, keep in mind to update COBRA hashes on protected modules.
 
 Credits go to all the original authors of MFW-BUILDER and its tools. Also credits to mysis, who has made most of the patches!
+Also credits to those testing this modified version of mfwbuilder
