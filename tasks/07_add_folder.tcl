@@ -43,6 +43,8 @@ namespace eval 07_add_folder {
 					::create_cex_tar4_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
 				} elseif {$::options(--4XX-DEX)} {
 					::create_dex_tar4_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
+				} elseif {$::options(--4XX-DEH)} {
+					::create_deh_tar4_000 $tar ${::CUSTOM_PUP_DIR} dev_flash
 				}
 			} else {
 				if {$::options(--341-CEX)} {
