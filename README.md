@@ -6,7 +6,7 @@ NOTES:
 - PLEASE DO NOT TRY A MFW WITHOUT HARDWARE FLASHER
 - Please check Base firmware option, so correct tarballs can be produced (each version/target has its own)
 - to use scetool for resigning prx(s)/elf(s), just leave both options for self-/isorebuilder unticked. if you wanna use
-self-/isorebuilder (make files more genuine with same size) check both options
+self-/isorebuilder (make files more genuine with same size) check both options (recommended)
 - AGAIN, PLEASE DO NOT FORGET TO HAVE A HARDWARE FLASHER AT HAND, especially when modifying any coreos file or using
 NAND PS3
 
