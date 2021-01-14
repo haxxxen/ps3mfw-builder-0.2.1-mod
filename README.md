@@ -7,10 +7,10 @@ NOTES:
 - Please check Base firmware option, so correct tarballs can be produced (each version/target has its own)
 - to use scetool for resigning prx(s) or elf(s), just leave both options for self-/isorebuilder unticked. if you wanna use
 self-/isorebuilder (they make files more genuine with same size) check both options (recommended)
-- AGAIN, PLEASE DO NOT FORGET TO HAVE A HARDWARE FLASHER AT HAND, especially when modifying any coreos file or using
-NAND PS3
 - when you want to replace files manually in coreos/devflash/devflash3 and using windows explorer, I recommend you close explorer
 after you have replaced files. otherwise, you could get an error about files not accessible
+- AGAIN, PLEASE DO NOT FORGET TO HAVE A HARDWARE FLASHER AT HAND, especially when modifying any coreos file or using
+NAND PS3
 
 Changes:
 
