@@ -56,5 +56,5 @@ small explanation of tasks:
 NOTE FOR COBRA CFWs:
 When patching a COBRA CFW, keep in mind to update COBRA hashes on protected modules.
 
-Credits go to all the original authors of MFW-BUILDER and its tools. Also credits to mysis, who has made most of the patches!
-Also credits to those testing this modified version of mfwbuilder
+Credits go to all the original authors of MFW-BUILDER and its tools. Besides, credits to toolboy for his amazing (mfw)tools and mysis, who has made most of the patches possible!
+And finally credits (to those brave enough) testing this modified version of mfwbuilder. Last but not least, some reminder to all of the already gone scener "bitsbubba", who initially inspired me to go for firmware moddings. You won't be forget, R.I.P. and please watch for my cat Luzi in heaven :) 
