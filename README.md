@@ -1,7 +1,7 @@
 # ps3mfw-builder-0.2.1-mod
 modified version of toolboy's MFW-Builder (and original MFW-Builder 0.2.1)
 
-ATTENTION: Just have noticed, currently lv0tool does not work with isorebuilder has to be fixed, so please do no
+ATTENTION: Just have noticed, currently lv0tool does not work with isorebuilder and has to be fixed, so please do no
 lv0 (lv1ldr, lv2ldr, isoldr, appldr) modifications for now. Sorry for any inconvinience and damage it may has brought.
 It may work with scetool, but have not tried so far
 
