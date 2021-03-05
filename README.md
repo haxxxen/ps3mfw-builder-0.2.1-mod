@@ -1,6 +1,9 @@
 # ps3mfw-builder-0.2.1-mod
 modified version of toolboy's MFW-Builder (and original MFW-Builder 0.2.1)
 
+ATTENTION: Just have noticed, currently lv0tool is broken and has to be fixed, so please do no
+lv0 modifications. Sorry for any inconvinience and damage it may has brought
+
 NOTES:
 - This modified mfwbuilder's purpose is mainly to modify all the different CFW flavours
 - PLEASE DO NOT TRY A MFW WITHOUT HARDWARE FLASHER
