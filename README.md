@@ -35,7 +35,7 @@ Changes:
   and then in format X00XX (e.g. 40084). keys will then automatically generated based on 4.81 set of keys
 - finally fixed lv0 ctype keys thanks to littlebalup and Joonie. I am sorry if I have caused any serious problems to anyone!
 - added target prefix to output file, depending on target of input file (CEX, DEX, SEX, DECR)
-- added decr tarball option, so now 4.xx decr firmwares can be modified
+- added DECR tarball option, so now 3.55 and 4.xx DECR firmwares can be modified
   
 small explanation of tasks:
 - patch_cos: Has all basic COREOS patches you would need for a standard MFW and is based on toolboy. I only have added appldr lv2memory protection removal patch and appldr signature patch to be able to exit FSM on 4.XX (NOTE: For lv0 patches on 4.XX, you have to select lv0 extract option. Also current payloads are not working for DEX MFW thanks to Joonie for reporting)
