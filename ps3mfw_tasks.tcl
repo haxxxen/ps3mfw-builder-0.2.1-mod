@@ -95,8 +95,7 @@ proc build_mfw {input output tasks} {
         die "Input file does not exist"
     }
 
-	# if {!{$::options(--auto-cos)} {
-	# if {${::341_CEX} == "0" || ${::355_CEX} == "0" || ${::3XX_DEX} == "0" || ${::4XX_CEX} == "0" || ${::4XX_DEX} == "0" || ${::4XX_DEH} == "0"} {
+	# if {!$::options(--341-CEX) || !$::options(--355-CEX) || !$::options(--3XX-DEX) || !$::options(--4XX-CEX) || !$::options(--4XX-DEX)} {
         # die "Please select Base Firmware in global options"
 	# }
 
@@ -113,6 +112,10 @@ proc build_mfw {input output tasks} {
     }
 
     clean_up
+
+	# if {$::options(--341-CEX) == "0" || $::options(--355-CEX) == "0" || $::options(--3XX-DEX) == "0" || $::options(--4XX-CEX) == "0" || $::options(--4XX-DEX) == "0" || $::options(--4XX-DEH) == "0"} {
+		# die "Please select Base Firmware in global options"
+	# }
 
     # PREPARE PS3UPDAT.PUP for modification
     unpack_source_pup ${input} ${::ORIGINAL_PUP_DIR}
@@ -242,29 +245,36 @@ proc build_mfw {input output tasks} {
 
 	log "Please WAIT....Building new PUP TAR file(s)....."	
 
-	if {$::options(--341-CEX)} {
-		create_cex_tar341_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} elseif {$::options(--355-CEX)} {
-		create_cex_tar355_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} elseif {$::options(--3XX-DEX)} {
-		create_dex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} elseif {$::options(--4XX-CEX)} {
-		create_cex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} elseif {$::options(--4XX-DEX)} {
-		create_dex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} elseif {$::options(--4XX-DEH)} {
-		create_deh_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
-	} else {
-		die "Please select Base Firmware in global options"
+	if {[file exists ${::ORIGINAL_UPDATE_TAR}]} {
+		if {$::options(--341-CEX)} {
+			create_cex_tar341_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--355-CEX)} {
+			create_cex_tar355_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--3XX-DEX)} {
+			create_dex_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--4XX-CEX)} {
+			create_cex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--4XX-DEX)} {
+			create_dex_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--3XX-DEH)} {
+			create_deh_tar3_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} elseif {$::options(--4XX-DEH)} {
+			create_deh_tar4_update ${::CUSTOM_UPDATE_TAR}  ${::CUSTOM_UPDATE_DIR} ${files}
+		} else {
+			die "Please select Base Firmware in global options"
+		}
+		log "\"update_files.tar\" created" 1
 	}
-	log "\"update_files.tar\" created" 1
-    if {[file exists ${::ORIGINAL_SPKG_TAR}] && [file exists ${::CUSTOM_SPKG_DIR}]} {
+
+	if {[file exists ${::ORIGINAL_SPKG_TAR}] && [file exists ${::CUSTOM_SPKG_DIR}]} {
 		if {$::options(--3XX-DEX)} {
 			create_dex_tar3_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} elseif {$::options(--4XX-CEX)} {
 			create_cex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
+		} elseif {$::options(--3XX-DEH)} {
+			create_deh_tar3_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} elseif {$::options(--4XX-DEH)} {
 			create_deh_tar4_spkg ${::CUSTOM_SPKG_TAR}  ${::CUSTOM_SPKG_DIR} ${filesSPKG}
 		} else {

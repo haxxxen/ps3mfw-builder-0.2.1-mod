@@ -607,6 +607,62 @@ proc create_dex_tar4_dev3 {tar directory files} {
 		cd $pwd
 	}
 
+proc create_deh_tar3_000 {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 3.xx dev_flash tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh3_000 $tar $files} "Could not create DECR 3.xx dev_flash tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar3_content {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 3.xx dev_flash tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh3_content $tar $files} "Could not create DECR 3.xx dev_flash tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar3_update {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "update_files" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 3.xx update tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh3_update $tar $files} "Could not create DECR 3.xx update tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar3_spkg {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "spkg_hdr" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 3.xx spkg tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh3_spkg $tar $files} "Could not create DECR 3.xx spkg tar file $tar"
+	cd $pwd
+}
+proc create_deh_tar3_dev3 {tar directory files} {
+	set debug [file tail $tar]
+	if {$debug == "content" } {
+		set debug [file tail [file dirname $tar]]
+	}
+	debug "Creating DECR 3.xx dev_flash3 tar file $debug"
+	set pwd [pwd]
+	cd $directory
+	catch_die {::tar::create_deh3_dev3 $tar $files} "Could not create DECR 3.xx dev_flash3 tar file $tar"
+	cd $pwd
+}
+
 proc create_deh_tar4_000 {tar directory files} {
 	set debug [file tail $tar]
 	if {$debug == "content" } {
@@ -1045,6 +1101,8 @@ proc modify_devflash_file {file callback args} {
 		create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+	} elseif {$::options(--3XX-DEH)} {
+		create_deh_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 	} elseif {$::options(--4XX-DEH)} {
 		create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
     } else {
@@ -1106,6 +1164,8 @@ proc modify_devflash_files {path files callback args} {
 			create_cex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--4XX-DEX)} {
 			create_dex_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		} elseif {$::options(--3XX-DEH)} {
+			create_deh_tar3_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} elseif {$::options(--4XX-DEH)} {
 			create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
 		} else {
@@ -1779,6 +1839,44 @@ proc remove_pkgs_from_upl_xml { xml key message } {
     }
     return $xml
 }
+proc add_pkg_from_upl_xml { xml key message } {
+    log "Adding \"$message\" package to UPL.xml" 1
+
+    set i 0
+    while { 1 } {
+        set index [::xml::GetNodeIndices $xml "UpdatePackageList:Package" $i]
+        if {$index == "" } break
+        set node [::xml::GetNodeByIndex $xml $index]
+        set data [::xml::GetData $node "Package:Type"]
+        #debug "index: $index :: node: $node :: data: $data"
+        if {[string equal $data $key] == 1 } {
+            #debug "data: $data :: key: $key"
+            set xml [::xml::InsertNode $xml $index]
+            break
+        }
+        incr i 1
+    }
+    return $xml
+}
+proc add_pkgs_from_upl_xml { xml key message } {
+    log "Adding \"$message\" packages to UPL.xml" 1
+
+    set i 0
+    while { 1 } {
+        set index [::xml::GetNodeIndices $xml "UpdatePackageList:Package" $i]
+        if {$index == "" } break
+        set node [::xml::GetNodeByIndex $xml $index]
+        set data [::xml::GetData $node "Package:Type"]
+        #debug "index: $index :: node: $node :: data: $data"
+        if {[string equal $data $key] == 1 } {
+            #debug "data: $data :: key: $key"
+            set xml [::xml::InsertNode $xml $index]
+            incr i -1
+        }
+        incr i 1
+    }
+    return $xml
+}
 
 proc remove_node_from_xmb_xml { xml key message} {
     log "Removing \"$message\" from XML"
@@ -2009,8 +2107,10 @@ proc modify_devflash3_file {file callback args} {
 		create_cex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--4XX-DEX)} {
 		create_dex_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
+	} elseif {$::options(--3XX-DEH)} {
+		create_deh_tar3_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
 	} elseif {$::options(--4XX-DEH)} {
-		create_deh_tar4_content $tar_file ${::CUSTOM_DEVFLASH_DIR} dev_flash
+		create_deh_tar4_dev3 $tar_file ${::CUSTOM_DEVFLASH3_DIR} dev_flash3
     } else {
         die "Please select Base Firmware in global options"
 	}

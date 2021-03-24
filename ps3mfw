@@ -14,6 +14,7 @@ set ::PS3MFW_VERSION "0.2.1"
 # Option --3XX-DEX: 3.xx DEX Base Firmware (-> 3.xx DEX tarball version)
 # Option --4XX-CEX: 4.xx CEX Base Firmware (-> 4.xx CEX tarball version)
 # Option --4XX-DEX: 4.xx DEX Base Firmware (-> 4.xx DEX tarball version)
+# Option --3XX-DEH: 3.xx DECR Base Firmware (-> 3.xx DECR tarball version)
 # Option --4XX-DEH: 4.xx DECR Base Firmware (-> 4.xx DECR tarball version)
 # Option --tool-debug: Enable TOOL(s) DEBUG mode
 # Option --task-verbose: Show verbose TASK output
@@ -32,6 +33,7 @@ array set ::options {
 	--3XX-DEX false
 	--4XX-CEX false
 	--4XX-DEX false
+	--3XX-DEH false
 	--4XX-DEH false
 	--tool-debug true
 	--task-verbose true			
@@ -100,6 +102,7 @@ set ::355_CEX "0"
 set ::3XX_DEX "0"
 set ::4XX_CEX "0"
 set ::4XX_DEX "0"
+set ::3XX_DEH "0"
 set ::4XX_DEH "0"
 
 if {$::options(--341-CEX)} {
@@ -130,6 +133,12 @@ if {$::options(--4XX-DEX)} {
 	set ::4XX_DEX "1"
 } else {
 	set ::4XX_DEX "0"
+}
+
+if {$::options(--3XX-DEH)} {
+	set ::3XX_DEH "1"
+} else {
+	set ::3XX_DEH "0"
 }
 
 if {$::options(--4XX-DEH)} {
