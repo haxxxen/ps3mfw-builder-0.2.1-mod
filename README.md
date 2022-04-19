@@ -57,6 +57,7 @@ small explanation of tasks:
 - repair_hashes: This will let you repair modified COBRA hashes yourself without recompiling new stage2 file(s). It is reduced only to basic_plugins.sprx, game_ext_plugin.sprx, vsh.self, vsh.self.cexsp and vsh.self.swp, but those modules are the only ones that can be patched with MFW-Builder and besides, the others do not need to get patched. Just select any patch task for any of these modules and select the repair_hashes task. It will run always at the very last instance, so other patches can be applied beforehand. You can also patch manually and then just run the task, it will do everything itself. NOTE: For official REBUG COBRAs you have to first select the spoofer task and let it patch all vsh files, to get same hashes in the end! It only works for REBUG 4.21-4.80 COBRA, DARKNET 4.70 v5/4.81 COBRA and habib 4.75 v4 COBRA for now and only for original version.
 - patch_db: This will let you patch a 4.xx OFW, to disable ECDSA checks, that it can be installed on CFW for dualboot setups.
 - patch_rsx_oc: This will let you patch lv1.self, to overclock RSX Speeds (600MHz Core / 750MHz Memory). Credits to M4j0r and zecoxao
+- patch_pad: This will let you patch emer_init.self, to let you use a 3rd-Party Controller in RECOVERY Menu. This was only tested with wired Controllers, so I don't know if this will also work for wireless Bluetooth Controller.
 
 NOTE FOR COBRA CFWs:
 When patching a COBRA CFW, keep in mind to update COBRA hashes on protected modules.
