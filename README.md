@@ -56,7 +56,7 @@ small explanation of tasks:
 - patch_appldr_unsigned_apps: This will let you patch (4.21 ONLY) appldr for running unsigned apps, based on DEMONHADES. Now you can remove kakaroto's unsigned app vsh patch, which disables npdrm_fself on DEX. So no more shutdowns or blackscreens when kakaroto's patch is removed on a CEX CFW
 - repair_hashes: This will let you repair modified COBRA hashes yourself without recompiling new stage2 file(s). It is reduced only to basic_plugins.sprx, game_ext_plugin.sprx, vsh.self, vsh.self.cexsp and vsh.self.swp, but those modules are the only ones that can be patched with MFW-Builder and besides, the others do not need to get patched. Just select any patch task for any of these modules and select the repair_hashes task. It will run always at the very last instance, so other patches can be applied beforehand. You can also patch manually and then just run the task, it will do everything itself. NOTE: For official REBUG COBRAs you have to first select the spoofer task and let it patch all vsh files, to get same hashes in the end! It only works for REBUG 4.21-4.80 COBRA, DARKNET 4.70 v5/4.81 COBRA and habib 4.75 v4 COBRA for now and only for original version.
 - patch_db: This will let you patch a 4.xx OFW, to disable ECDSA checks, that it can be installed on CFW for dualboot setups.
-- patch_rsx_oc: This will let you patch lv1.self, to overclock RSX Speeds (600MHz Core / 750MHz Memory)
+- patch_rsx_oc: This will let you patch lv1.self, to overclock RSX Speeds (600MHz Core / 750MHz Memory). Credits to M4j0r and zecoxao
 
 NOTE FOR COBRA CFWs:
 When patching a COBRA CFW, keep in mind to update COBRA hashes on protected modules.
