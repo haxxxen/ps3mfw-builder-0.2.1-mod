@@ -86,8 +86,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/550
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 550MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 550MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 550MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 550MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x16\x04"
 			set offset 0
@@ -146,8 +146,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/575
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 575MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 575MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 575MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 575MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x17\x04"
 			set offset 0
@@ -206,8 +206,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/600
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 600MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 600MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 600MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 600MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x18\x04"
 			set offset 0
@@ -266,8 +266,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/625
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 625MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 625MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 625MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 625MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x19\x04"
 			set offset 0
@@ -316,8 +316,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/650
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 650MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 650MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 650MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 650MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set offset 0
@@ -376,8 +376,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/675
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 675MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 675MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 675MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 675MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1b\x04"
 			set offset 0
@@ -436,8 +436,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/700
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 700MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 700MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 700MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 700MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1c\x04"
 			set offset 0
@@ -496,8 +496,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/725
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 725MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 725MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 725MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 725MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1d\x04"
 			set offset 0
@@ -556,8 +556,8 @@ namespace eval ::01_patch_rsx_oc {
 			catch_die {::patch_elf $elf $search $offset $replace $mask} "Unable to patch self [file tail $elf]" 
         }
 		# RSX OC 650/750
-		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "600MHz / 750MHz"} {
-            log "Patching LV1 hypervisor to overclock RSX to 600MHz / 750MHz"
+		if {$::01_patch_rsx_oc::options(--patch-lv1-rsx-oc) == "650MHz / 750MHz"} {
+            log "Patching LV1 hypervisor to overclock RSX to 650MHz / 750MHz"
 			set search  "\x0a\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1a\x04"
 			set replace "\x0d\x02\x00\x00\x00\xa1\x00\x00\x00\x00\x00\x00\x1e\x04"
 			set offset 0
