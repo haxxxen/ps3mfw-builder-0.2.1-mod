@@ -38,8 +38,8 @@ namespace eval ::24_patch_pad {
 		if {$::24_patch_pad::options(--patch-pad)} {
             log "Patching EMER_INIT to enable (wired only?) 3rd-Party Controller"
 			00
-			set search  "\x80\x01\x00\x74\x2F\x80\x00\x00\x40\x9E\x00\x14"
-			set replace "\x38\x00\x00\x01\x2F\x80\x00\x00\x40\x9E\x00\x14"
+			set search  "\x41\x9E\x00\x40\x2B\xBC\x00\x7E"
+			set replace "\x38\x00\x00\x01\x2B\xBC\x00\x7E"
 			set offset 0
 			set mask 0				
 			# PATCH THE ELF BINARY
