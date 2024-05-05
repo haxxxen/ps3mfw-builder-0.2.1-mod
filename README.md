@@ -65,3 +65,20 @@ When patching a COBRA CFW, keep in mind to update COBRA hashes on protected modu
 Credits go to all the original authors of MFW-BUILDER and its tools and of course Graf Chokolo and glevand. Besides, credits to toolboy for his amazing (mfw)tools and mysis, who has made most of the patches possible! And finally credits to those (brave enough ;)) testing this modified version of mfwbuilder.
 
 Last but not least, some reminder to all, on the already gone scener "bitsbubba", who initially inspired me with his "NFW", to go for firmware moddings. You won't be forgotten, R.I.P.
+
+Picture Guide:
+1. main gui
+![01](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/9d638491-db48-4e29-9c3a-8096f158c5b2)
+2. configure Settings (temp path and very important, ps3keys path)
+![02](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/34e3ff58-0822-45c0-8199-7a20282feecb)
+![03](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/0a9ee9a4-7628-4795-87ef-364e0a5e5a4c)
+3. choose source CFW/OFW to mod and also path to resulting modded Firmware
+![04](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/73db7573-8d38-4790-9b61-b04c7c8ea30c)
+4. select in global options the CFW version tarball (this changes on targets but also on version)
+![05](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/5f2be114-0a26-4ca7-98fa-bac6e7cc99de)
+5. configure rebuilders or scetool for resigning of files. disabling both options will use scetool (only rebuilders will create almost identical files to original)
+![06](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/b2d001c7-aaf3-492b-a51b-5bd7d9b160b2)
+
+example when modifying CFW (e.g. REBUG or Evilnat)
+you have to disable rebbuilders option when modifying CoreOS file, otherwise you will brick (because of scetool compression)
+![07](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/607dad25-adf6-4658-8c96-ac6d1d2b05d0)
