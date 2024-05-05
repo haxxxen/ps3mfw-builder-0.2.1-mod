@@ -80,5 +80,5 @@ Picture Guide:
 ![06](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/b2d001c7-aaf3-492b-a51b-5bd7d9b160b2)
 
 example when modifying CFW (e.g. REBUG or Evilnat)
-you have to disable rebbuilders option when modifying CoreOS file, otherwise you will brick (because of scetool compression)
+you have to disable rebuilders options when modifying CoreOS file, otherwise you will brick (because of scetool compression)
 ![07](https://github.com/haxxxen/ps3mfw-builder-0.2.1-mod/assets/3664796/607dad25-adf6-4658-8c96-ac6d1d2b05d0)
