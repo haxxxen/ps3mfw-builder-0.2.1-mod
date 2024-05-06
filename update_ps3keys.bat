@@ -9,7 +9,6 @@ echo Updating scetool keys...
 set /p new=Type in new PS3 Firmware Version in special format (e.g. for 4.84 type 40084): 
 tools\sfk.exe rep -pat /90099/%new%/ -dir . -file keydat -yes
 tools\sfk.exe partcopy keydat -allfrom 0x0 data\keys -append -yes
-tools\sfk.exe partcopy keydat -allfrom 0x0 ps3keys\keys -append -yes
 
 del /F /Q keydat
 echo Done!
